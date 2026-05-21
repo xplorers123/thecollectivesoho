@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative h-[92vh] w-full overflow-hidden bg-black">
+      <section className="relative h-[80vh] md:h-[74vh] w-full overflow-hidden bg-black">
         <HeroCarousel />
         <div className="absolute inset-0 z-[2] bg-gradient-to-b from-black/30 via-black/50 to-black/90" />
         <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-end px-6 pb-20 text-white">
