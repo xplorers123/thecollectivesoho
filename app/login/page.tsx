@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 export default function Login() {
-  const { signIn, setActive } = useSignIn();
+  const { signIn } = useSignIn();
   const { isSignedIn } = useAuth();
   const router = useRouter();
 
@@ -26,11 +26,10 @@ export default function Login() {
     try {
       const { error: createError } = await (signIn as any).create({ identifier: email, password });
       if (createError) {
-        setError(createError.longMessage ?? createError.message ?? JSON.stringify(createError));
+        setError(createError.longMessage ?? createError.message ?? "Invalid email or password.");
         return;
       }
-      await (signIn as any).finalize();
-      router.push("/dashboard");
+      await (signIn as any).finalize({ navigate: () => router.push("/dashboard") });
     } catch (err: any) {
       setError(err?.errors?.[0]?.longMessage ?? "Invalid email or password.");
     } finally {
