@@ -10,28 +10,51 @@ export default function Login() {
   const { isSignedIn } = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    if (isSignedIn) router.replace("/dashboard");
-  }, [isSignedIn, router]);
+  const [step, setStep] = useState<"email" | "code">("email");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [code, setCode] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(e: React.FormEvent) {
+  useEffect(() => {
+    if (isSignedIn) router.replace("/dashboard");
+  }, [isSignedIn, router]);
+
+  async function handleEmail(e: React.FormEvent) {
     e.preventDefault();
     if (!signIn) return;
     setError("");
     setLoading(true);
     try {
-      const { error: createError } = await (signIn as any).create({ identifier: email, password });
-      if (createError) {
-        setError(createError.longMessage ?? createError.message ?? "Invalid email or password.");
+      // Check approved vendors list
+      const res = await fetch(`/api/check-approval?email=${encodeURIComponent(email)}`);
+      const data = await res.json();
+      if (!data.approved) {
+        setError("This email isn't on our approved vendor list. Contact info@popupcollectivenyc.com to apply.");
+        setLoading(false);
         return;
       }
+
+      // Send OTP code via Clerk
+      await (signIn as any).create({ strategy: "email_code", identifier: email });
+      setStep("code");
+    } catch (err: any) {
+      setError(err?.errors?.[0]?.longMessage ?? "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleCode(e: React.FormEvent) {
+    e.preventDefault();
+    if (!signIn) return;
+    setError("");
+    setLoading(true);
+    try {
+      await (signIn as any).attemptFirstFactor({ strategy: "email_code", code });
       await (signIn as any).finalize({ navigate: () => router.push("/dashboard") });
     } catch (err: any) {
-      setError(err?.errors?.[0]?.longMessage ?? "Invalid email or password.");
+      setError(err?.errors?.[0]?.longMessage ?? "Invalid code. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -46,68 +69,81 @@ export default function Login() {
             Welcome <span className="serif-italic font-normal">back</span>.
           </h1>
           <p className="mx-auto mt-6 max-w-md text-base text-muted">
-            This area is for approved vendors only. If you have an account, sign in below.
+            Enter your approved email and we'll send you a sign-in code.
           </p>
         </div>
       </section>
 
       <section className="bg-neutral-50 px-6 py-20">
         <div className="mx-auto max-w-md">
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="mb-2 block text-xs uppercase tracking-widest text-muted" htmlFor="email">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full border border-border bg-white px-4 py-3 text-sm focus:border-black focus:outline-none"
-                placeholder="you@example.com"
-              />
-            </div>
-
-            <div>
-              <label className="mb-2 block text-xs uppercase tracking-widest text-muted" htmlFor="password">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full border border-border bg-white px-4 py-3 text-sm focus:border-black focus:outline-none"
-                placeholder="••••••••"
-              />
-            </div>
-
-            {error && <p className="text-sm text-red-600">{error}</p>}
-
-            <button
-              type="submit"
-              disabled={loading || !signIn}
-              className="w-full bg-black px-6 py-4 text-xs uppercase tracking-widest text-white hover:bg-neutral-800 transition-colors disabled:opacity-50"
-            >
-              {loading ? "Signing in…" : "Log In"}
-            </button>
-          </form>
-
-          <p className="mt-6 text-center text-sm text-muted">
-            <a href="mailto:info@popupcollectivenyc.com" className="underline underline-offset-2 hover:text-black transition-colors">
-              Forgot your password?
-            </a>
-          </p>
+          {step === "email" ? (
+            <form onSubmit={handleEmail} className="space-y-5">
+              <div>
+                <label className="mb-2 block text-xs uppercase tracking-widest text-muted" htmlFor="email">
+                  Email address
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full border border-border bg-white px-4 py-3 text-sm focus:border-black focus:outline-none"
+                  placeholder="you@example.com"
+                />
+              </div>
+              {error && <p className="text-sm text-red-600">{error}</p>}
+              <button
+                type="submit"
+                disabled={loading || !signIn}
+                className="w-full bg-black px-6 py-4 text-xs uppercase tracking-widest text-white hover:bg-neutral-800 transition-colors disabled:opacity-50"
+              >
+                {loading ? "Sending code…" : "Send Sign-In Code"}
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleCode} className="space-y-5">
+              <p className="text-sm text-muted">
+                We sent a 6-digit code to <strong>{email}</strong>. Enter it below.
+              </p>
+              <div>
+                <label className="mb-2 block text-xs uppercase tracking-widest text-muted" htmlFor="code">
+                  Verification code
+                </label>
+                <input
+                  id="code"
+                  type="text"
+                  inputMode="numeric"
+                  required
+                  value={code}
+                  onChange={(e) => setCode(e.target.value)}
+                  className="w-full border border-border bg-white px-4 py-3 text-sm tracking-widest focus:border-black focus:outline-none"
+                  placeholder="123456"
+                  maxLength={6}
+                />
+              </div>
+              {error && <p className="text-sm text-red-600">{error}</p>}
+              <button
+                type="submit"
+                disabled={loading || !signIn}
+                className="w-full bg-black px-6 py-4 text-xs uppercase tracking-widest text-white hover:bg-neutral-800 transition-colors disabled:opacity-50"
+              >
+                {loading ? "Verifying…" : "Sign In"}
+              </button>
+              <button
+                type="button"
+                onClick={() => { setStep("email"); setCode(""); setError(""); }}
+                className="w-full text-xs text-muted uppercase tracking-widest hover:text-black transition-colors"
+              >
+                ← Use a different email
+              </button>
+            </form>
+          )}
 
           <div className="my-10 border-t border-border" />
-
           <div className="space-y-4 text-center">
             <p className="text-sm text-muted">
-              Don&apos;t have an account? Only approved vendors who have submitted an application may register.
+              Don&apos;t have an account yet?
             </p>
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
               <Link
