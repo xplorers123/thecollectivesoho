@@ -35,11 +35,22 @@ export default function Login() {
         return;
       }
 
-      // Send OTP code via Clerk
-      await (signIn as any).create({ strategy: "email_code", identifier: email });
+      const { error: createError } = await (signIn as any).create({ identifier: email });
+      if (createError) {
+        setError(createError.longMessage ?? createError.message ?? "Could not send code.");
+        setLoading(false);
+        return;
+      }
+      const { error: sendError } = await (signIn as any).emailCode.sendCode();
+      if (sendError) {
+        setError(sendError.longMessage ?? sendError.message ?? "Could not send code.");
+        setLoading(false);
+        return;
+      }
       setStep("code");
     } catch (err: any) {
-      setError(err?.errors?.[0]?.longMessage ?? "Something went wrong. Please try again.");
+      console.error("Login error:", err);
+      setError(err?.errors?.[0]?.longMessage ?? err?.message ?? JSON.stringify(err));
     } finally {
       setLoading(false);
     }
@@ -51,7 +62,11 @@ export default function Login() {
     setError("");
     setLoading(true);
     try {
-      await (signIn as any).attemptFirstFactor({ strategy: "email_code", code });
+      const { error: verifyError } = await (signIn as any).emailCode.verifyCode({ code });
+      if (verifyError) {
+        setError(verifyError.longMessage ?? verifyError.message ?? "Invalid code. Please try again.");
+        return;
+      }
       await (signIn as any).finalize({ navigate: () => router.push("/dashboard") });
     } catch (err: any) {
       setError(err?.errors?.[0]?.longMessage ?? "Invalid code. Please try again.");
