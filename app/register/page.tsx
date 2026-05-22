@@ -1,6 +1,6 @@
 "use client";
 
-import { useSignUp } from "@clerk/nextjs";
+import { useSignIn } from "@clerk/nextjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -8,7 +8,7 @@ import { useState } from "react";
 type Step = "email" | "brand" | "code";
 
 export default function Register() {
-  const { signUp } = useSignUp();
+  const { signIn } = useSignIn();
   const router = useRouter();
 
   const [step, setStep] = useState<Step>("email");
@@ -39,19 +39,25 @@ export default function Register() {
 
   async function createAndSendCode(e: React.FormEvent) {
     e.preventDefault();
-    if (!signUp) return;
+    if (!signIn) return;
     setError("");
     setLoading(true);
     try {
-      const { error: createError } = await (signUp as any).create({
-        emailAddress: email,
-        unsafeMetadata: { brandName },
+      // Create the Clerk user server-side
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, brandName }),
       });
-      if (createError) {
-        setError(createError.longMessage ?? createError.message ?? "Could not create account.");
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error ?? "Could not create account.");
         return;
       }
-      await (signUp as any).prepareEmailAddressVerification({ strategy: "email_code" });
+
+      // Sign in with email OTP (same flow as login page, which works)
+      await (signIn as any).create({ identifier: email });
+      await (signIn as any).emailCode.sendCode();
       setStep("code");
     } catch (err: any) {
       setError(err?.errors?.[0]?.longMessage ?? err?.message ?? "Something went wrong.");
@@ -62,12 +68,12 @@ export default function Register() {
 
   async function verifyCode(e: React.FormEvent) {
     e.preventDefault();
-    if (!signUp) return;
+    if (!signIn) return;
     setError("");
     setLoading(true);
     try {
-      await (signUp as any).attemptEmailAddressVerification({ code });
-      router.push("/dashboard");
+      await (signIn as any).emailCode.verifyCode({ code });
+      await (signIn as any).finalize({ navigate: () => router.push("/dashboard") });
     } catch (err: any) {
       setError(err?.errors?.[0]?.longMessage ?? err?.message ?? "Invalid code. Please try again.");
     } finally {
@@ -142,10 +148,10 @@ export default function Register() {
               {error && <p className="text-sm text-red-600">{error}</p>}
               <button
                 type="submit"
-                disabled={loading || !signUp}
+                disabled={loading || !signIn}
                 className="w-full bg-black px-6 py-4 text-xs uppercase tracking-widest text-white hover:bg-neutral-800 transition-colors disabled:opacity-50"
               >
-                {loading ? "Sending code…" : "Send Sign-In Code"}
+                {loading ? "Creating account…" : "Create Account & Send Code"}
               </button>
             </form>
           )}
@@ -174,7 +180,7 @@ export default function Register() {
               {error && <p className="text-sm text-red-600">{error}</p>}
               <button
                 type="submit"
-                disabled={loading || !signUp}
+                disabled={loading || !signIn}
                 className="w-full bg-black px-6 py-4 text-xs uppercase tracking-widest text-white hover:bg-neutral-800 transition-colors disabled:opacity-50"
               >
                 {loading ? "Verifying…" : "Verify & Enter Portal"}
