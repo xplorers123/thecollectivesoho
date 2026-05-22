@@ -51,11 +51,7 @@ export default function Register() {
         setError(createError.longMessage ?? createError.message ?? "Could not create account.");
         return;
       }
-      const { error: sendError } = await (signUp as any).emailCode.sendCode();
-      if (sendError) {
-        setError(sendError.longMessage ?? sendError.message ?? "Could not send code.");
-        return;
-      }
+      await (signUp as any).prepareEmailAddressVerification({ strategy: "email_code" });
       setStep("code");
     } catch (err: any) {
       setError(err?.errors?.[0]?.longMessage ?? err?.message ?? "Something went wrong.");
@@ -70,12 +66,8 @@ export default function Register() {
     setError("");
     setLoading(true);
     try {
-      const { error: verifyError } = await (signUp as any).emailCode.verifyCode({ code });
-      if (verifyError) {
-        setError(verifyError.longMessage ?? verifyError.message ?? "Invalid code.");
-        return;
-      }
-      await (signUp as any).finalize({ navigate: () => router.push("/dashboard") });
+      await (signUp as any).attemptEmailAddressVerification({ code });
+      router.push("/dashboard");
     } catch (err: any) {
       setError(err?.errors?.[0]?.longMessage ?? err?.message ?? "Invalid code. Please try again.");
     } finally {
