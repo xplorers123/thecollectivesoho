@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-type Step = "email" | "details" | "verify";
+type Step = "email" | "brand" | "code";
 
 export default function Register() {
   const { signUp } = useSignUp();
@@ -14,7 +14,6 @@ export default function Register() {
   const [step, setStep] = useState<Step>("email");
   const [email, setEmail] = useState("");
   const [brandName, setBrandName] = useState("");
-  const [password, setPassword] = useState("");
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,9 +26,9 @@ export default function Register() {
       const res = await fetch(`/api/check-approval?email=${encodeURIComponent(email)}`);
       const data = await res.json();
       if (!data.approved) {
-        setError("Your email isn't on our approved list. Please submit an application first, or contact info@popupcollectivenyc.com.");
+        setError("This email isn't on our approved list. Contact info@popupcollectivenyc.com to apply.");
       } else {
-        setStep("details");
+        setStep("brand");
       }
     } catch {
       setError("Something went wrong. Please try again.");
@@ -38,45 +37,47 @@ export default function Register() {
     }
   }
 
-  async function createAccount(e: React.FormEvent) {
+  async function createAndSendCode(e: React.FormEvent) {
     e.preventDefault();
     if (!signUp) return;
     setError("");
     setLoading(true);
     try {
-      const { error: createError } = await signUp.create({
+      const { error: createError } = await (signUp as any).create({
         emailAddress: email,
-        password,
         unsafeMetadata: { brandName },
       });
       if (createError) {
-        setError(createError.longMessage ?? "Could not create account.");
+        setError(createError.longMessage ?? createError.message ?? "Could not create account.");
         return;
       }
-      await signUp.verifications.sendEmailCode();
-      setStep("verify");
+      const { error: sendError } = await (signUp as any).emailCode.sendCode();
+      if (sendError) {
+        setError(sendError.longMessage ?? sendError.message ?? "Could not send code.");
+        return;
+      }
+      setStep("code");
     } catch (err: any) {
-      setError(err?.errors?.[0]?.longMessage ?? "Could not create account. Please try again.");
+      setError(err?.errors?.[0]?.longMessage ?? err?.message ?? "Something went wrong.");
     } finally {
       setLoading(false);
     }
   }
 
-  async function verifyEmail(e: React.FormEvent) {
+  async function verifyCode(e: React.FormEvent) {
     e.preventDefault();
     if (!signUp) return;
     setError("");
     setLoading(true);
     try {
-      const { error: verifyError } = await signUp.verifications.verifyEmailCode({ code });
+      const { error: verifyError } = await (signUp as any).emailCode.verifyCode({ code });
       if (verifyError) {
-        setError(verifyError.longMessage ?? "Invalid code.");
+        setError(verifyError.longMessage ?? verifyError.message ?? "Invalid code.");
         return;
       }
-      await signUp.finalize();
-      router.push("/dashboard");
+      await (signUp as any).finalize({ navigate: () => router.push("/dashboard") });
     } catch (err: any) {
-      setError(err?.errors?.[0]?.longMessage ?? "Invalid code. Please try again.");
+      setError(err?.errors?.[0]?.longMessage ?? err?.message ?? "Invalid code. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -126,8 +127,8 @@ export default function Register() {
             </form>
           )}
 
-          {step === "details" && (
-            <form onSubmit={createAccount} className="space-y-5">
+          {step === "brand" && (
+            <form onSubmit={createAndSendCode} className="space-y-5">
               <div>
                 <label className="mb-2 block text-xs uppercase tracking-widest text-muted">Email</label>
                 <p className="border border-border bg-white px-4 py-3 text-sm text-muted">{email}</p>
@@ -146,36 +147,21 @@ export default function Register() {
                   placeholder="Your brand name"
                 />
               </div>
-              <div>
-                <label className="mb-2 block text-xs uppercase tracking-widest text-muted" htmlFor="password">
-                  Create a password
-                </label>
-                <input
-                  id="password"
-                  type="password"
-                  required
-                  minLength={8}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full border border-border bg-white px-4 py-3 text-sm focus:border-black focus:outline-none"
-                  placeholder="At least 8 characters"
-                />
-              </div>
               {error && <p className="text-sm text-red-600">{error}</p>}
               <button
                 type="submit"
                 disabled={loading || !signUp}
                 className="w-full bg-black px-6 py-4 text-xs uppercase tracking-widest text-white hover:bg-neutral-800 transition-colors disabled:opacity-50"
               >
-                {loading ? "Creating account…" : "Create Account"}
+                {loading ? "Sending code…" : "Send Sign-In Code"}
               </button>
             </form>
           )}
 
-          {step === "verify" && (
-            <form onSubmit={verifyEmail} className="space-y-5">
+          {step === "code" && (
+            <form onSubmit={verifyCode} className="space-y-5">
               <p className="text-sm text-muted">
-                We sent a 6-digit code to <strong>{email}</strong>. Enter it below to verify your account.
+                We sent a 6-digit code to <strong>{email}</strong>. Enter it below to verify and activate your account.
               </p>
               <div>
                 <label className="mb-2 block text-xs uppercase tracking-widest text-muted" htmlFor="code">
@@ -200,6 +186,13 @@ export default function Register() {
                 className="w-full bg-black px-6 py-4 text-xs uppercase tracking-widest text-white hover:bg-neutral-800 transition-colors disabled:opacity-50"
               >
                 {loading ? "Verifying…" : "Verify & Enter Portal"}
+              </button>
+              <button
+                type="button"
+                onClick={() => { setStep("email"); setCode(""); setError(""); }}
+                className="w-full text-xs text-muted uppercase tracking-widest hover:text-black transition-colors"
+              >
+                ← Start over
               </button>
             </form>
           )}
