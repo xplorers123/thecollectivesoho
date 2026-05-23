@@ -103,8 +103,22 @@ export default async function Dashboard() {
         </div>
       )}
 
+      {/* Vendor Guide */}
+      <div className="mt-16 border border-border bg-neutral-50 p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <p className="text-sm font-medium">Vendor Guide</p>
+          <p className="mt-1 text-xs text-muted">Hours, rules, display requirements, and everything you need for your booth.</p>
+        </div>
+        <Link
+          href="/dashboard/vendor-guide"
+          className="shrink-0 border border-black px-6 py-3 text-xs uppercase tracking-widest hover:bg-black hover:text-white transition-colors text-center"
+        >
+          Read the Guide
+        </Link>
+      </div>
+
       {/* Help */}
-      <div className="mt-16 border border-border bg-black p-8 text-white text-center">
+      <div className="mt-4 border border-border bg-black p-8 text-white text-center">
         <p className="text-sm font-medium">Need help?</p>
         <p className="mt-1 text-xs text-white/60">Contact our team</p>
         <a
