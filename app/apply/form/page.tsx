@@ -13,37 +13,10 @@ const CATEGORIES = [
   "Other",
 ];
 
-const WEEKLY_TIERS = [
-  "Tier A ($1,350/week)",
-  "Tier B ($1,200/week)",
-  "Tier C ($1,050/week)",
-  "No preference",
-];
-
-const MONTHLY_TIERS = [
-  "Tier A ($3,895/month)",
-  "Tier B ($3,485/month)",
-  "Tier C ($2,985/month)",
-  "No preference",
-];
-
 const BOOKING_TYPES = [
   "Weekly ($750+/week)",
   "Monthly ($3,000+/month)",
   "Weekend ($550+/weekend)",
-];
-
-const THREE_MONTH_TIERS = [
-  "Tier A ($3,595/month)",
-  "Tier B ($3,195/month)",
-  "Tier C ($2,795/month)",
-  "No preference",
-];
-
-const GRAND_OPENING = [
-  "Tier B ($600/weekend)",
-  "Tier C ($550/weekend)",
-  "No Preference",
 ];
 
 function Label({ children, required }: { children: React.ReactNode; required?: boolean }) {
@@ -126,11 +99,7 @@ export default function ApplyForm() {
   const [brandStory, setBrandStory] = useState("");
   const [productPhotos, setProductPhotos] = useState<FileList | null>(null);
   const [displayPhotos, setDisplayPhotos] = useState<FileList | null>(null);
-  const [weeklyTier, setWeeklyTier] = useState("");
-  const [monthlyTier, setMonthlyTier] = useState("");
   const [bookingType, setBookingType] = useState("");
-  const [threeMonthTier, setThreeMonthTier] = useState("");
-  const [grandOpening, setGrandOpening] = useState("");
   const [additionalComments, setAdditionalComments] = useState("");
   const [emailConsent, setEmailConsent] = useState(false);
 
@@ -154,11 +123,7 @@ export default function ApplyForm() {
     fd.append("website", website);
     fd.append("priceRange", priceRange);
     fd.append("brandStory", brandStory);
-    fd.append("weeklyTier", weeklyTier);
-    fd.append("monthlyTier", monthlyTier);
     fd.append("bookingType", bookingType);
-    fd.append("threeMonthTier", threeMonthTier);
-    fd.append("grandOpening", grandOpening);
     fd.append("additionalComments", additionalComments);
     fd.append("emailConsent", String(emailConsent));
     if (productPhotos) Array.from(productPhotos).forEach((f) => fd.append("productPhotos", f));
@@ -319,26 +284,11 @@ export default function ApplyForm() {
           <div>
             <Label required>Which booking type are you interested in?</Label>
             <RadioGroup name="bookingType" options={BOOKING_TYPES} value={bookingType} onChange={setBookingType} />
-          </div>
-
-          <div>
-            <Label required>Which tier for Weekly Booking?</Label>
-            <RadioGroup name="weeklyTier" options={WEEKLY_TIERS} value={weeklyTier} onChange={setWeeklyTier} />
-          </div>
-
-          <div>
-            <Label required>Which tier for Monthly Booking? (30% off)</Label>
-            <RadioGroup name="monthlyTier" options={MONTHLY_TIERS} value={monthlyTier} onChange={setMonthlyTier} />
-          </div>
-
-          <div>
-            <Label required>Which tier for 3-Month Commitment? (35% off)</Label>
-            <RadioGroup name="threeMonthTier" options={THREE_MONTH_TIERS} value={threeMonthTier} onChange={setThreeMonthTier} />
-          </div>
-
-          <div>
-            <Label>Grand Opening Weekend (4/4–4/5)</Label>
-            <RadioGroup name="grandOpening" options={GRAND_OPENING} value={grandOpening} onChange={setGrandOpening} />
+            {bookingType === "Weekend ($550+/weekend)" && (
+              <p className="mt-3 border border-border bg-white px-4 py-3 text-xs leading-relaxed text-muted">
+                <strong className="text-black">NOTE:</strong> Weekend-only application is limited and not guaranteed. For June, we are prioritizing weekly participants.
+              </p>
+            )}
           </div>
 
           <SectionTitle>Almost Done</SectionTitle>
@@ -357,7 +307,7 @@ export default function ApplyForm() {
                 className="mt-0.5 h-4 w-4 cursor-pointer accent-black"
               />
               <span>
-                I agree to receive email or text messages from Pop-Up Collective NYC.{" "}
+                I agree to receive email or text messages from The Collective SoHo.{" "}
                 <span className="text-black font-medium">*</span>
               </span>
             </label>
