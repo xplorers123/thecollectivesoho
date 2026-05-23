@@ -68,6 +68,8 @@ const sections = [
       "Fitting room located next to the bathroom",
       "Music & atmosphere curated by The Collective SoHo",
       "Outlet access is limited — bring your own extension cords",
+      "WiFi name: Cubico.co · Password: cubico123",
+      "Alt WiFi name: cubico-compatibility · Password: cubico123",
     ],
   },
   {

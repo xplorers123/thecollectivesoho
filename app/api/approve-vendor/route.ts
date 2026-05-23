@@ -68,15 +68,15 @@ export async function GET(req: NextRequest) {
           Our merchant community of artists, crafters, vintage curators and creatives of all types is what makes our markets so special — so thank you for joining us.
         </p>
 
-        <p style="font-size:15px;font-weight:bold;margin-top:32px;margin-bottom:8px;">To complete your booking, follow these steps:</p>
+        <p style="font-size:15px;font-weight:bold;margin-top:32px;margin-bottom:8px;">To start selling with us, follow these steps:</p>
 
         <table style="width:100%;border-collapse:collapse;font-size:15px;line-height:1.7;">
           <tr>
             <td style="padding:10px 0;vertical-align:top;width:32px;font-weight:bold;">1.</td>
             <td style="padding:10px 0;">
-              Log in to your vendor portal using the same email address as your application.
+              Register a vendor portal account using the same email address as your application.
               <br/>
-              <a href="${SITE_URL}/login" style="color:#000;font-weight:bold;">${SITE_URL}/login</a>
+              <a href="${SITE_URL}/register" style="color:#000;font-weight:bold;">${SITE_URL}/register</a>
             </td>
           </tr>
           <tr>
