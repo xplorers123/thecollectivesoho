@@ -19,16 +19,15 @@ const sections = [
   {
     title: "Contact Info",
     items: [
-      "On-site manager — Lou: (631) 877-5330",
+      "On-site manager — (646) 423-7308",
       "Email: info@popupcollectivenyc.com",
       "Instagram: @popupcollective.nyc",
-      "Wi-Fi password: TBA",
     ],
   },
   {
     title: "Booking Packages",
     items: [
-      "Single space: roughly 7′ × 5′",
+      "Single space: roughly 7′ × 5′, or 9′ × 4′ (best for clothing & accessory vendors)",
       "Spaces assigned on-site upon arrival — no advance requests",
       "One 6′ foldable table included",
       "Chairs and additional furniture not provided",
