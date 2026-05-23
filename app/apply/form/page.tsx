@@ -286,7 +286,7 @@ export default function ApplyForm() {
             <RadioGroup name="bookingType" options={BOOKING_TYPES} value={bookingType} onChange={setBookingType} />
             {bookingType === "Weekend ($550+/weekend)" && (
               <p className="mt-3 border border-border bg-white px-4 py-3 text-xs leading-relaxed text-muted">
-                <strong className="text-black">NOTE:</strong> Weekend-only application is limited and not guaranteed. For June, we are prioritizing weekly participants.
+                <strong className="text-black">NOTE:</strong> Weekend-only application is limited and not guaranteed. For the summer/fall, we are prioritizing weekly participants.
               </p>
             )}
           </div>
