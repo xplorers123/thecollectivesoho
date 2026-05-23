@@ -77,7 +77,7 @@ const sections = [
       "Post at least 2 stories and 1 feed post the week before your market dates",
       "Post at least 1 feed post and 2 stories during your market week",
       "Tag @popupcollectivenyc and use #popupcollectivenyc",
-      "Add your date range (e.g. "The Collective SoHo, Nov 28–Dec 28") to your bio",
+      "Add your date range (e.g. \"The Collective SoHo, Nov 28–Dec 28\") to your bio",
       "Follow and engage with neighboring vendors",
     ],
   },
