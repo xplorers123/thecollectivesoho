@@ -1,12 +1,206 @@
-import Link from "next/link";
-import Script from "next/script";
+"use client";
 
-export const metadata = {
-  title: "Apply — The Collective SoHo",
-  description: "Submit your vendor application to The Collective SoHo.",
-};
+import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
+const CATEGORIES = [
+  "Jewelry",
+  "Beauty and Home Goods",
+  "Clothing & Accessories",
+  "Vintage",
+  "Food / Drink",
+  "Other",
+];
+
+const WEEKLY_TIERS = [
+  "Tier A ($1,350/week)",
+  "Tier B ($1,200/week)",
+  "Tier C ($1,050/week)",
+  "No preference",
+];
+
+const MONTHLY_TIERS = [
+  "Tier A ($3,895/month)",
+  "Tier B ($3,485/month)",
+  "Tier C ($2,985/month)",
+  "No preference",
+];
+
+const BOOKING_TYPES = [
+  "Weekly ($750+/week)",
+  "Monthly ($3,000+/month)",
+  "Weekend ($550+/weekend)",
+];
+
+const THREE_MONTH_TIERS = [
+  "Tier A ($3,595/month)",
+  "Tier B ($3,195/month)",
+  "Tier C ($2,795/month)",
+  "No preference",
+];
+
+const GRAND_OPENING = [
+  "Tier B ($600/weekend)",
+  "Tier C ($550/weekend)",
+  "No Preference",
+];
+
+function Label({ children, required }: { children: React.ReactNode; required?: boolean }) {
+  return (
+    <label className="mb-2 block text-xs uppercase tracking-widest text-muted">
+      {children}{required && <span className="ml-1 text-black">*</span>}
+    </label>
+  );
+}
+
+function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
+  return (
+    <input
+      {...props}
+      className="w-full border border-border bg-white px-4 py-3 text-sm focus:border-black focus:outline-none"
+    />
+  );
+}
+
+function Textarea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
+  return (
+    <textarea
+      {...props}
+      rows={4}
+      className="w-full border border-border bg-white px-4 py-3 text-sm focus:border-black focus:outline-none resize-none"
+    />
+  );
+}
+
+function RadioGroup({
+  name, options, value, onChange,
+}: {
+  name: string;
+  options: string[];
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  return (
+    <div className="space-y-2">
+      {options.map((opt) => (
+        <label key={opt} className="flex cursor-pointer items-center gap-3 text-sm">
+          <input
+            type="radio"
+            name={name}
+            value={opt}
+            checked={value === opt}
+            onChange={() => onChange(opt)}
+            className="h-4 w-4 cursor-pointer accent-black"
+          />
+          {opt}
+        </label>
+      ))}
+    </div>
+  );
+}
+
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="border-t border-border pt-10 mt-10">
+      <p className="text-xs uppercase tracking-[0.3em] text-muted mb-6">{children}</p>
+    </div>
+  );
+}
 
 export default function ApplyForm() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [brandName, setBrandName] = useState("");
+  const [category, setCategory] = useState("");
+  const [instagram, setInstagram] = useState("");
+  const [website, setWebsite] = useState("");
+  const [priceRange, setPriceRange] = useState("");
+  const [brandStory, setBrandStory] = useState("");
+  const [productPhotos, setProductPhotos] = useState<FileList | null>(null);
+  const [displayPhotos, setDisplayPhotos] = useState<FileList | null>(null);
+  const [weeklyTier, setWeeklyTier] = useState("");
+  const [monthlyTier, setMonthlyTier] = useState("");
+  const [bookingType, setBookingType] = useState("");
+  const [threeMonthTier, setThreeMonthTier] = useState("");
+  const [grandOpening, setGrandOpening] = useState("");
+  const [additionalComments, setAdditionalComments] = useState("");
+  const [emailConsent, setEmailConsent] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!emailConsent) {
+      setError("Please agree to receive communications to submit your application.");
+      return;
+    }
+    setError("");
+    setLoading(true);
+
+    const fd = new FormData();
+    fd.append("firstName", firstName);
+    fd.append("lastName", lastName);
+    fd.append("phone", phone);
+    fd.append("email", email);
+    fd.append("brandName", brandName);
+    fd.append("category", category);
+    fd.append("instagram", instagram);
+    fd.append("website", website);
+    fd.append("priceRange", priceRange);
+    fd.append("brandStory", brandStory);
+    fd.append("weeklyTier", weeklyTier);
+    fd.append("monthlyTier", monthlyTier);
+    fd.append("bookingType", bookingType);
+    fd.append("threeMonthTier", threeMonthTier);
+    fd.append("grandOpening", grandOpening);
+    fd.append("additionalComments", additionalComments);
+    fd.append("emailConsent", String(emailConsent));
+    if (productPhotos) Array.from(productPhotos).forEach((f) => fd.append("productPhotos", f));
+    if (displayPhotos) Array.from(displayPhotos).forEach((f) => fd.append("displayPhotos", f));
+
+    try {
+      const res = await fetch("/api/apply", { method: "POST", body: fd });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error ?? "Something went wrong. Please try again.");
+      } else {
+        setSubmitted(true);
+      }
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (submitted) {
+    return (
+      <section className="bg-neutral-50 px-6 py-32 min-h-[60vh] flex items-center justify-center">
+        <div className="mx-auto max-w-md text-center">
+          <p className="mb-4 text-xs uppercase tracking-[0.3em] text-muted">Application Received</p>
+          <h2 className="text-4xl font-medium leading-tight">
+            Thank you, <span className="serif-italic font-normal">{firstName}</span>.
+          </h2>
+          <p className="mt-6 text-base leading-relaxed text-muted">
+            We've received your application for <strong>{brandName}</strong> and will be in touch shortly.
+          </p>
+          <Link
+            href="/"
+            className="mt-10 inline-flex items-center justify-center border border-black px-8 py-3 text-xs uppercase tracking-widest hover:bg-black hover:text-white transition-colors"
+          >
+            Back to Home
+          </Link>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <>
       <section className="border-b border-border bg-white px-6 pt-32 pb-12">
@@ -17,35 +211,172 @@ export default function ApplyForm() {
           >
             ← Back to Apply
           </Link>
-          <p className="mb-6 text-xs uppercase tracking-[0.3em] text-muted">
-            Vendor Application
-          </p>
+          <p className="mb-6 text-xs uppercase tracking-[0.3em] text-muted">Vendor Application</p>
           <h1 className="text-4xl font-medium leading-tight tracking-tight sm:text-6xl">
             Tell us about{" "}
             <span className="serif-italic font-normal">your brand</span>.
           </h1>
           <p className="mt-6 max-w-xl text-lg text-muted">
-            All applications are reviewed personally. We&apos;ll be in touch shortly.
+            All applications are reviewed personally. We'll be in touch shortly.
           </p>
         </div>
       </section>
 
       <section className="bg-neutral-50 px-6 py-16">
-        <div className="mx-auto max-w-3xl">
-          <iframe
-            id="JotFormIFrame-260200584913148"
-            title="Vendor Application"
-            src="https://form.jotform.com/260200584913148"
-            width="100%"
-            style={{ minWidth: "100%", height: "800px", border: "none" }}
-            scrolling="yes"
-            allow="geolocation; microphone; camera; fullscreen"
-          />
-          <Script src="https://cdn.jotfor.ms/s/umd/latest/for-form-embed-handler.js" strategy="afterInteractive" />
-          <Script id="jotform-handler" strategy="afterInteractive">{`
-            window.jotformEmbedHandler("iframe[id='JotFormIFrame-260200584913148']", "https://form.jotform.com/")
-          `}</Script>
-        </div>
+        <form onSubmit={handleSubmit} className="mx-auto max-w-3xl space-y-6">
+
+          {/* Personal Info */}
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <Label required>First Name</Label>
+              <Input required value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="Jane" />
+            </div>
+            <div>
+              <Label required>Last Name</Label>
+              <Input required value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Smith" />
+            </div>
+          </div>
+
+          <div>
+            <Label required>Phone Number</Label>
+            <Input required type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="(000) 000-0000" />
+          </div>
+
+          <div>
+            <Label required>Email</Label>
+            <Input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
+          </div>
+
+          <SectionTitle>Brand Information</SectionTitle>
+
+          <div>
+            <Label required>Company / Brand Name</Label>
+            <Input required value={brandName} onChange={(e) => setBrandName(e.target.value)} placeholder="Your Brand" />
+          </div>
+
+          <div>
+            <Label required>Product Category</Label>
+            <select
+              required
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="w-full border border-border bg-white px-4 py-3 text-sm focus:border-black focus:outline-none"
+            >
+              <option value="">Select a category</option>
+              {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+            {category === "Food / Drink" && (
+              <p className="mt-2 text-xs text-muted leading-relaxed">
+                Food vendors must comply with all applicable NYC and NY State food safety regulations and may be asked to provide relevant permits.
+              </p>
+            )}
+          </div>
+
+          <div>
+            <Label required>Instagram / Facebook / TikTok Handle</Label>
+            <Input required value={instagram} onChange={(e) => setInstagram(e.target.value)} placeholder="@yourbrand" />
+          </div>
+
+          <div>
+            <Label>Website</Label>
+            <Input type="url" value={website} onChange={(e) => setWebsite(e.target.value)} placeholder="https://yourbrand.com" />
+          </div>
+
+          <div>
+            <Label required>Price Range of Your Products</Label>
+            <Input required value={priceRange} onChange={(e) => setPriceRange(e.target.value)} placeholder="e.g. $20 – $200" />
+          </div>
+
+          <div>
+            <Label>Tell us about your brand and story</Label>
+            <Textarea value={brandStory} onChange={(e) => setBrandStory(e.target.value)} placeholder="Share your story..." />
+          </div>
+
+          <div>
+            <Label>Attach photos of your products / display</Label>
+            <input
+              type="file"
+              multiple
+              accept=".gif,.jpg,.jpeg,.png"
+              onChange={(e) => setProductPhotos(e.target.files)}
+              className="w-full border border-border bg-white px-4 py-3 text-sm file:mr-4 file:border-0 file:bg-black file:px-3 file:py-1 file:text-xs file:uppercase file:tracking-widest file:text-white cursor-pointer"
+            />
+          </div>
+
+          <div>
+            <Label>Attach photos of your displays</Label>
+            <input
+              type="file"
+              multiple
+              accept=".gif,.jpg,.jpeg,.png"
+              onChange={(e) => setDisplayPhotos(e.target.files)}
+              className="w-full border border-border bg-white px-4 py-3 text-sm file:mr-4 file:border-0 file:bg-black file:px-3 file:py-1 file:text-xs file:uppercase file:tracking-widest file:text-white cursor-pointer"
+            />
+          </div>
+
+          <SectionTitle>Booking Preference</SectionTitle>
+
+          <div>
+            <Label required>Which booking type are you interested in?</Label>
+            <RadioGroup name="bookingType" options={BOOKING_TYPES} value={bookingType} onChange={setBookingType} />
+          </div>
+
+          <div>
+            <Label required>Which tier for Weekly Booking?</Label>
+            <RadioGroup name="weeklyTier" options={WEEKLY_TIERS} value={weeklyTier} onChange={setWeeklyTier} />
+          </div>
+
+          <div>
+            <Label required>Which tier for Monthly Booking? (30% off)</Label>
+            <RadioGroup name="monthlyTier" options={MONTHLY_TIERS} value={monthlyTier} onChange={setMonthlyTier} />
+          </div>
+
+          <div>
+            <Label required>Which tier for 3-Month Commitment? (35% off)</Label>
+            <RadioGroup name="threeMonthTier" options={THREE_MONTH_TIERS} value={threeMonthTier} onChange={setThreeMonthTier} />
+          </div>
+
+          <div>
+            <Label>Grand Opening Weekend (4/4–4/5)</Label>
+            <RadioGroup name="grandOpening" options={GRAND_OPENING} value={grandOpening} onChange={setGrandOpening} />
+          </div>
+
+          <SectionTitle>Almost Done</SectionTitle>
+
+          <div>
+            <Label>Additional Comments / Questions</Label>
+            <Textarea value={additionalComments} onChange={(e) => setAdditionalComments(e.target.value)} placeholder="Anything else you'd like us to know?" />
+          </div>
+
+          <div>
+            <label className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed">
+              <input
+                type="checkbox"
+                checked={emailConsent}
+                onChange={(e) => setEmailConsent(e.target.checked)}
+                className="mt-0.5 h-4 w-4 cursor-pointer accent-black"
+              />
+              <span>
+                I agree to receive email or text messages from Pop-Up Collective NYC.{" "}
+                <span className="text-black font-medium">*</span>
+              </span>
+            </label>
+          </div>
+
+          {error && <p className="text-sm text-red-600">{error}</p>}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-black px-6 py-4 text-xs uppercase tracking-widest text-white hover:bg-neutral-800 transition-colors disabled:opacity-50"
+          >
+            {loading ? "Submitting…" : "Submit Application"}
+          </button>
+
+          <p className="text-center text-xs text-muted">
+            All applications are reviewed personally. We'll be in touch shortly.
+          </p>
+        </form>
       </section>
     </>
   );
