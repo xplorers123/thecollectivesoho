@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { createToken } from "@/lib/approval-token";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 const SITE_URL = process.env.NEXT_PUBLIC_URL ?? "https://popupcollectivenyc.com";
 const ADMIN_EMAIL = "info@popupcollectivenyc.com";
 
@@ -48,6 +47,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No email in submission" }, { status: 400 });
     }
 
+    const resend = new Resend(process.env.RESEND_API_KEY);
     const token = createToken(email);
     const approveUrl = `${SITE_URL}/api/approve-vendor?email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}&brand=${encodeURIComponent(brand)}&category=${encodeURIComponent(category)}&token=${token}`;
 

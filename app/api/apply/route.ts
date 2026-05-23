@@ -3,7 +3,6 @@ import { Resend } from "resend";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { createToken } from "@/lib/approval-token";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 const SITE_URL = process.env.NEXT_PUBLIC_URL ?? "https://popupcollectivenyc.com";
 const ADMIN_EMAIL = "info@popupcollectivenyc.com";
 
@@ -86,6 +85,7 @@ export async function POST(req: NextRequest) {
     }
 
     const token = createToken(email);
+    const resend = new Resend(process.env.RESEND_API_KEY);
     const approveUrl = `${SITE_URL}/api/approve-vendor?email=${encodeURIComponent(email)}&name=${encodeURIComponent(`${firstName} ${lastName}`)}&brand=${encodeURIComponent(brandName)}&category=${encodeURIComponent(category)}&token=${token}`;
 
     const photoLinks = [

@@ -4,7 +4,6 @@ import { Resend } from "resend";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { verifyToken } from "@/lib/approval-token";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 const SITE_URL = process.env.NEXT_PUBLIC_URL ?? "https://popupcollectivenyc.com";
 const ADMIN_EMAIL = "info@popupcollectivenyc.com";
 
@@ -47,6 +46,7 @@ export async function GET(req: NextRequest) {
   }
 
   // 3. Send approval email to vendor
+  const resend = new Resend(process.env.RESEND_API_KEY);
   const firstName = name.split(" ")[0] || name;
   await resend.emails.send({
     from: `The Collective SoHo <${ADMIN_EMAIL}>`,
