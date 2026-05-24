@@ -88,10 +88,11 @@ export async function POST(req: NextRequest) {
     const resend = new Resend(process.env.RESEND_API_KEY);
     const approveUrl = `${SITE_URL}/api/approve-vendor?email=${encodeURIComponent(email)}&name=${encodeURIComponent(`${firstName} ${lastName}`)}&brand=${encodeURIComponent(brandName)}&category=${encodeURIComponent(category)}&token=${token}`;
 
-    const photoLinks = [
-      ...productPhotoUrls.map((u, i) => `<a href="${u}">Product photo ${i + 1}</a>`),
-      ...displayPhotoUrls.map((u, i) => `<a href="${u}">Display photo ${i + 1}</a>`),
-    ].join(" · ");
+    function photoGrid(urls: string[], label: string) {
+      if (!urls.length) return "";
+      const thumbs = urls.map(u => `<a href="${u}" target="_blank" style="display:inline-block;margin:4px;"><img src="${u}" width="100" height="100" style="width:100px;height:100px;object-fit:cover;border:1px solid #eee;" /></a>`).join("");
+      return `<div style="margin-top:16px;"><p style="font-size:12px;color:#666;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">${label}</p>${thumbs}</div>`;
+    }
 
     await resend.emails.send({
       from: `The Collective SoHo <${ADMIN_EMAIL}>`,
@@ -112,14 +113,11 @@ export async function POST(req: NextRequest) {
             <tr><td style="padding:6px 0;color:#666;">Website</td><td>${website || "—"}</td></tr>
             <tr><td style="padding:6px 0;color:#666;">Price range</td><td>${priceRange}</td></tr>
             <tr><td style="padding:6px 0;color:#666;">Booking type</td><td>${bookingType}</td></tr>
-            <tr><td style="padding:6px 0;color:#666;">Weekly tier</td><td>${weeklyTier || "—"}</td></tr>
-            <tr><td style="padding:6px 0;color:#666;">Monthly tier</td><td>${monthlyTier || "—"}</td></tr>
-            <tr><td style="padding:6px 0;color:#666;">3-month tier</td><td>${threeMonthTier || "—"}</td></tr>
-            <tr><td style="padding:6px 0;color:#666;">Grand Opening</td><td>${grandOpening || "—"}</td></tr>
           </table>
           ${brandStory ? `<div style="margin:16px 0;padding:14px;background:#f9f9f9;font-size:13px;line-height:1.6;"><strong>Brand story:</strong><br/>${brandStory}</div>` : ""}
           ${additionalComments ? `<div style="margin:12px 0;padding:14px;background:#f9f9f9;font-size:13px;line-height:1.6;"><strong>Comments:</strong><br/>${additionalComments}</div>` : ""}
-          ${photoLinks ? `<p style="font-size:13px;color:#444;margin-top:16px;"><strong>Photos:</strong> ${photoLinks}</p>` : ""}
+          ${photoGrid(productPhotoUrls, "Product photos")}
+          ${photoGrid(displayPhotoUrls, "Display photos")}
           <div style="margin-top:32px;">
             <a href="${approveUrl}" style="display:inline-block;background:#000;color:#fff;padding:14px 28px;text-decoration:none;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;">
               ✓ Approve this vendor
