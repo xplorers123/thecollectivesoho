@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
     ).filter(Boolean) as string[];
 
     // Save to Supabase
-    const { error: dbError } = await supabaseAdmin.from("Applications").insert({
+    const { error: dbError } = await supabaseAdmin.from("applications").insert({
       first_name: firstName,
       last_name: lastName,
       phone,

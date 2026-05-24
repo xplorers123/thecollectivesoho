@@ -104,7 +104,7 @@ for (const row of data) {
   const newDisplayUrls = (await Promise.all(displayUrls.map(u => downloadAndUpload(u, "display-photos")))).filter(Boolean);
 
   const { error } = await supabase
-    .from("Applications")
+    .from("applications")
     .update({
       product_photo_urls: newProductUrls,
       display_photo_urls: newDisplayUrls,
