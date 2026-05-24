@@ -11,10 +11,10 @@ async function uploadPhoto(file: File, folder: string): Promise<string | null> {
     const ext = file.name.split(".").pop() ?? "jpg";
     const path = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
     const { error } = await supabaseAdmin.storage
-      .from("applications")
+      .from("Applications")
       .upload(path, file, { contentType: file.type, upsert: false });
     if (error) return null;
-    const { data } = supabaseAdmin.storage.from("applications").getPublicUrl(path);
+    const { data } = supabaseAdmin.storage.from("Applications").getPublicUrl(path);
     return data.publicUrl;
   } catch {
     return null;
@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
     ).filter(Boolean) as string[];
 
     // Save to Supabase
-    const { error: dbError } = await supabaseAdmin.from("applications").insert({
+    const { error: dbError } = await supabaseAdmin.from("Applications").insert({
       first_name: firstName,
       last_name: lastName,
       phone,
