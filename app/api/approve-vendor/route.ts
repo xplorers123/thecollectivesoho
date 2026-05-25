@@ -19,10 +19,15 @@ export async function GET(req: NextRequest) {
     return new NextResponse("Invalid or expired approval link.", { status: 403 });
   }
 
-  // 1. Add to approved_vendors (ignore if already there)
+  // 1. Add to approved_vendors and mark application as approved
   await supabaseAdmin
     .from("approved_vendors")
     .upsert({ email, brand_name: brand }, { onConflict: "email" });
+
+  await supabaseAdmin
+    .from("applications")
+    .update({ status: "approved", approved_at: new Date().toISOString() })
+    .eq("email", email);
 
   // 2. Create Clerk account (ignore if already exists)
   const client = await clerkClient();
