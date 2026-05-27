@@ -4,10 +4,11 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 const slides = [
-  "/images/DSC_0657-scaled.jpg",
-  "/images/DSC_0661-scaled.jpg",
-  "/images/DSC_0721.jpg",
-  "/images/DSC_0742.jpg",
+  { src: "/images/DSC_0657-scaled.jpg", position: "object-center" },
+  { src: "/images/DSC_0755.jpg",        position: "object-[center_right]" },
+  { src: "/images/DSC_0661-scaled.jpg", position: "object-center" },
+  { src: "/images/DSC_0721.jpg",        position: "object-center" },
+  { src: "/images/DSC_0742.jpg",        position: "object-center" },
 ];
 
 export default function HeroCarousel() {
@@ -51,15 +52,15 @@ export default function HeroCarousel() {
       onTouchEnd={handleTouchEnd}
       style={{ touchAction: "pan-y" }}
     >
-      {slides.map((src, i) => (
+      {slides.map((slide, i) => (
         <Image
-          key={src}
-          src={src}
+          key={slide.src}
+          src={slide.src}
           alt=""
           fill
           priority={i === 0}
           sizes="100vw"
-          className="object-cover absolute inset-0"
+          className={`object-cover absolute inset-0 ${slide.position}`}
           style={{
             opacity: i === current ? 1 : 0,
             transition: "opacity 1s ease-in-out",
@@ -70,7 +71,7 @@ export default function HeroCarousel() {
 
       {/* Dots */}
       <div className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 gap-3">
-        {slides.map((_, i) => (
+        {slides.map((_slide, i) => (
           <button
             key={i}
             type="button"
