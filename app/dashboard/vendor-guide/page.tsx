@@ -29,8 +29,9 @@ const sections = [
     items: [
       "Single space: roughly 7′ × 5′, or 9′ × 4′ (best for clothing & accessory vendors)",
       "Spaces assigned on-site upon arrival — no advance requests",
-      "One 6′ foldable table included",
-      "Chairs and additional furniture not provided",
+      "1 six-foot table and 1 chair provided",
+      "Tablecloths, racks, and additional furniture not provided",
+      "Additional table or extra chair available for an extra cost",
     ],
   },
   {
@@ -73,7 +74,7 @@ const sections = [
   },
   {
     title: "Marketing & Promotion",
-    content: "To help drive traffic to the market, please:",
+    content: "Your customers need to know where to find you:",
     items: [
       "Post at least 2 stories and 1 feed post the week before your market dates",
       "Post at least 1 feed post and 2 stories during your market week",
@@ -89,7 +90,8 @@ const sections = [
       "Max display height: 6 ft free-standing, 8 ft wall-backed",
       "Backdrop: max 6 ft wide, 8 ft tall",
       "Do not obstruct neighboring booths or aisles",
-      "No painting, drilling, or permanent modifications to any surface",
+      "Drilling into drywall is allowed — all nails, screws, and hardware must be removed at the end of your booking",
+      "No painting or permanent modifications to any surface",
       "Pricing must be visible on your display",
       "All display elements must stay within your booth footprint",
       "Remove all stickers, trash, tape, and items at end of booking",

@@ -56,6 +56,12 @@ export default function Apply() {
             >
               Booth Options & Details
             </Link>
+            <Link
+              href="/dashboard/vendor-guide"
+              className="inline-flex items-center justify-center border border-border px-10 py-4 text-xs uppercase tracking-widest text-muted hover:border-black hover:text-black transition-colors"
+            >
+              Vendor Guide
+            </Link>
           </div>
         </div>
       </section>

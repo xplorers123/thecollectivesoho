@@ -73,6 +73,12 @@ export default function Register() {
     setLoading(true);
     try {
       await (signIn as any).emailCode.verifyCode({ code });
+      // Notify admin that this vendor just registered for the first time
+      fetch("/api/notify-registered", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, brandName }),
+      }).catch(() => {});
       await (signIn as any).finalize({ navigate: () => router.push("/dashboard") });
     } catch (err: any) {
       setError(err?.errors?.[0]?.longMessage ?? err?.message ?? "Invalid code. Please try again.");

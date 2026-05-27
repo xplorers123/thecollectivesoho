@@ -1,6 +1,5 @@
 // OOS for an entire booking type + category (all dates)
 const TYPE_CATEGORY_OOS = new Set([
-  "weekend:jewelry",
 ]);
 
 // OOS for a specific slot + category keyed as "type:startDate:category"
