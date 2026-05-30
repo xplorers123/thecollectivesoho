@@ -49,7 +49,7 @@ export default async function InvoicePage({
         </div>
 
         {/* Payment buttons */}
-        <InvoiceButtons slug={slug} />
+        <InvoiceButtons slug={slug} amountCents={invoice.amountCents} />
 
         <p className="mt-6 text-xs text-center text-muted">
           Questions? Email{" "}
