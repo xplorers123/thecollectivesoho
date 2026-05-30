@@ -14,6 +14,6 @@ export const invoices: Record<string, Invoice> = {
     name: "Yuehu",
     description: "Share Staff Model — Base Rent, June 1–30, 2026",
     amountCents: 100000, // $1,000.00
-    dueDate: "June 1, 2026",
+    dueDate: "May 31, 2026",
   },
 };
