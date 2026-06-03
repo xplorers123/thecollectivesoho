@@ -29,7 +29,7 @@ export const invoices: Record<string, Invoice> = {
     email: "info@aromademerrie.com",
     name: "Aroma de Merrie",
     description: "Booth Fee — June 5 – July 4, 2026",
-    amountCents: 30000,
+    amountCents: 300000,
     dueDate: "June 4, 2026",
   },
 
