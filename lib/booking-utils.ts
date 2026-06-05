@@ -50,7 +50,7 @@ export function getWeekendSlots(): BookingSlot[] {
       startDate: toISO(sat),
       endDate: toISO(sun),
       label,
-      price: 55000,
+      price: 60000,
       type: "weekend",
     });
 
@@ -78,7 +78,7 @@ export function getWeeklySlots(): BookingSlot[] {
       startDate: toISO(sat),
       endDate: toISO(fri),
       label,
-      price: 75000,
+      price: 85000,
       type: "weekly",
     });
 
@@ -112,7 +112,7 @@ export function getMonthlySlots(): BookingSlot[] {
       startDate: toISO(start),
       endDate: toISO(end),
       label,
-      price: 300000,
+      price: 320000,
       type: "monthly",
     });
 
