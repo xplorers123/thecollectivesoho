@@ -9,7 +9,7 @@ const tiers = [
   {
     name: "Weekend",
     badge: "Limited Availability",
-    price: "$550",
+    price: "$600",
     period: "/ weekend",
     description: "A short-run option to test the market. Weekend slots are limited and fill quickly.",
     days: "Saturday – Sunday (2 days)",
@@ -26,7 +26,7 @@ const tiers = [
   {
     name: "Weekly",
     badge: "Most Popular",
-    price: "$750",
+    price: "$850",
     period: "/ week",
     description: "Our most popular option — a full week to build momentum and connect with shoppers.",
     days: "Saturday – following Friday (7 days)",
@@ -44,7 +44,7 @@ const tiers = [
   {
     name: "Monthly",
     badge: "Best Value",
-    price: "$3,000",
+    price: "$3,200",
     period: "/ month",
     description: "Commit to a full month and we'll secure the best placement in the space for your brand.",
     days: "4-week booking period",
