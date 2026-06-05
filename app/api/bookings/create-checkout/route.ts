@@ -65,6 +65,7 @@ export async function POST(req: NextRequest) {
       primePlacement: prime ? "yes" : "no",
       paymentMethod: isAch ? "ach" : "card",
     },
+    allow_promotion_codes: true,
     success_url: `${baseUrl}/dashboard/book/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${baseUrl}/dashboard/book/${type}`,
   });
