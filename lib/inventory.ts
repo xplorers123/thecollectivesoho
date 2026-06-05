@@ -7,6 +7,7 @@ const TYPE_CATEGORY_OOS = new Set([
 // OOS for a specific slot + category keyed as "type:startDate:category"
 const SLOT_CATEGORY_OOS = new Set([
   "monthly:2026-06-01:jewelry",
+  "monthly:2026-07-01:jewelry",
 ]);
 
 const ALL_CATEGORIES = ["jewelry", "clothing", "other"];
