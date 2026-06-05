@@ -14,9 +14,9 @@ const CATEGORIES = [
 ];
 
 const BOOKING_TYPES = [
-  "Weekly ($750+/week)",
-  "Monthly ($3,000+/month)",
-  "Weekend ($550+/weekend)",
+  "Weekly ($850+/week)",
+  "Monthly ($3,200+/month)",
+  "Weekend ($600+/weekend)",
 ];
 
 function Label({ children, required }: { children: React.ReactNode; required?: boolean }) {
@@ -284,7 +284,7 @@ export default function ApplyForm() {
           <div>
             <Label required>Which booking type are you interested in?</Label>
             <RadioGroup name="bookingType" options={BOOKING_TYPES} value={bookingType} onChange={setBookingType} />
-            {bookingType === "Weekend ($550+/weekend)" && (
+            {bookingType === "Weekend ($600+/weekend)" && (
               <p className="mt-3 border border-border bg-white px-4 py-3 text-xs leading-relaxed text-muted">
                 <strong className="text-black">NOTE:</strong> Weekend-only application is limited and not guaranteed. For the summer/fall, we are prioritizing weekly participants.
               </p>
