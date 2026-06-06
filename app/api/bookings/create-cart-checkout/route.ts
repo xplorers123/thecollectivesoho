@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
       lineItems.push({
         price_data: {
           currency: "usd",
-          product_data: { name: "Credit card surcharge (3%)", description: "" },
+          product_data: { name: "Credit card surcharge (3%)" },
           unit_amount: fee,
         },
         quantity: 1,
