@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useCart } from "@/lib/cart-context";
+import { useRouter } from "next/navigation";
 
 type Category = "jewelry" | "clothing" | "other";
 
@@ -40,6 +42,9 @@ export default function BookingDetail({ slot, primePlacementPrice, originalPrice
   const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState<"ach" | "card" | null>(null);
   const [error, setError] = useState("");
+  const [addedToCart, setAddedToCart] = useState(false);
+  const { addItem } = useCart();
+  const router = useRouter();
 
   const totalPrice = slot.price + (prime ? primePlacementPrice : 0);
   const cardTotal = Math.round(totalPrice * 1.03);
@@ -200,6 +205,47 @@ export default function BookingDetail({ slot, primePlacementPrice, originalPrice
         >
           {loading === "card" ? "Loading…" : `Pay by Card — ${formatPrice(cardTotal)} (+3% fee)`}
         </button>
+
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-border" />
+          </div>
+          <div className="relative flex justify-center">
+            <span className="bg-white px-3 text-xs text-muted uppercase tracking-widest">or</span>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          disabled={!category || !agreed}
+          onClick={() => {
+            if (!category || !agreed) return;
+            addItem({
+              id: `${slot.type}-${slot.startDate}`,
+              type: slot.type,
+              startDate: slot.startDate,
+              endDate: slot.endDate,
+              label: slot.label,
+              price: totalPrice,
+              category,
+              prime,
+            });
+            setAddedToCart(true);
+          }}
+          className="w-full border border-border px-6 py-4 text-xs uppercase tracking-widest text-muted hover:border-black hover:text-black transition-colors disabled:opacity-40"
+        >
+          {addedToCart ? "✓ Added to Cart" : "Add to Cart"}
+        </button>
+
+        {addedToCart && (
+          <button
+            type="button"
+            onClick={() => router.push("/dashboard/cart")}
+            className="w-full text-xs uppercase tracking-widest text-muted underline underline-offset-4 hover:text-black transition-colors"
+          >
+            View Cart →
+          </button>
+        )}
       </div>
     </div>
   );

@@ -19,18 +19,38 @@ export async function POST(req: NextRequest) {
     const session = event.data.object as Stripe.Checkout.Session;
     const m = session.metadata!;
 
-    await supabaseAdmin.from("bookings").insert({
-      vendor_clerk_id: m.vendorClerkId,
-      vendor_email: m.vendorEmail,
-      brand_name: m.brandName,
-      booking_type: m.bookingType,
-      start_date: m.startDate,
-      end_date: m.endDate,
-      price_cents: Number(m.priceCents),
-      category: m.category ?? null,
-      status: "confirmed",
-      stripe_session_id: session.id,
-    });
+    if (m.isCart === "true") {
+      // Multi-item cart checkout
+      const cartItems = JSON.parse(m.cartItems ?? "[]");
+      for (const item of cartItems) {
+        await supabaseAdmin.from("bookings").insert({
+          vendor_clerk_id: m.vendorClerkId,
+          vendor_email: m.vendorEmail,
+          brand_name: m.brandName,
+          booking_type: item.type,
+          start_date: item.startDate,
+          end_date: item.endDate,
+          price_cents: item.priceCents,
+          category: item.category ?? null,
+          status: "confirmed",
+          stripe_session_id: session.id,
+        });
+      }
+    } else {
+      // Single booking checkout
+      await supabaseAdmin.from("bookings").insert({
+        vendor_clerk_id: m.vendorClerkId,
+        vendor_email: m.vendorEmail,
+        brand_name: m.brandName,
+        booking_type: m.bookingType,
+        start_date: m.startDate,
+        end_date: m.endDate,
+        price_cents: Number(m.priceCents),
+        category: m.category ?? null,
+        status: "confirmed",
+        stripe_session_id: session.id,
+      });
+    }
   }
 
   return NextResponse.json({ received: true });
