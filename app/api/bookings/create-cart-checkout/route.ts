@@ -2,7 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import Stripe from "stripe";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { CartItem } from "@/lib/cart-context";
+
+type CartItem = {
+  id: string;
+  type: string;
+  startDate: string;
+  endDate: string;
+  label: string;
+  price: number;
+  category: string;
+  prime: boolean;
+};
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
