@@ -13,8 +13,8 @@ const PHOTOS: Record<string, string> = {
 };
 
 const PRIME_PRICE: Record<string, number> = {
-  weekend: 5000,
-  weekly:  10000,
+  weekend: 0,
+  weekly:  0,
   monthly: 0,
 };
 
