@@ -60,23 +60,27 @@ export function getWeekendSlots(): BookingSlot[] {
   return slots;
 }
 
-export function getWeeklySlots(): BookingSlot[] {
+export function getWeeklySlots(startDay: "saturday" | "monday" = "saturday"): BookingSlot[] {
   const slots: BookingSlot[] = [];
   let sat = nextSaturday(new Date());
 
   while (sat < CUTOFF) {
-    const fri = new Date(sat);
-    fri.setDate(fri.getDate() + 6);
+    const start = new Date(sat);
+    if (startDay === "monday") {
+      start.setDate(start.getDate() + 2); // Sat → Mon
+    }
+    const end = new Date(start);
+    end.setDate(end.getDate() + 6);
 
-    const sameMonth = sat.getMonth() === fri.getMonth();
+    const sameMonth = start.getMonth() === end.getMonth();
     const label = sameMonth
-      ? `${formatDate(sat)} – ${fri.getDate()}, ${sat.getFullYear()}`
-      : `${formatDate(sat)} – ${formatDate(fri)}, ${fri.getFullYear()}`;
+      ? `${formatDate(start)} – ${end.getDate()}, ${start.getFullYear()}`
+      : `${formatDate(start)} – ${formatDate(end)}, ${end.getFullYear()}`;
 
     slots.push({
-      id: toISO(sat),
-      startDate: toISO(sat),
-      endDate: toISO(fri),
+      id: toISO(start),
+      startDate: toISO(start),
+      endDate: toISO(end),
       label,
       price: 85000,
       type: "weekly",
@@ -86,6 +90,10 @@ export function getWeeklySlots(): BookingSlot[] {
     sat.setDate(sat.getDate() + 7);
   }
   return slots;
+}
+
+export function getAllWeeklySlots(): BookingSlot[] {
+  return [...getWeeklySlots("saturday"), ...getWeeklySlots("monday")];
 }
 
 export function getMonthlySlots(): BookingSlot[] {

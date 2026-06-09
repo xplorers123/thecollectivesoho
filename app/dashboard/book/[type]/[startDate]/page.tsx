@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { getWeekendSlots, getWeeklySlots, getMonthlySlots, AVAILABLE_BOOTHS } from "@/lib/booking-utils";
+import { getWeekendSlots, getAllWeeklySlots, getMonthlySlots, AVAILABLE_BOOTHS } from "@/lib/booking-utils";
 import { getOOSCategories } from "@/lib/inventory";
 import BookingDetail from "@/components/BookingDetail";
 
@@ -24,7 +24,7 @@ const ORIGINAL_PRICE: Record<string, number> = {
 
 function getAllSlots(type: string) {
   if (type === "weekend") return getWeekendSlots();
-  if (type === "weekly")  return getWeeklySlots();
+  if (type === "weekly")  return getAllWeeklySlots();
   if (type === "monthly") return getMonthlySlots();
   return [];
 }
