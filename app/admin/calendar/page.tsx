@@ -3,25 +3,19 @@ import Link from "next/link";
 
 export const metadata = { title: "Calendar — Admin" };
 
-const CATEGORY_BG: Record<string, string> = {
-  clothing: "bg-blue-200 text-blue-900",
-  jewelry:  "bg-amber-200 text-amber-900",
-  vintage:  "bg-purple-200 text-purple-900",
-  other:    "bg-emerald-200 text-emerald-900",
+const COLORS: Record<string, { bg: string; text: string }> = {
+  clothing: { bg: "#bfdbfe", text: "#1e3a8a" },
+  jewelry:  { bg: "#fde68a", text: "#78350f" },
+  vintage:  { bg: "#e9d5ff", text: "#581c87" },
+  other:    { bg: "#a7f3d0", text: "#064e3b" },
 };
+const DEFAULT_COLOR = { bg: "#e5e7eb", text: "#374151" };
 
-const CATEGORY_BAR: Record<string, string> = {
-  clothing: "bg-blue-200",
-  jewelry:  "bg-amber-200",
-  vintage:  "bg-purple-200",
-  other:    "bg-emerald-200",
-};
-
-const CATEGORY_DOT: Record<string, string> = {
-  clothing: "bg-blue-500",
-  jewelry:  "bg-amber-500",
-  vintage:  "bg-purple-500",
-  other:    "bg-emerald-500",
+const LEGEND_DOTS: Record<string, string> = {
+  clothing: "#3b82f6",
+  jewelry:  "#f59e0b",
+  vintage:  "#a855f7",
+  other:    "#10b981",
 };
 
 type Booking = {
@@ -34,10 +28,7 @@ type Booking = {
   price_cents: number;
 };
 
-type DayEntry = {
-  booking: Booking;
-  position: "start" | "middle" | "end" | "single";
-};
+type DayEntry = { booking: Booking; position: "start" | "middle" | "end" | "single" };
 
 function dateToISO(d: Date) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
@@ -50,22 +41,19 @@ function isoToDate(s: string) {
 
 function buildDayMap(bookings: Booking[], year: number, month: number) {
   const map: Record<string, DayEntry[]> = {};
-
   for (const b of bookings) {
     const start = isoToDate(b.start_date);
     const end   = isoToDate(b.end_date);
     const cur   = new Date(start);
-
     while (cur <= end) {
-      const key = dateToISO(cur);
-      // only include days within this month
       if (cur.getFullYear() === year && cur.getMonth() === month) {
+        const key = dateToISO(cur);
         if (!map[key]) map[key] = [];
         const isStart = dateToISO(cur) === b.start_date;
         const isEnd   = dateToISO(cur) === b.end_date;
-        const pos: DayEntry["position"] =
+        const position: DayEntry["position"] =
           isStart && isEnd ? "single" : isStart ? "start" : isEnd ? "end" : "middle";
-        map[key].push({ booking: b, position: pos });
+        map[key].push({ booking: b, position });
       }
       cur.setDate(cur.getDate() + 1);
     }
@@ -85,8 +73,7 @@ export default async function AdminCalendar({
 
   if (month && /^\d{4}-\d{2}$/.test(month)) {
     const [y, m] = month.split("-").map(Number);
-    year = y;
-    monthIdx = m - 1;
+    year = y; monthIdx = m - 1;
   }
 
   const prevDate  = new Date(year, monthIdx - 1, 1);
@@ -108,9 +95,8 @@ export default async function AdminCalendar({
   const dayMap = buildDayMap(bookings ?? [], year, monthIdx);
 
   const firstOfMonth = new Date(year, monthIdx, 1);
-  const startPad     = firstOfMonth.getDay();
-  const daysInMonth  = new Date(year, monthIdx + 1, 0).getDate();
-
+  const startPad    = firstOfMonth.getDay();
+  const daysInMonth = new Date(year, monthIdx + 1, 0).getDate();
   const cells: (number | null)[] = [
     ...Array(startPad).fill(null),
     ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
@@ -129,68 +115,69 @@ export default async function AdminCalendar({
 
       {/* Legend */}
       <div className="flex items-center gap-5 mb-6">
-        {["clothing","jewelry","vintage","other"].map((cat) => (
+        {Object.entries(LEGEND_DOTS).map(([cat, dot]) => (
           <div key={cat} className="flex items-center gap-1.5">
-            <span className={`w-2.5 h-2.5 rounded-full ${CATEGORY_DOT[cat]}`} />
+            <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: dot }} />
             <span className="text-xs capitalize text-muted">{cat}</span>
           </div>
         ))}
       </div>
 
-      {/* Grid */}
-      <div className="bg-white border border-border rounded-sm overflow-hidden">
-        <div className="grid grid-cols-7 border-b border-border">
+      {/* Calendar */}
+      <div className="border border-border rounded-sm overflow-hidden bg-white">
+        {/* Day headers */}
+        <div className="grid grid-cols-7 border-b border-border bg-neutral-50">
           {["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map((d) => (
-            <div key={d} className="px-3 py-2 text-xs uppercase tracking-widest text-muted text-center font-medium">{d}</div>
+            <div key={d} className="py-2 text-xs uppercase tracking-widest text-muted text-center font-medium">{d}</div>
           ))}
         </div>
 
+        {/* Week rows */}
         <div className="grid grid-cols-7">
           {cells.map((day, i) => {
             const iso = day
               ? `${year}-${String(monthIdx + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`
               : null;
-            const entries = iso ? (dayMap[iso] ?? []) : [];
-            const isToday = iso === dateToISO(today);
+            const entries: DayEntry[] = iso ? (dayMap[iso] ?? []) : [];
+            const isToday   = iso === dateToISO(today);
             const isWeekend = i % 7 === 0 || i % 7 === 6;
 
             return (
               <div
                 key={i}
-                className={`min-h-[110px] border-b border-r border-border ${!day ? "bg-neutral-50" : isWeekend ? "bg-stone-50/40" : "bg-white"}`}
+                className={`min-h-[110px] border-b border-r border-border ${!day ? "bg-neutral-50" : isWeekend ? "bg-stone-50/30" : "bg-white"}`}
               >
                 {day && (
                   <>
                     <div className="px-2 pt-2 pb-1">
-                      <span className={`text-xs font-medium w-6 h-6 flex items-center justify-center rounded-full ${isToday ? "bg-black text-white" : "text-gray-500"}`}>
+                      <span
+                        className="text-xs font-medium w-6 h-6 flex items-center justify-center rounded-full"
+                        style={isToday ? { backgroundColor: "#000", color: "#fff" } : { color: "#6b7280" }}
+                      >
                         {day}
                       </span>
                     </div>
                     <div className="flex flex-col gap-0.5">
                       {entries.map(({ booking: b, position }) => {
                         const cat   = (b.category ?? "other").toLowerCase();
-                        const bgText = CATEGORY_BG[cat]  ?? "bg-gray-200 text-gray-800";
-                        const bar    = CATEGORY_BAR[cat] ?? "bg-gray-200";
+                        const color = COLORS[cat] ?? DEFAULT_COLOR;
                         const isStart  = position === "start"  || position === "single";
                         const isEnd    = position === "end"    || position === "single";
 
                         return (
                           <div
-                            key={b.id}
+                            key={b.id + iso}
+                            style={{ backgroundColor: color.bg, color: color.text }}
                             className={`
                               text-[11px] leading-none py-1 overflow-hidden
-                              ${isStart ? "pl-2" : "pl-0"}
-                              ${isEnd   ? "pr-2" : "pr-0"}
-                              ${isStart ? `${bgText} rounded-l-sm` : bar}
-                              ${isEnd   ? "rounded-r-sm" : ""}
-                              ${!isStart && !isEnd ? bar : ""}
+                              ${isStart ? "ml-1 pl-1.5 rounded-l-sm" : "-ml-px pl-0"}
+                              ${isEnd   ? "mr-1 rounded-r-sm"         : "-mr-px"}
                             `}
                           >
-                            {isStart ? (
-                              <span className="font-semibold truncate block">{b.brand_name}</span>
-                            ) : (
-                              <span className="block h-[14px]" />
-                            )}
+                            {isStart
+                              ? <span className="font-semibold truncate block">{b.brand_name}</span>
+                              : <span className="block h-3.5" />
+                            }
                           </div>
                         );
                       })}
@@ -203,7 +190,7 @@ export default async function AdminCalendar({
         </div>
       </div>
 
-      {/* List summary */}
+      {/* Summary list */}
       {(bookings ?? []).length > 0 && (
         <div className="mt-10">
           <h2 className="text-xs uppercase tracking-widest text-muted mb-4">This month</h2>
@@ -211,10 +198,11 @@ export default async function AdminCalendar({
             {[...(bookings ?? [])]
               .sort((a, b) => a.start_date.localeCompare(b.start_date))
               .map((b) => {
-                const cat = (b.category ?? "other").toLowerCase();
+                const cat   = (b.category ?? "other").toLowerCase();
+                const dot   = LEGEND_DOTS[cat] ?? "#9ca3af";
                 return (
                   <div key={b.id} className="bg-white border border-border rounded-sm px-5 py-4 flex items-center gap-4">
-                    <span className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${CATEGORY_DOT[cat] ?? "bg-gray-400"}`} />
+                    <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: dot }} />
                     <div className="flex-1 min-w-0">
                       <p className="font-medium text-sm">{b.brand_name}</p>
                       <p className="text-xs text-muted capitalize">{b.booking_type} · {b.category ?? "other"}</p>
