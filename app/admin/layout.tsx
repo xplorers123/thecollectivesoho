@@ -5,6 +5,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="flex items-center gap-6">
           <p className="text-xs uppercase tracking-widest font-medium">Admin</p>
           <a href="/admin/applications" className="text-xs uppercase tracking-widest text-muted hover:text-black transition-colors">Applications</a>
+          <a href="/admin/bookings" className="text-xs uppercase tracking-widest text-muted hover:text-black transition-colors">Bookings</a>
           <a href="/admin/add-vendor" className="text-xs uppercase tracking-widest text-muted hover:text-black transition-colors">Add Vendor</a>
         </div>
         <a href="/" className="text-xs uppercase tracking-widest text-muted hover:text-black transition-colors">← Site</a>
