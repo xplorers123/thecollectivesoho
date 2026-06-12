@@ -7,6 +7,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <a href="/admin/applications" className="text-xs uppercase tracking-widest text-muted hover:text-black transition-colors">Applications</a>
           <a href="/admin/bookings" className="text-xs uppercase tracking-widest text-muted hover:text-black transition-colors">Bookings</a>
           <a href="/admin/calendar" className="text-xs uppercase tracking-widest text-muted hover:text-black transition-colors">Calendar</a>
+          <a href="/admin/load-in" className="text-xs uppercase tracking-widest text-muted hover:text-black transition-colors">Load-In</a>
           <a href="/admin/add-vendor" className="text-xs uppercase tracking-widest text-muted hover:text-black transition-colors">Add Vendor</a>
         </div>
         <a href="/" className="text-xs uppercase tracking-widest text-muted hover:text-black transition-colors">← Site</a>
