@@ -15,10 +15,9 @@ export async function POST(req: NextRequest) {
   const resend = new Resend(process.env.RESEND_API_KEY);
   const {
     vendors,
-    loadInDate,
     slot1Time,
     slot2Time,
-  }: { vendors: Vendor[]; loadInDate: string; slot1Time: string; slot2Time: string } = await req.json();
+  }: { vendors: Vendor[]; slot1Time: string; slot2Time: string } = await req.json();
 
   if (!vendors?.length) return NextResponse.json({ error: "No vendors selected." }, { status: 400 });
 
@@ -46,7 +45,6 @@ export async function POST(req: NextRequest) {
 
   <p style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:#888;margin-bottom:6px;">Load-In & Setup</p>
   <p style="font-size:15px;margin-top:0;">
-    <strong>${loadInDate}</strong><br/>
     Your load-in window: <strong>${assignedTime}</strong>
   </p>
   <p style="font-size:15px;">Please arrive within your assigned window. Our onsite manager will be there to greet you.</p>
@@ -91,7 +89,7 @@ export async function POST(req: NextRequest) {
     const { error } = await resend.emails.send({
       from: `The Collective SoHo <${ADMIN_EMAIL}>`,
       to: v.email,
-      subject: `Your Load-In Details — The Collective SoHo, ${loadInDate}`,
+      subject: `Your Load-In Details — The Collective SoHo`,
       html,
     });
 

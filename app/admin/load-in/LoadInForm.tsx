@@ -23,17 +23,22 @@ function fmt12(time: string) {
 function fmtDate(iso: string) {
   if (!iso) return "";
   const [y, m, d] = iso.split("-").map(Number);
-  const date = new Date(y, m - 1, d);
-  return date.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+  return new Date(y, m - 1, d).toLocaleDateString("en-US", {
+    weekday: "long", month: "long", day: "numeric", year: "numeric",
+  });
 }
+
+function slotLabel(date: string, start: string, end: string) {
+  if (!date || !start || !end) return "";
+  return `${fmtDate(date)}, ${fmt12(start)} – ${fmt12(end)}`;
+}
+
+type SlotState = { date: string; start: string; end: string };
 
 export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
   const [selected, setSelected] = useState<Record<string, { checked: boolean; slot: "1" | "2" }>>({});
-  const [loadInDate, setLoadInDate] = useState("");
-  const [slot1Start, setSlot1Start] = useState("");
-  const [slot1End,   setSlot1End]   = useState("");
-  const [slot2Start, setSlot2Start] = useState("");
-  const [slot2End,   setSlot2End]   = useState("");
+  const [slot1, setSlot1] = useState<SlotState>({ date: "", start: "", end: "" });
+  const [slot2, setSlot2] = useState<SlotState>({ date: "", start: "", end: "" });
   const [status,  setStatus]  = useState<"idle" | "sending" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
 
@@ -44,7 +49,7 @@ export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
     }));
   }
 
-  function setSlot(id: string, slot: "1" | "2") {
+  function assignSlot(id: string, slot: "1" | "2") {
     setSelected((prev) => ({
       ...prev,
       [id]: { checked: prev[id]?.checked ?? true, slot },
@@ -63,8 +68,8 @@ export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
   }
 
   async function send() {
-    const slot1Time = slot1Start && slot1End ? `${fmt12(slot1Start)} – ${fmt12(slot1End)}` : "";
-    const slot2Time = slot2Start && slot2End ? `${fmt12(slot2Start)} – ${fmt12(slot2End)}` : "";
+    const slot1Label = slotLabel(slot1.date, slot1.start, slot1.end);
+    const slot2Label = slotLabel(slot2.date, slot2.start, slot2.end);
 
     const vendors = bookings
       .filter((b) => selected[b.id]?.checked)
@@ -75,10 +80,9 @@ export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
         slot: selected[b.id]?.slot ?? "1",
       }));
 
-    if (!vendors.length)  { setMessage("Select at least one vendor."); return; }
-    if (!loadInDate)      { setMessage("Pick a load-in date."); return; }
-    if (!slot1Time)       { setMessage("Enter Slot 1 start and end time."); return; }
-    if (!slot2Time)       { setMessage("Enter Slot 2 start and end time."); return; }
+    if (!vendors.length) { setMessage("Select at least one vendor."); return; }
+    if (!slot1Label)     { setMessage("Fill in Slot 1 date and time."); return; }
+    if (!slot2Label)     { setMessage("Fill in Slot 2 date and time."); return; }
 
     setStatus("sending");
     setMessage("");
@@ -86,7 +90,7 @@ export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
     const res = await fetch("/api/admin/send-load-in", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ vendors, loadInDate: fmtDate(loadInDate), slot1Time, slot2Time }),
+      body: JSON.stringify({ vendors, slot1Time: slot1Label, slot2Time: slot2Label }),
     });
 
     const data = await res.json();
@@ -102,67 +106,55 @@ export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
 
   const checkedCount = Object.values(selected).filter((v) => v.checked).length;
 
-  return (
-    <div className="space-y-10">
-      {/* Load-in details */}
-      <div className="bg-white border border-border rounded-sm p-6 space-y-5">
-        <p className="text-xs uppercase tracking-widest text-muted">Load-In Details</p>
-
-        {/* Date */}
+  function SlotInputs({ label, value, onChange }: { label: string; value: SlotState; onChange: (v: SlotState) => void }) {
+    return (
+      <div className="space-y-3">
+        <p className="text-xs font-semibold uppercase tracking-widest">{label}</p>
         <div>
-          <label className="block text-xs text-muted mb-1.5">Load-In Date</label>
+          <label className="block text-xs text-muted mb-1">Date</label>
           <input
             type="date"
-            value={loadInDate}
-            onChange={(e) => setLoadInDate(e.target.value)}
-            className="border border-border px-3 py-2 text-sm focus:outline-none focus:border-black"
+            value={value.date}
+            onChange={(e) => onChange({ ...value, date: e.target.value })}
+            className="border border-border px-3 py-2 text-sm focus:outline-none focus:border-black w-full"
           />
-          {loadInDate && (
-            <p className="text-xs text-muted mt-1">{fmtDate(loadInDate)}</p>
-          )}
         </div>
-
-        {/* Time slots */}
-        <div className="grid sm:grid-cols-2 gap-5">
-          <div className="space-y-2">
-            <p className="text-xs font-medium uppercase tracking-widest">Slot 1</p>
-            <div className="flex items-center gap-2">
-              <div>
-                <label className="block text-xs text-muted mb-1">Start</label>
-                <input type="time" value={slot1Start} onChange={(e) => setSlot1Start(e.target.value)}
-                  className="border border-border px-3 py-2 text-sm focus:outline-none focus:border-black" />
-              </div>
-              <span className="text-muted mt-5">–</span>
-              <div>
-                <label className="block text-xs text-muted mb-1">End</label>
-                <input type="time" value={slot1End} onChange={(e) => setSlot1End(e.target.value)}
-                  className="border border-border px-3 py-2 text-sm focus:outline-none focus:border-black" />
-              </div>
-            </div>
-            {slot1Start && slot1End && (
-              <p className="text-xs text-muted">{fmt12(slot1Start)} – {fmt12(slot1End)}</p>
-            )}
+        <div className="flex items-end gap-2">
+          <div>
+            <label className="block text-xs text-muted mb-1">Start</label>
+            <input
+              type="time"
+              value={value.start}
+              onChange={(e) => onChange({ ...value, start: e.target.value })}
+              className="border border-border px-3 py-2 text-sm focus:outline-none focus:border-black"
+            />
           </div>
-
-          <div className="space-y-2">
-            <p className="text-xs font-medium uppercase tracking-widest">Slot 2</p>
-            <div className="flex items-center gap-2">
-              <div>
-                <label className="block text-xs text-muted mb-1">Start</label>
-                <input type="time" value={slot2Start} onChange={(e) => setSlot2Start(e.target.value)}
-                  className="border border-border px-3 py-2 text-sm focus:outline-none focus:border-black" />
-              </div>
-              <span className="text-muted mt-5">–</span>
-              <div>
-                <label className="block text-xs text-muted mb-1">End</label>
-                <input type="time" value={slot2End} onChange={(e) => setSlot2End(e.target.value)}
-                  className="border border-border px-3 py-2 text-sm focus:outline-none focus:border-black" />
-              </div>
-            </div>
-            {slot2Start && slot2End && (
-              <p className="text-xs text-muted">{fmt12(slot2Start)} – {fmt12(slot2End)}</p>
-            )}
+          <span className="text-muted pb-2">–</span>
+          <div>
+            <label className="block text-xs text-muted mb-1">End</label>
+            <input
+              type="time"
+              value={value.end}
+              onChange={(e) => onChange({ ...value, end: e.target.value })}
+              className="border border-border px-3 py-2 text-sm focus:outline-none focus:border-black"
+            />
           </div>
+        </div>
+        {slotLabel(value.date, value.start, value.end) && (
+          <p className="text-xs text-muted">{slotLabel(value.date, value.start, value.end)}</p>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-10">
+      {/* Slots */}
+      <div className="bg-white border border-border rounded-sm p-6">
+        <p className="text-xs uppercase tracking-widest text-muted mb-6">Load-In Time Slots</p>
+        <div className="grid sm:grid-cols-2 gap-8">
+          <SlotInputs label="Slot 1" value={slot1} onChange={setSlot1} />
+          <SlotInputs label="Slot 2" value={slot2} onChange={setSlot2} />
         </div>
       </div>
 
@@ -198,13 +190,13 @@ export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
               {isChecked && (
                 <div className="flex items-center border border-border text-xs uppercase tracking-widest overflow-hidden flex-shrink-0">
                   <button
-                    onClick={() => setSlot(b.id, "1")}
+                    onClick={() => assignSlot(b.id, "1")}
                     className={`px-3 py-1.5 transition-colors ${slot === "1" ? "bg-black text-white" : "bg-white text-black hover:bg-neutral-50"}`}
                   >
                     Slot 1
                   </button>
                   <button
-                    onClick={() => setSlot(b.id, "2")}
+                    onClick={() => assignSlot(b.id, "2")}
                     className={`px-3 py-1.5 border-l border-border transition-colors ${slot === "2" ? "bg-black text-white" : "bg-white text-black hover:bg-neutral-50"}`}
                   >
                     Slot 2
