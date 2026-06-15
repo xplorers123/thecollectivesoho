@@ -36,7 +36,7 @@ function slotLabel(date: string, start: string, end: string) {
 type SlotState = { date: string; start: string; end: string };
 
 export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
-  const [selected, setSelected] = useState<Record<string, { checked: boolean; slot: "1" | "2" }>>({});
+  const [selected, setSelected] = useState<Record<string, { checked: boolean; slot: "1" | "2"; spot: "wall" | "middle" }>>({});
   const [slot1, setSlot1] = useState<SlotState>({ date: "", start: "", end: "" });
   const [slot2, setSlot2] = useState<SlotState>({ date: "", start: "", end: "" });
   const [status,  setStatus]  = useState<"idle" | "sending" | "done" | "error">("idle");
@@ -45,14 +45,21 @@ export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
   function toggle(id: string) {
     setSelected((prev) => ({
       ...prev,
-      [id]: { checked: !prev[id]?.checked, slot: prev[id]?.slot ?? "1" },
+      [id]: { checked: !prev[id]?.checked, slot: prev[id]?.slot ?? "1", spot: prev[id]?.spot ?? "wall" },
     }));
   }
 
   function assignSlot(id: string, slot: "1" | "2") {
     setSelected((prev) => ({
       ...prev,
-      [id]: { checked: prev[id]?.checked ?? true, slot },
+      [id]: { ...prev[id], checked: prev[id]?.checked ?? true, slot },
+    }));
+  }
+
+  function assignSpot(id: string, spot: "wall" | "middle") {
+    setSelected((prev) => ({
+      ...prev,
+      [id]: { ...prev[id], checked: prev[id]?.checked ?? true, spot },
     }));
   }
 
@@ -62,7 +69,7 @@ export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
       setSelected({});
     } else {
       const next: typeof selected = {};
-      bookings.forEach((b) => { next[b.id] = { checked: true, slot: selected[b.id]?.slot ?? "1" }; });
+      bookings.forEach((b) => { next[b.id] = { checked: true, slot: selected[b.id]?.slot ?? "1", spot: selected[b.id]?.spot ?? "wall" }; });
       setSelected(next);
     }
   }
@@ -78,6 +85,7 @@ export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
         firstName: b.first_name || b.brand_name,
         brandName: b.brand_name,
         slot: selected[b.id]?.slot ?? "1",
+        spot: selected[b.id]?.spot ?? "wall",
       }));
 
     if (!vendors.length) { setMessage("Select at least one vendor."); return; }
@@ -174,6 +182,7 @@ export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
         {bookings.map((b) => {
           const isChecked = !!selected[b.id]?.checked;
           const slot = selected[b.id]?.slot ?? "1";
+          const spot = selected[b.id]?.spot ?? "wall";
           return (
             <div key={b.id} className={`flex items-center gap-4 px-5 py-4 border-b border-border last:border-0 transition-colors ${isChecked ? "bg-stone-50" : ""}`}>
               <input
@@ -188,19 +197,17 @@ export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
               </div>
 
               {isChecked && (
-                <div className="flex items-center border border-border text-xs uppercase tracking-widest overflow-hidden flex-shrink-0">
-                  <button
-                    onClick={() => assignSlot(b.id, "1")}
-                    className={`px-3 py-1.5 transition-colors ${slot === "1" ? "bg-black text-white" : "bg-white text-black hover:bg-neutral-50"}`}
-                  >
-                    Slot 1
-                  </button>
-                  <button
-                    onClick={() => assignSlot(b.id, "2")}
-                    className={`px-3 py-1.5 border-l border-border transition-colors ${slot === "2" ? "bg-black text-white" : "bg-white text-black hover:bg-neutral-50"}`}
-                  >
-                    Slot 2
-                  </button>
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  {/* Load-in slot */}
+                  <div className="flex items-center border border-border text-xs uppercase tracking-widest overflow-hidden">
+                    <button onClick={() => assignSlot(b.id, "1")} className={`px-3 py-1.5 transition-colors ${slot === "1" ? "bg-black text-white" : "bg-white text-black hover:bg-neutral-50"}`}>Slot 1</button>
+                    <button onClick={() => assignSlot(b.id, "2")} className={`px-3 py-1.5 border-l border-border transition-colors ${slot === "2" ? "bg-black text-white" : "bg-white text-black hover:bg-neutral-50"}`}>Slot 2</button>
+                  </div>
+                  {/* Spot type */}
+                  <div className="flex items-center border border-border text-xs uppercase tracking-widest overflow-hidden">
+                    <button onClick={() => assignSpot(b.id, "wall")} className={`px-3 py-1.5 transition-colors ${spot === "wall" ? "bg-black text-white" : "bg-white text-black hover:bg-neutral-50"}`}>Wall</button>
+                    <button onClick={() => assignSpot(b.id, "middle")} className={`px-3 py-1.5 border-l border-border transition-colors ${spot === "middle" ? "bg-black text-white" : "bg-white text-black hover:bg-neutral-50"}`}>Middle</button>
+                  </div>
                 </div>
               )}
             </div>
