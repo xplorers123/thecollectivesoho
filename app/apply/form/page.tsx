@@ -109,6 +109,23 @@ export default function ApplyForm() {
       setError("Please agree to receive communications to submit your application.");
       return;
     }
+
+    // File size check — max 3 MB per file, 10 MB total
+    const allFiles = [
+      ...(productPhotos ? Array.from(productPhotos) : []),
+      ...(displayPhotos ? Array.from(displayPhotos) : []),
+    ];
+    const oversized = allFiles.filter((f) => f.size > 3 * 1024 * 1024);
+    if (oversized.length) {
+      setError(`Each photo must be under 3 MB. Please compress or resize: ${oversized.map((f) => f.name).join(", ")}`);
+      return;
+    }
+    const totalSize = allFiles.reduce((s, f) => s + f.size, 0);
+    if (totalSize > 10 * 1024 * 1024) {
+      setError("Total photo size must be under 10 MB. Please reduce the number or size of photos.");
+      return;
+    }
+
     setError("");
     setLoading(true);
 

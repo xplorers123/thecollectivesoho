@@ -55,8 +55,9 @@ export async function POST(req: NextRequest) {
       await Promise.all(displayPhotoFiles.filter((f) => f.size > 0).map((f) => uploadPhoto(f, "display-photos")))
     ).filter(Boolean) as string[];
 
-    // Save to Supabase
-    const { error: dbError } = await supabaseAdmin.from("applications").insert({
+    // Save to Supabase — upsert so retries / duplicate submissions don't error
+    const { error: dbError } = await supabaseAdmin.from("applications").upsert({
+      email,
       first_name: firstName,
       last_name: lastName,
       phone,
