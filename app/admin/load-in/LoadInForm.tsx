@@ -12,6 +12,9 @@ type Booking = {
   end_date: string;
 };
 
+type SlotState = { date: string; start: string; end: string };
+type VendorState = { checked: boolean; slot: "1" | "2"; spot: "wall" | "middle" };
+
 function fmt12(time: string) {
   if (!time) return "";
   const [h, m] = time.split(":").map(Number);
@@ -22,142 +25,145 @@ function fmt12(time: string) {
 
 function fmtDate(iso: string) {
   if (!iso) return "";
-  const [y, m, d] = iso.split("-").map(Number);
-  return new Date(y, m - 1, d).toLocaleDateString("en-US", {
+  const [y, mo, d] = iso.split("-").map(Number);
+  return new Date(y, mo - 1, d).toLocaleDateString("en-US", {
     weekday: "long", month: "long", day: "numeric", year: "numeric",
   });
 }
 
-function slotLabel(date: string, start: string, end: string) {
-  if (!date || !start || !end) return "";
-  return `${fmtDate(date)}, ${fmt12(start)} – ${fmt12(end)}`;
+function slotLabel(s: SlotState) {
+  if (!s.date || !s.start || !s.end) return "";
+  return `${fmtDate(s.date)}, ${fmt12(s.start)} – ${fmt12(s.end)}`;
 }
 
-type SlotState = { date: string; start: string; end: string };
+// Extracted outside to avoid remount issues
+function SlotInputs({
+  label, value, onChange,
+}: {
+  label: string;
+  value: SlotState;
+  onChange: (v: SlotState) => void;
+}) {
+  const preview = slotLabel(value);
+  return (
+    <div className="space-y-3">
+      <p className="text-xs font-semibold uppercase tracking-widest">{label}</p>
+      <div>
+        <label className="block text-xs text-muted mb-1">Date</label>
+        <input
+          type="date"
+          value={value.date}
+          onChange={(e) => onChange({ ...value, date: e.target.value })}
+          className="border border-border px-3 py-2 text-sm focus:outline-none focus:border-black w-full"
+        />
+      </div>
+      <div className="flex items-end gap-2">
+        <div>
+          <label className="block text-xs text-muted mb-1">Start</label>
+          <input
+            type="time"
+            value={value.start}
+            onChange={(e) => onChange({ ...value, start: e.target.value })}
+            className="border border-border px-3 py-2 text-sm focus:outline-none focus:border-black"
+          />
+        </div>
+        <span className="text-muted pb-2">–</span>
+        <div>
+          <label className="block text-xs text-muted mb-1">End</label>
+          <input
+            type="time"
+            value={value.end}
+            onChange={(e) => onChange({ ...value, end: e.target.value })}
+            className="border border-border px-3 py-2 text-sm focus:outline-none focus:border-black"
+          />
+        </div>
+      </div>
+      {preview && <p className="text-xs text-muted">{preview}</p>}
+    </div>
+  );
+}
 
 export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
-  const [selected, setSelected] = useState<Record<string, { checked: boolean; slot: "1" | "2"; spot: "wall" | "middle" }>>({});
+  const [vendors, setVendors] = useState<Record<string, VendorState>>({});
   const [slot1, setSlot1] = useState<SlotState>({ date: "", start: "", end: "" });
   const [slot2, setSlot2] = useState<SlotState>({ date: "", start: "", end: "" });
   const [status,  setStatus]  = useState<"idle" | "sending" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
 
   function toggle(id: string) {
-    setSelected((prev) => ({
+    setVendors((prev) => ({
       ...prev,
-      [id]: { checked: !prev[id]?.checked, slot: prev[id]?.slot ?? "1", spot: prev[id]?.spot ?? "wall" },
+      [id]: {
+        checked: !prev[id]?.checked,
+        slot:  prev[id]?.slot  ?? "1",
+        spot:  prev[id]?.spot  ?? "wall",
+      },
     }));
   }
 
-  function assignSlot(id: string, slot: "1" | "2") {
-    setSelected((prev) => ({
+  function set(id: string, patch: Partial<VendorState>) {
+    setVendors((prev) => ({
       ...prev,
-      [id]: { ...prev[id], checked: prev[id]?.checked ?? true, slot },
-    }));
-  }
-
-  function assignSpot(id: string, spot: "wall" | "middle") {
-    setSelected((prev) => ({
-      ...prev,
-      [id]: { ...prev[id], checked: prev[id]?.checked ?? true, spot },
+      [id]: { checked: true, slot: "1", spot: "wall", ...prev[id], ...patch },
     }));
   }
 
   function selectAll() {
-    const allChecked = bookings.every((b) => selected[b.id]?.checked);
-    if (allChecked) {
-      setSelected({});
+    const allOn = bookings.every((b) => vendors[b.id]?.checked);
+    if (allOn) {
+      setVendors({});
     } else {
-      const next: typeof selected = {};
-      bookings.forEach((b) => { next[b.id] = { checked: true, slot: selected[b.id]?.slot ?? "1", spot: selected[b.id]?.spot ?? "wall" }; });
-      setSelected(next);
+      const next: Record<string, VendorState> = {};
+      bookings.forEach((b) => {
+        next[b.id] = { checked: true, slot: vendors[b.id]?.slot ?? "1", spot: vendors[b.id]?.spot ?? "wall" };
+      });
+      setVendors(next);
     }
   }
 
   async function send() {
-    const slot1Label = slotLabel(slot1.date, slot1.start, slot1.end);
-    const slot2Label = slotLabel(slot2.date, slot2.start, slot2.end);
+    const s1 = slotLabel(slot1);
+    const s2 = slotLabel(slot2);
+    const selected = bookings.filter((b) => vendors[b.id]?.checked);
 
-    const vendors = bookings
-      .filter((b) => selected[b.id]?.checked)
-      .map((b) => ({
-        email: b.vendor_email,
-        firstName: b.first_name || b.brand_name,
-        brandName: b.brand_name,
-        slot: selected[b.id]?.slot ?? "1",
-        spot: selected[b.id]?.spot ?? "wall",
-      }));
-
-    if (!vendors.length) { setMessage("Select at least one vendor."); return; }
-    if (!slot1Label)     { setMessage("Fill in Slot 1 date and time."); return; }
-    if (!slot2Label)     { setMessage("Fill in Slot 2 date and time."); return; }
+    if (!selected.length) { setMessage("Select at least one vendor."); return; }
+    if (!s1) { setMessage("Fill in Slot 1 date and time."); return; }
+    if (!s2) { setMessage("Fill in Slot 2 date and time."); return; }
 
     setStatus("sending");
     setMessage("");
 
+    const payload = selected.map((b) => ({
+      email:     b.vendor_email,
+      firstName: b.first_name || b.brand_name,
+      brandName: b.brand_name,
+      slot:      vendors[b.id]?.slot ?? "1",
+      spot:      vendors[b.id]?.spot ?? "wall",
+    }));
+
     const res = await fetch("/api/admin/send-load-in", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ vendors, slot1Time: slot1Label, slot2Time: slot2Label }),
+      body: JSON.stringify({ vendors: payload, slot1Time: s1, slot2Time: s2 }),
     });
 
     const data = await res.json();
     if (res.ok) {
       setStatus("done");
       setMessage(`✓ Sent to ${data.sent} vendor${data.sent === 1 ? "" : "s"}.`);
-      setSelected({});
+      setVendors({});
     } else {
       setStatus("error");
       setMessage(data.error ?? "Something went wrong.");
     }
   }
 
-  const checkedCount = Object.values(selected).filter((v) => v.checked).length;
-
-  function SlotInputs({ label, value, onChange }: { label: string; value: SlotState; onChange: (v: SlotState) => void }) {
-    return (
-      <div className="space-y-3">
-        <p className="text-xs font-semibold uppercase tracking-widest">{label}</p>
-        <div>
-          <label className="block text-xs text-muted mb-1">Date</label>
-          <input
-            type="date"
-            value={value.date}
-            onChange={(e) => onChange({ ...value, date: e.target.value })}
-            className="border border-border px-3 py-2 text-sm focus:outline-none focus:border-black w-full"
-          />
-        </div>
-        <div className="flex items-end gap-2">
-          <div>
-            <label className="block text-xs text-muted mb-1">Start</label>
-            <input
-              type="time"
-              value={value.start}
-              onChange={(e) => onChange({ ...value, start: e.target.value })}
-              className="border border-border px-3 py-2 text-sm focus:outline-none focus:border-black"
-            />
-          </div>
-          <span className="text-muted pb-2">–</span>
-          <div>
-            <label className="block text-xs text-muted mb-1">End</label>
-            <input
-              type="time"
-              value={value.end}
-              onChange={(e) => onChange({ ...value, end: e.target.value })}
-              className="border border-border px-3 py-2 text-sm focus:outline-none focus:border-black"
-            />
-          </div>
-        </div>
-        {slotLabel(value.date, value.start, value.end) && (
-          <p className="text-xs text-muted">{slotLabel(value.date, value.start, value.end)}</p>
-        )}
-      </div>
-    );
-  }
+  const checkedCount = bookings.filter((b) => vendors[b.id]?.checked).length;
 
   return (
     <div className="space-y-10">
-      {/* Slots */}
+
+      {/* Time slots */}
       <div className="bg-white border border-border rounded-sm p-6">
         <p className="text-xs uppercase tracking-widest text-muted mb-6">Load-In Time Slots</p>
         <div className="grid sm:grid-cols-2 gap-8">
@@ -170,8 +176,8 @@ export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
       <div className="bg-white border border-border rounded-sm overflow-hidden">
         <div className="flex items-center justify-between px-5 py-3 border-b border-border bg-neutral-50">
           <p className="text-xs uppercase tracking-widest text-muted">Select Vendors</p>
-          <button onClick={selectAll} className="text-xs uppercase tracking-widest hover:text-black text-muted transition-colors">
-            {bookings.every((b) => selected[b.id]?.checked) ? "Deselect All" : "Select All"}
+          <button onClick={selectAll} className="text-xs uppercase tracking-widest text-muted hover:text-black transition-colors">
+            {bookings.every((b) => vendors[b.id]?.checked) ? "Deselect All" : "Select All"}
           </button>
         </div>
 
@@ -180,9 +186,11 @@ export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
         )}
 
         {bookings.map((b) => {
-          const isChecked = !!selected[b.id]?.checked;
-          const slot = selected[b.id]?.slot ?? "1";
-          const spot = selected[b.id]?.spot ?? "wall";
+          const v = vendors[b.id];
+          const isChecked = !!v?.checked;
+          const slot = v?.slot ?? "1";
+          const spot = v?.spot ?? "wall";
+
           return (
             <div key={b.id} className={`flex items-center gap-4 px-5 py-4 border-b border-border last:border-0 transition-colors ${isChecked ? "bg-stone-50" : ""}`}>
               <input
@@ -199,14 +207,26 @@ export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
               {isChecked && (
                 <div className="flex items-center gap-2 flex-shrink-0">
                   {/* Load-in slot */}
-                  <div className="flex items-center border border-border text-xs uppercase tracking-widest overflow-hidden">
-                    <button onClick={() => assignSlot(b.id, "1")} className={`px-3 py-1.5 transition-colors ${slot === "1" ? "bg-black text-white" : "bg-white text-black hover:bg-neutral-50"}`}>Slot 1</button>
-                    <button onClick={() => assignSlot(b.id, "2")} className={`px-3 py-1.5 border-l border-border transition-colors ${slot === "2" ? "bg-black text-white" : "bg-white text-black hover:bg-neutral-50"}`}>Slot 2</button>
+                  <div className="flex border border-border text-xs uppercase tracking-widest overflow-hidden">
+                    <button
+                      onClick={() => set(b.id, { slot: "1" })}
+                      className={`px-3 py-1.5 transition-colors ${slot === "1" ? "bg-black text-white" : "hover:bg-neutral-50"}`}
+                    >Slot 1</button>
+                    <button
+                      onClick={() => set(b.id, { slot: "2" })}
+                      className={`px-3 py-1.5 border-l border-border transition-colors ${slot === "2" ? "bg-black text-white" : "hover:bg-neutral-50"}`}
+                    >Slot 2</button>
                   </div>
                   {/* Spot type */}
-                  <div className="flex items-center border border-border text-xs uppercase tracking-widest overflow-hidden">
-                    <button onClick={() => assignSpot(b.id, "wall")} className={`px-3 py-1.5 transition-colors ${spot === "wall" ? "bg-black text-white" : "bg-white text-black hover:bg-neutral-50"}`}>Wall</button>
-                    <button onClick={() => assignSpot(b.id, "middle")} className={`px-3 py-1.5 border-l border-border transition-colors ${spot === "middle" ? "bg-black text-white" : "bg-white text-black hover:bg-neutral-50"}`}>Middle</button>
+                  <div className="flex border border-border text-xs uppercase tracking-widest overflow-hidden">
+                    <button
+                      onClick={() => set(b.id, { spot: "wall" })}
+                      className={`px-3 py-1.5 transition-colors ${spot === "wall" ? "bg-black text-white" : "hover:bg-neutral-50"}`}
+                    >Wall</button>
+                    <button
+                      onClick={() => set(b.id, { spot: "middle" })}
+                      className={`px-3 py-1.5 border-l border-border transition-colors ${spot === "middle" ? "bg-black text-white" : "hover:bg-neutral-50"}`}
+                    >Middle</button>
                   </div>
                 </div>
               )}
