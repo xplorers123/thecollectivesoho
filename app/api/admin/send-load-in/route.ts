@@ -26,9 +26,10 @@ export async function POST(req: NextRequest) {
 
   for (const v of vendors) {
     const assignedTime = v.slot === "1" ? slot1Time : slot2Time;
-    const spotInfo = v.spot === "wall"
-      ? { size: "7′ × 5′", placement: "Against the wall", traffic: "Single-sided" }
-      : { size: "9′ × 4′", placement: "Middle floor", traffic: "Double-sided traffic" };
+    const isWall = v.spot === "wall";
+    const spotInfo = isWall
+      ? { size: "7′ × 5′", placement: "Against the wall" }
+      : { size: "9′ × 4′", placement: "Middle floor — double-sided traffic" };
 
     const html = `
 <div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;color:#111;line-height:1.6;">
@@ -63,12 +64,8 @@ export async function POST(req: NextRequest) {
       <td style="padding:12px 16px;border-bottom:1px solid #eee;"><strong>${spotInfo.size}</strong></td>
     </tr>
     <tr>
-      <td style="padding:12px 16px;border-bottom:1px solid #eee;color:#888;">Placement</td>
-      <td style="padding:12px 16px;border-bottom:1px solid #eee;"><strong>${spotInfo.placement}</strong></td>
-    </tr>
-    <tr>
-      <td style="padding:12px 16px;color:#888;">Traffic</td>
-      <td style="padding:12px 16px;"><strong>${spotInfo.traffic}</strong></td>
+      <td style="padding:12px 16px;color:#888;">Placement</td>
+      <td style="padding:12px 16px;"><strong>${spotInfo.placement}</strong></td>
     </tr>
   </table>
   <p style="font-size:13px;color:#888;margin-top:8px;">Your exact booth position will be pointed out by our onsite manager upon arrival.</p>
@@ -79,8 +76,8 @@ export async function POST(req: NextRequest) {
   <table style="font-size:14px;border-collapse:collapse;">
     <tr><td style="padding:3px 16px 3px 0;color:#888;">Network</td><td><strong>Cubico.co</strong></td></tr>
     <tr><td style="padding:3px 16px 3px 0;color:#888;">Password</td><td><strong>cubico123</strong></td></tr>
-    <tr><td style="padding:3px 16px 3px 0;color:#888;">Backup</td><td><strong>cubico-compatibility</strong> · cubico123</td></tr>
   </table>
+  <p style="font-size:13px;color:#888;margin-top:10px;">If unavailable, use backup network <strong style="color:#111;">cubico-compatibility</strong> with the same password.</p>
 
   <hr style="border:none;border-top:1px solid #eee;margin:28px 0;" />
 
