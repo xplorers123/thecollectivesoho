@@ -214,8 +214,8 @@ export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
 
               {/* Spot type — always visible */}
               <div className={`flex border border-border text-xs uppercase tracking-widest overflow-hidden w-32 ${!isChecked ? "opacity-30 pointer-events-none" : ""}`}>
-                <button onClick={() => set(b.id, { spot: "wall" })} className={`flex-1 py-1.5 transition-colors ${spot === "wall" ? "bg-black text-white" : "hover:bg-neutral-50"}`}>Wall</button>
-                <button onClick={() => set(b.id, { spot: "middle" })} className={`flex-1 py-1.5 border-l border-border transition-colors ${spot === "middle" ? "bg-black text-white" : "hover:bg-neutral-50"}`}>Middle</button>
+                <button onClick={() => set(b.id, { spot: "wall" })} className={`flex-1 py-1.5 transition-colors ${spot === "wall" ? "bg-black text-white" : "hover:bg-neutral-50"}`}>7×5</button>
+                <button onClick={() => set(b.id, { spot: "middle" })} className={`flex-1 py-1.5 border-l border-border transition-colors ${spot === "middle" ? "bg-black text-white" : "hover:bg-neutral-50"}`}>9×4</button>
               </div>
             </div>
           );
