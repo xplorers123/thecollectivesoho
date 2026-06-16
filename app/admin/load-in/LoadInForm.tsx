@@ -174,11 +174,13 @@ export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
 
       {/* Vendor list */}
       <div className="bg-white border border-border rounded-sm overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-3 border-b border-border bg-neutral-50">
-          <p className="text-xs uppercase tracking-widest text-muted">Select Vendors</p>
-          <button onClick={selectAll} className="text-xs uppercase tracking-widest text-muted hover:text-black transition-colors">
+        <div className="grid grid-cols-[auto_1fr_auto_auto] items-center gap-4 px-5 py-3 border-b border-border bg-neutral-50">
+          <input type="checkbox" className="w-4 h-4 accent-black opacity-0 pointer-events-none" />
+          <button onClick={selectAll} className="text-xs uppercase tracking-widest text-muted hover:text-black transition-colors text-left">
             {bookings.every((b) => vendors[b.id]?.checked) ? "Deselect All" : "Select All"}
           </button>
+          <p className="text-xs uppercase tracking-widest text-muted w-28 text-center">Load-In Slot</p>
+          <p className="text-xs uppercase tracking-widest text-muted w-32 text-center">Spot Type</p>
         </div>
 
         {bookings.length === 0 && (
@@ -192,44 +194,29 @@ export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
           const spot = v?.spot ?? "wall";
 
           return (
-            <div key={b.id} className={`flex items-center gap-4 px-5 py-4 border-b border-border last:border-0 transition-colors ${isChecked ? "bg-stone-50" : ""}`}>
+            <div key={b.id} className={`grid grid-cols-[auto_1fr_auto_auto] items-center gap-4 px-5 py-4 border-b border-border last:border-0 transition-colors ${isChecked ? "bg-stone-50" : ""}`}>
               <input
                 type="checkbox"
                 checked={isChecked}
                 onChange={() => toggle(b.id)}
                 className="w-4 h-4 accent-black flex-shrink-0"
               />
-              <div className="flex-1 min-w-0 cursor-pointer" onClick={() => toggle(b.id)}>
-                <p className="font-medium text-sm">{b.brand_name}</p>
+              <div className="min-w-0 cursor-pointer" onClick={() => toggle(b.id)}>
+                <p className={`font-medium text-sm ${!isChecked ? "text-muted" : ""}`}>{b.brand_name}</p>
                 <p className="text-xs text-muted">{b.vendor_email} · {b.booking_type} · {b.start_date} → {b.end_date}</p>
               </div>
 
-              {isChecked && (
-                <div className="flex items-center gap-2 flex-shrink-0">
-                  {/* Load-in slot */}
-                  <div className="flex border border-border text-xs uppercase tracking-widest overflow-hidden">
-                    <button
-                      onClick={() => set(b.id, { slot: "1" })}
-                      className={`px-3 py-1.5 transition-colors ${slot === "1" ? "bg-black text-white" : "hover:bg-neutral-50"}`}
-                    >Slot 1</button>
-                    <button
-                      onClick={() => set(b.id, { slot: "2" })}
-                      className={`px-3 py-1.5 border-l border-border transition-colors ${slot === "2" ? "bg-black text-white" : "hover:bg-neutral-50"}`}
-                    >Slot 2</button>
-                  </div>
-                  {/* Spot type */}
-                  <div className="flex border border-border text-xs uppercase tracking-widest overflow-hidden">
-                    <button
-                      onClick={() => set(b.id, { spot: "wall" })}
-                      className={`px-3 py-1.5 transition-colors ${spot === "wall" ? "bg-black text-white" : "hover:bg-neutral-50"}`}
-                    >Wall</button>
-                    <button
-                      onClick={() => set(b.id, { spot: "middle" })}
-                      className={`px-3 py-1.5 border-l border-border transition-colors ${spot === "middle" ? "bg-black text-white" : "hover:bg-neutral-50"}`}
-                    >Middle</button>
-                  </div>
-                </div>
-              )}
+              {/* Load-in slot — always visible */}
+              <div className={`flex border border-border text-xs uppercase tracking-widest overflow-hidden w-28 ${!isChecked ? "opacity-30 pointer-events-none" : ""}`}>
+                <button onClick={() => set(b.id, { slot: "1" })} className={`flex-1 py-1.5 transition-colors ${slot === "1" ? "bg-black text-white" : "hover:bg-neutral-50"}`}>Slot 1</button>
+                <button onClick={() => set(b.id, { slot: "2" })} className={`flex-1 py-1.5 border-l border-border transition-colors ${slot === "2" ? "bg-black text-white" : "hover:bg-neutral-50"}`}>Slot 2</button>
+              </div>
+
+              {/* Spot type — always visible */}
+              <div className={`flex border border-border text-xs uppercase tracking-widest overflow-hidden w-32 ${!isChecked ? "opacity-30 pointer-events-none" : ""}`}>
+                <button onClick={() => set(b.id, { spot: "wall" })} className={`flex-1 py-1.5 transition-colors ${spot === "wall" ? "bg-black text-white" : "hover:bg-neutral-50"}`}>Wall</button>
+                <button onClick={() => set(b.id, { spot: "middle" })} className={`flex-1 py-1.5 border-l border-border transition-colors ${spot === "middle" ? "bg-black text-white" : "hover:bg-neutral-50"}`}>Middle</button>
+              </div>
             </div>
           );
         })}
