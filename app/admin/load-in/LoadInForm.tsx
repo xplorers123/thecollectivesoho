@@ -128,7 +128,6 @@ export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
 
     if (!selected.length) { setMessage("Select at least one vendor."); return; }
     if (!s1) { setMessage("Fill in Slot 1 date and time."); return; }
-    if (!s2) { setMessage("Fill in Slot 2 date and time."); return; }
 
     setStatus("sending");
     setMessage("");
@@ -137,7 +136,7 @@ export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
       email:     b.vendor_email,
       firstName: b.first_name || b.brand_name,
       brandName: b.brand_name,
-      slot:      vendors[b.id]?.slot ?? "1",
+      slot:      s2 ? (vendors[b.id]?.slot ?? "1") : "1",
       spot:      vendors[b.id]?.spot ?? "wall",
     }));
 
@@ -159,6 +158,7 @@ export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
   }
 
   const checkedCount = bookings.filter((b) => vendors[b.id]?.checked).length;
+  const slot2Label = slotLabel(slot2);
 
   return (
     <div className="space-y-10">
@@ -174,12 +174,12 @@ export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
 
       {/* Vendor list */}
       <div className="bg-white border border-border rounded-sm overflow-hidden">
-        <div className="grid grid-cols-[auto_1fr_auto_auto] items-center gap-4 px-5 py-3 border-b border-border bg-neutral-50">
+        <div className={`grid items-center gap-4 px-5 py-3 border-b border-border bg-neutral-50 ${slot2Label ? "grid-cols-[auto_1fr_auto_auto]" : "grid-cols-[auto_1fr_auto]"}`}>
           <input type="checkbox" className="w-4 h-4 accent-black opacity-0 pointer-events-none" />
           <button onClick={selectAll} className="text-xs uppercase tracking-widest text-muted hover:text-black transition-colors text-left">
             {bookings.every((b) => vendors[b.id]?.checked) ? "Deselect All" : "Select All"}
           </button>
-          <p className="text-xs uppercase tracking-widest text-muted w-28 text-center">Load-In Slot</p>
+          {slot2Label && <p className="text-xs uppercase tracking-widest text-muted w-28 text-center">Load-In Slot</p>}
           <p className="text-xs uppercase tracking-widest text-muted w-32 text-center">Spot Type</p>
         </div>
 
@@ -194,7 +194,7 @@ export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
           const spot = v?.spot ?? "wall";
 
           return (
-            <div key={b.id} className={`grid grid-cols-[auto_1fr_auto_auto] items-center gap-4 px-5 py-4 border-b border-border last:border-0 transition-colors ${isChecked ? "bg-stone-50" : ""}`}>
+            <div key={b.id} className={`grid items-center gap-4 px-5 py-4 border-b border-border last:border-0 transition-colors ${slot2Label ? "grid-cols-[auto_1fr_auto_auto]" : "grid-cols-[auto_1fr_auto]"} ${isChecked ? "bg-stone-50" : ""}`}>
               <input
                 type="checkbox"
                 checked={isChecked}
@@ -206,11 +206,13 @@ export default function LoadInForm({ bookings }: { bookings: Booking[] }) {
                 <p className="text-xs text-muted">{b.vendor_email} · {b.booking_type} · {b.start_date} → {b.end_date}</p>
               </div>
 
-              {/* Load-in slot — always visible */}
-              <div className={`flex border border-border text-xs uppercase tracking-widest overflow-hidden w-28 ${!isChecked ? "opacity-30 pointer-events-none" : ""}`}>
-                <button onClick={() => set(b.id, { slot: "1" })} className={`flex-1 py-1.5 transition-colors ${slot === "1" ? "bg-black text-white" : "hover:bg-neutral-50"}`}>Slot 1</button>
-                <button onClick={() => set(b.id, { slot: "2" })} className={`flex-1 py-1.5 border-l border-border transition-colors ${slot === "2" ? "bg-black text-white" : "hover:bg-neutral-50"}`}>Slot 2</button>
-              </div>
+              {/* Load-in slot — only shown when Slot 2 is filled */}
+              {slot2Label && (
+                <div className={`flex border border-border text-xs uppercase tracking-widest overflow-hidden w-28 ${!isChecked ? "opacity-30 pointer-events-none" : ""}`}>
+                  <button onClick={() => set(b.id, { slot: "1" })} className={`flex-1 py-1.5 transition-colors ${slot === "1" ? "bg-black text-white" : "hover:bg-neutral-50"}`}>Slot 1</button>
+                  <button onClick={() => set(b.id, { slot: "2" })} className={`flex-1 py-1.5 border-l border-border transition-colors ${slot === "2" ? "bg-black text-white" : "hover:bg-neutral-50"}`}>Slot 2</button>
+                </div>
+              )}
 
               {/* Spot type — always visible */}
               <div className={`flex border border-border text-xs uppercase tracking-widest overflow-hidden w-32 ${!isChecked ? "opacity-30 pointer-events-none" : ""}`}>
