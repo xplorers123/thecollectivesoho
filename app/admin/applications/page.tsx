@@ -1,4 +1,5 @@
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import ApplicationRow from "./ApplicationRow";
 
 export const metadata = { title: "Applications — Admin" };
 
@@ -104,46 +105,9 @@ export default async function AdminApplicationsPage() {
       {resolved.length === 0 ? (
         <p className="text-sm text-muted">No applications yet.</p>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-3">
           {resolved.map((app) => (
-            <div key={app.id} className="border border-border bg-white p-6">
-              {/* Header row */}
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="font-medium text-sm">
-                    {app.first_name} {app.last_name}
-                    {app.brand_name && (
-                      <span className="ml-2 text-muted font-normal">— {app.brand_name}</span>
-                    )}
-                  </p>
-                  <p className="mt-0.5 text-xs text-muted">{app.email} · {app.phone}</p>
-                </div>
-                <div className="flex items-center gap-3 shrink-0">
-                  <StatusBadge status={app.status ?? "pending"} />
-                  <p className="text-xs text-muted">
-                    {new Date(app.created_at).toLocaleDateString("en-US", {
-                      month: "short", day: "numeric", year: "numeric",
-                    })}
-                  </p>
-                </div>
-              </div>
-
-              {/* Details */}
-              <div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-1 text-xs sm:grid-cols-4">
-                {app.product_category && <><span className="text-muted">Category</span><span>{app.product_category}</span></>}
-                {app.price_range && <><span className="text-muted">Price range</span><span>{app.price_range}</span></>}
-                {app.booking_type && <><span className="text-muted">Booking</span><span>{app.booking_type}</span></>}
-                {app.instagram && <><span className="text-muted">Instagram</span><span>{app.instagram}</span></>}
-              </div>
-
-              {app.brand_story && (
-                <p className="mt-3 text-xs text-muted leading-relaxed line-clamp-2">{app.brand_story}</p>
-              )}
-
-              {/* Photos */}
-              <PhotoGrid urls={app._productUrls} label="Product photos" />
-              <PhotoGrid urls={app._displayUrls} label="Display photos" />
-            </div>
+            <ApplicationRow key={app.id} app={app} />
           ))}
         </div>
       )}
