@@ -279,7 +279,7 @@ export default function ApplyForm() {
             <input
               type="file"
               multiple
-              accept=".gif,.jpg,.jpeg,.png"
+              accept="image/*"
               onChange={(e) => setProductPhotos(e.target.files)}
               className="w-full border border-border bg-white px-4 py-3 text-sm file:mr-4 file:border-0 file:bg-black file:px-3 file:py-1 file:text-xs file:uppercase file:tracking-widest file:text-white cursor-pointer"
             />
@@ -290,7 +290,7 @@ export default function ApplyForm() {
             <input
               type="file"
               multiple
-              accept=".gif,.jpg,.jpeg,.png"
+              accept="image/*"
               onChange={(e) => setDisplayPhotos(e.target.files)}
               className="w-full border border-border bg-white px-4 py-3 text-sm file:mr-4 file:border-0 file:bg-black file:px-3 file:py-1 file:text-xs file:uppercase file:tracking-widest file:text-white cursor-pointer"
             />
