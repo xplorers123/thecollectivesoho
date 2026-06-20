@@ -4,18 +4,20 @@ import Link from "next/link";
 export const metadata = { title: "Calendar — Admin" };
 
 const COLORS: Record<string, { bg: string; text: string }> = {
-  clothing: { bg: "#bfdbfe", text: "#1e3a8a" },
-  jewelry:  { bg: "#fde68a", text: "#78350f" },
-  vintage:  { bg: "#e9d5ff", text: "#581c87" },
-  other:    { bg: "#a7f3d0", text: "#064e3b" },
+  clothing:   { bg: "#bfdbfe", text: "#1e3a8a" },
+  jewelry:    { bg: "#fde68a", text: "#78350f" },
+  vintage:    { bg: "#e9d5ff", text: "#581c87" },
+  "food-drink": { bg: "#fed7aa", text: "#7c2d12" },
+  other:      { bg: "#a7f3d0", text: "#064e3b" },
 };
 const DEFAULT_COLOR = { bg: "#e5e7eb", text: "#374151" };
 
 const LEGEND_DOTS: Record<string, string> = {
-  clothing: "#3b82f6",
-  jewelry:  "#f59e0b",
-  vintage:  "#a855f7",
-  other:    "#10b981",
+  clothing:   "#3b82f6",
+  jewelry:    "#f59e0b",
+  vintage:    "#a855f7",
+  "food-drink": "#f97316",
+  other:      "#10b981",
 };
 
 type Booking = {

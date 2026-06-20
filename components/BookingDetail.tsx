@@ -5,11 +5,12 @@ import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
 import { useRouter } from "next/navigation";
 
-type Category = "jewelry" | "clothing" | "other";
+type Category = "jewelry" | "clothing" | "other" | "food-drink";
 
 const CATEGORIES: { value: Category; label: string }[] = [
   { value: "jewelry", label: "Jewelry" },
   { value: "clothing", label: "Clothing / Accessories" },
+  { value: "food-drink", label: "Food & Drink" },
   { value: "other", label: "All Other Categories" },
 ];
 
