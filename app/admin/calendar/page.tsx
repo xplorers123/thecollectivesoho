@@ -95,7 +95,8 @@ export default async function AdminCalendar({
   const dayMap = buildDayMap(bookings ?? [], year, monthIdx);
 
   const firstOfMonth = new Date(year, monthIdx, 1);
-  const startPad    = firstOfMonth.getDay();
+  // getDay() returns 0=Sun…6=Sat; shift so 0=Mon…6=Sun
+  const startPad    = (firstOfMonth.getDay() + 6) % 7;
   const daysInMonth = new Date(year, monthIdx + 1, 0).getDate();
   const cells: (number | null)[] = [
     ...Array(startPad).fill(null),
@@ -127,7 +128,7 @@ export default async function AdminCalendar({
       <div className="border border-border rounded-sm overflow-hidden bg-white">
         {/* Day headers */}
         <div className="grid grid-cols-7 border-b border-border bg-neutral-50">
-          {["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map((d) => (
+          {["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map((d) => (
             <div key={d} className="py-2 text-xs uppercase tracking-widest text-muted text-center font-medium">{d}</div>
           ))}
         </div>
@@ -140,7 +141,7 @@ export default async function AdminCalendar({
               : null;
             const entries: DayEntry[] = iso ? (dayMap[iso] ?? []) : [];
             const isToday   = iso === dateToISO(today);
-            const isWeekend = i % 7 === 0 || i % 7 === 6;
+            const isWeekend = i % 7 === 5 || i % 7 === 6;
 
             return (
               <div
