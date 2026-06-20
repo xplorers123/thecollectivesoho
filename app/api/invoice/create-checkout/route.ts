@@ -5,6 +5,7 @@ import { invoices } from "@/lib/invoices";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 const SITE_URL = process.env.NEXT_PUBLIC_URL ?? "https://popupcollectivenyc.com";
 const CARD_SURCHARGE = 0.03;
+const BANK_FEE_CENTS = 500;
 
 export async function POST(req: NextRequest) {
   const { slug, method } = await req.json();
@@ -14,8 +15,7 @@ export async function POST(req: NextRequest) {
 
   const isCard = method === "card";
   const baseAmount = invoice.amountCents;
-  const chargeAmount = isCard ? Math.round(baseAmount * (1 + CARD_SURCHARGE)) : baseAmount;
-  const surcharge = chargeAmount - baseAmount;
+  const cardSurcharge = Math.round(baseAmount * CARD_SURCHARGE);
 
   const lineItems = isCard
     ? [
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
         {
           price_data: {
             currency: "usd",
-            unit_amount: surcharge,
+            unit_amount: cardSurcharge,
             product_data: { name: "Credit card surcharge (3%)" },
           },
           quantity: 1,
@@ -42,6 +42,14 @@ export async function POST(req: NextRequest) {
             currency: "usd",
             unit_amount: baseAmount,
             product_data: { name: invoice.description },
+          },
+          quantity: 1,
+        },
+        {
+          price_data: {
+            currency: "usd",
+            unit_amount: BANK_FEE_CENTS,
+            product_data: { name: "Bank transfer fee" },
           },
           quantity: 1,
         },
