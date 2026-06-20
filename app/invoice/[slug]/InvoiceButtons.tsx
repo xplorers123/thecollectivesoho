@@ -81,7 +81,7 @@ export default function InvoiceButtons({ slug, amountCents }: { slug: string; am
           </div>
           <div className="flex justify-between">
             <span className="text-muted">Name</span>
-            <span className="font-medium">The Collective SoHo</span>
+            <span className="font-medium">Xplorers LLC</span>
           </div>
           <div className="flex justify-between">
             <span className="text-muted">Amount</span>
