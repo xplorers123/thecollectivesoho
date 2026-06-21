@@ -6,17 +6,33 @@ export const metadata = { title: "Load-In Email — Admin" };
 export default async function LoadInPage() {
   const today = new Date().toISOString().split("T")[0];
 
-  // Upcoming: confirmed, start_date >= today, not yet sent
-  const { data: upcomingRaw } = await supabaseAdmin
+  // Fetch all upcoming confirmed bookings
+  const { data: allUpcoming, error: upcomingErr } = await supabaseAdmin
     .from("bookings")
     .select("id, brand_name, vendor_email, booking_type, start_date, end_date, load_in_sent_at")
     .eq("status", "confirmed")
     .gte("start_date", today)
-    .is("load_in_sent_at", null)
     .order("start_date", { ascending: true });
 
-  // Sent: load_in_sent_at is set
-  const { data: sentRaw } = await supabaseAdmin
+  // If load_in_sent_at column doesn't exist yet, fall back without it
+  const { data: fallback } = upcomingErr
+    ? await supabaseAdmin
+        .from("bookings")
+        .select("id, brand_name, vendor_email, booking_type, start_date, end_date")
+        .eq("status", "confirmed")
+        .gte("start_date", today)
+        .order("start_date", { ascending: true })
+    : { data: null };
+
+  const combinedUpcoming = (allUpcoming ?? fallback ?? []) as Array<{
+    id: string; brand_name: string; vendor_email: string; booking_type: string;
+    start_date: string; end_date: string; load_in_sent_at?: string | null;
+  }>;
+
+  const upcomingRaw = combinedUpcoming.filter((b) => !b.load_in_sent_at);
+
+  // Sent: load_in_sent_at is set (only if column exists)
+  const { data: sentRaw } = upcomingErr ? { data: [] } : await supabaseAdmin
     .from("bookings")
     .select("id, brand_name, vendor_email, booking_type, start_date, end_date, load_in_sent_at")
     .eq("status", "confirmed")
