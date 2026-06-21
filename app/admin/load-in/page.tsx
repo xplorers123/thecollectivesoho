@@ -11,7 +11,7 @@ export default async function LoadInPage() {
     .from("bookings")
     .select("id, brand_name, vendor_email, booking_type, start_date, end_date")
     .eq("status", "confirmed")
-    .gte("end_date", today)
+    .gte("start_date", today)
     .order("start_date", { ascending: true });
 
   // Pull first names from applications table
