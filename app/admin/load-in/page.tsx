@@ -6,16 +6,26 @@ export const metadata = { title: "Load-In Email — Admin" };
 export default async function LoadInPage() {
   const today = new Date().toISOString().split("T")[0];
 
-  // Get upcoming confirmed bookings + join first_name from applications
-  const { data: bookings } = await supabaseAdmin
+  // Upcoming: confirmed, start_date >= today, not yet sent
+  const { data: upcomingRaw } = await supabaseAdmin
     .from("bookings")
-    .select("id, brand_name, vendor_email, booking_type, start_date, end_date")
+    .select("id, brand_name, vendor_email, booking_type, start_date, end_date, load_in_sent_at")
     .eq("status", "confirmed")
     .gte("start_date", today)
+    .is("load_in_sent_at", null)
     .order("start_date", { ascending: true });
 
+  // Sent: load_in_sent_at is set
+  const { data: sentRaw } = await supabaseAdmin
+    .from("bookings")
+    .select("id, brand_name, vendor_email, booking_type, start_date, end_date, load_in_sent_at")
+    .eq("status", "confirmed")
+    .not("load_in_sent_at", "is", null)
+    .order("load_in_sent_at", { ascending: false });
+
   // Pull first names from applications table
-  const emails = (bookings ?? []).map((b) => b.vendor_email);
+  const allBookings = [...(upcomingRaw ?? []), ...(sentRaw ?? [])];
+  const emails = allBookings.map((b) => b.vendor_email);
   const { data: apps } = await supabaseAdmin
     .from("applications")
     .select("email, first_name")
@@ -24,10 +34,7 @@ export default async function LoadInPage() {
   const nameMap: Record<string, string> = {};
   for (const a of apps ?? []) nameMap[a.email] = a.first_name ?? "";
 
-  const enriched = (bookings ?? []).map((b) => ({
-    ...b,
-    first_name: nameMap[b.vendor_email] ?? "",
-  }));
+  const enrich = (b: typeof allBookings[0]) => ({ ...b, first_name: nameMap[b.vendor_email] ?? "" });
 
   return (
     <div className="px-8 py-10 max-w-4xl">
@@ -37,7 +44,7 @@ export default async function LoadInPage() {
           Select vendors, assign them to a time slot, and send load-in details in one click.
         </p>
       </div>
-      <LoadInForm bookings={enriched} />
+      <LoadInForm upcoming={(upcomingRaw ?? []).map(enrich)} sent={(sentRaw ?? []).map(enrich)} />
     </div>
   );
 }

@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 
 const ADMIN_EMAIL = "info@popupcollectivenyc.com";
 const SITE_URL    = "https://popupcollectivenyc.com";
 
 type Vendor = {
+  id?: string;
   email: string;
   firstName: string;
   brandName: string;
@@ -117,6 +119,15 @@ export async function POST(req: NextRequest) {
 
   const failed = results.filter((r) => !r.ok);
   if (failed.length) return NextResponse.json({ error: `Failed: ${failed.map((f) => f.email).join(", ")}` }, { status: 500 });
+
+  // Mark sent bookings in DB
+  const sentIds = vendors.filter((v) => v.id).map((v) => v.id!);
+  if (sentIds.length) {
+    await supabaseAdmin
+      .from("bookings")
+      .update({ load_in_sent_at: new Date().toISOString() })
+      .in("id", sentIds);
+  }
 
   return NextResponse.json({ sent: results.length });
 }
