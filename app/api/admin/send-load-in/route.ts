@@ -51,10 +51,18 @@ export async function POST(req: NextRequest) {
   <hr style="border:none;border-top:1px solid #eee;margin:28px 0;" />
 
   <p style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:#888;margin-bottom:6px;">Load-In & Setup</p>
-  <p style="font-size:15px;margin-top:0;">
-    Your load-in window: <strong>${assignedTime}</strong>
-  </p>
-  <p style="font-size:15px;">Please arrive within your assigned window. Our onsite manager will be there to greet you.</p>
+  <p style="font-size:15px;margin-top:0;">We have two load-in windows available. Please <strong>reply to this email</strong> to confirm which one works best for you:</p>
+  <table style="font-size:15px;border-collapse:collapse;width:100%;background:#f9f9f9;border:1px solid #eee;margin-bottom:10px;">
+    <tr>
+      <td style="padding:12px 16px;border-bottom:1px solid #eee;color:#888;width:30%;">Option 1</td>
+      <td style="padding:12px 16px;border-bottom:1px solid #eee;"><strong>${slot1Time}</strong></td>
+    </tr>
+    ${slot2Time ? `<tr>
+      <td style="padding:12px 16px;color:#888;">Option 2</td>
+      <td style="padding:12px 16px;"><strong>${slot2Time}</strong></td>
+    </tr>` : ""}
+  </table>
+  <p style="font-size:15px;">Our onsite manager will be there to greet you upon arrival.</p>
   <p style="font-size:15px;">Onsite Manager: <strong>+1 (646) 423-7308</strong></p>
 
   <hr style="border:none;border-top:1px solid #eee;margin:28px 0;" />
