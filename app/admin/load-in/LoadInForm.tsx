@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type Booking = {
   id: string;
@@ -66,7 +67,18 @@ function SlotInputs({ label, value, onChange }: { label: string; value: SlotStat
 }
 
 export default function LoadInForm({ upcoming, sent }: { upcoming: Booking[]; sent: Booking[] }) {
-  const [tab, setTab] = useState<"upcoming" | "sent">("upcoming");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [tab, setTab] = useState<"upcoming" | "sent">(
+    searchParams.get("tab") === "sent" ? "sent" : "upcoming"
+  );
+
+  function switchTab(t: "upcoming" | "sent") {
+    setTab(t);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("tab", t);
+    router.replace(`?${params.toString()}`, { scroll: false });
+  }
   const [vendors, setVendors] = useState<Record<string, VendorState>>({});
   const [slot1, setSlot1] = useState<SlotState>({ date: "", start: "", end: "" });
   const [slot2, setSlot2] = useState<SlotState>({ date: "", start: "", end: "" });
@@ -147,13 +159,13 @@ export default function LoadInForm({ upcoming, sent }: { upcoming: Booking[]; se
       {/* Tabs */}
       <div className="inline-flex border border-black overflow-hidden text-xs uppercase tracking-widest">
         <button
-          onClick={() => setTab("upcoming")}
+          onClick={() => switchTab("upcoming")}
           className={`px-5 py-2 transition-colors ${tab === "upcoming" ? "bg-black text-white" : "bg-white text-black hover:bg-neutral-50"}`}
         >
           Upcoming {visibleUpcoming.length > 0 && `(${visibleUpcoming.length})`}
         </button>
         <button
-          onClick={() => setTab("sent")}
+          onClick={() => switchTab("sent")}
           className={`px-5 py-2 border-l border-black transition-colors ${tab === "sent" ? "bg-black text-white" : "bg-white text-black hover:bg-neutral-50"}`}
         >
           Sent {(sent.length + sentIds.size) > 0 && `(${sent.length + sentIds.size})`}

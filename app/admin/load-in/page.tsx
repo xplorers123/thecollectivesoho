@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import LoadInForm from "./LoadInForm";
 
@@ -60,7 +61,9 @@ export default async function LoadInPage() {
           Select vendors, assign them to a time slot, and send load-in details in one click.
         </p>
       </div>
-      <LoadInForm upcoming={(upcomingRaw ?? []).map(enrich)} sent={(sentRaw ?? []).map(enrich)} />
+      <Suspense>
+        <LoadInForm upcoming={(upcomingRaw ?? []).map(enrich)} sent={(sentRaw ?? []).map(enrich)} />
+      </Suspense>
     </div>
   );
 }
