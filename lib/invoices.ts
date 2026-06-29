@@ -121,7 +121,7 @@ export const invoices: Record<string, Invoice> = {
     description: "Prorated Booth Fee — July 5–31, 2026",
     lineItems: [
       { label: "Monthly rate (July 2026)",                  amountCents: 330000 },
-      { label: "Proration adjustment (4/31 days free)",     amountCents: 42581, deduction: true },
+      { label: "Proration adjustment (July 1–4 complimentary)", amountCents: 42581, deduction: true },
     ],
     amountCents: 287419,
     dueDate: "June 30, 2026",
@@ -179,7 +179,7 @@ export const invoices: Record<string, Invoice> = {
     description: "Prorated Booth Fee — July 4–31, 2026",
     lineItems: [
       { label: "Monthly rate (July 2026)",                  amountCents: 320000 },
-      { label: "Proration adjustment (3/31 days free)",     amountCents: 30968, deduction: true },
+      { label: "Proration adjustment (July 1–3 complimentary)", amountCents: 30968, deduction: true },
     ],
     amountCents: 289032,
     dueDate: "June 30, 2026",
