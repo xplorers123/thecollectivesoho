@@ -105,6 +105,95 @@ export const invoices: Record<string, Invoice> = {
     dueDate: "June 25, 2026",
   },
 
+  "frgmnt-jul-2026": {
+    id: "frgmnt-jul-2026",
+    email: "ed@frgmntfoto.com",
+    name: "Ed",
+    description: "Booth Fee — July 1–31, 2026",
+    amountCents: 150000,
+    dueDate: "June 30, 2026",
+  },
+
+  "aromademerrie-jul-2026": {
+    id: "aromademerrie-jul-2026",
+    email: "info@aromademerrie.com",
+    name: "Aroma de Merrie",
+    description: "Prorated Booth Fee — July 5–31, 2026",
+    lineItems: [
+      { label: "Monthly rate (July 2026)",                  amountCents: 330000 },
+      { label: "Proration adjustment (4/31 days free)",     amountCents: 42581, deduction: true },
+    ],
+    amountCents: 287419,
+    dueDate: "June 30, 2026",
+  },
+
+  "oilogy-jul-2026": {
+    id: "oilogy-jul-2026",
+    email: "oilogy.us@gmail.com",
+    name: "Oilogy",
+    description: "Monthly Booth Fee — July 1–31, 2026",
+    amountCents: 340000,
+    dueDate: "June 30, 2026",
+  },
+
+  "savageanchor-jul-2026": {
+    id: "savageanchor-jul-2026",
+    email: "info@savageanchor.com",
+    name: "Savage Anchor",
+    description: "Monthly Booth Fee — July 1–31, 2026",
+    amountCents: 340000,
+    dueDate: "June 30, 2026",
+  },
+
+  "bangbang-jul-2026": {
+    id: "bangbang-jul-2026",
+    email: "erenarina@gmail.com",
+    name: "BangBang Co",
+    description: "Monthly Booth Fee — July 1–31, 2026",
+    amountCents: 200000,
+    dueDate: "June 30, 2026",
+  },
+
+  "selfloom-jul-2026": {
+    id: "selfloom-jul-2026",
+    email: "helloselfloom@gmail.com",
+    name: "Selfloom",
+    description: "Monthly Booth Fee — July 1–31, 2026",
+    amountCents: 340000,
+    dueDate: "June 30, 2026",
+  },
+
+  "maisonthird-jul-2026": {
+    id: "maisonthird-jul-2026",
+    email: "maisonthird03@gmail.com",
+    name: "Maison Third",
+    description: "Monthly Booth Fee — July 1–31, 2026",
+    amountCents: 325000,
+    dueDate: "June 30, 2026",
+  },
+
+  "natalia-jul-2026": {
+    id: "natalia-jul-2026",
+    email: "nataliajingjing55@yahoo.com",
+    name: "Natalia",
+    description: "Prorated Booth Fee — July 4–31, 2026",
+    lineItems: [
+      { label: "Monthly rate (July 2026)",                  amountCents: 320000 },
+      { label: "Proration adjustment (3/31 days free)",     amountCents: 30968, deduction: true },
+    ],
+    amountCents: 289032,
+    dueDate: "June 30, 2026",
+  },
+
+  "marina-jul-2026": {
+    id: "marina-jul-2026",
+    email: "marinamatia@hotmail.com",
+    name: "Marina",
+    description: "Monthly Booth Fee — July 1–31, 2026",
+    amountCents: 300000,
+    dueDate: "June 30, 2026",
+  },
+
   "cafetruman-june-aug-2026": {
     id: "cafetruman-june-aug-2026",
     email: "cafetruman@gmail.com",
