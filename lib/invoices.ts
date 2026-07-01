@@ -65,6 +65,15 @@ export const invoices: Record<string, Invoice> = {
     dueDate: "June 27, 2026",
   },
 
+  "danablair-jul11-2026": {
+    id: "danablair-jul11-2026",
+    email: "danablairdesigns@yahoo.com",
+    name: "Dana Blair",
+    description: "Weekly Booth Fee — July 11–17, 2026 · Jewelry",
+    amountCents: 85000,
+    dueDate: "July 1, 2026",
+  },
+
   "danablair-jul6-2026": {
     id: "danablair-jul6-2026",
     email: "danablairdesigns@yahoo.com",
