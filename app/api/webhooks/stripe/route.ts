@@ -245,6 +245,79 @@ async function notifyAchPending(session: Stripe.Checkout.Session, resend: Resend
   }
 }
 
+function invoiceReceiptHtml(
+  vendorName: string,
+  description: string,
+  totalCents: number,
+  paymentMethod: string,
+  pending: boolean,
+) {
+  const methodLabel = paymentMethod === "card" ? "Credit Card" : "Bank Transfer (ACH)";
+  const feeNote = paymentMethod === "card" ? " (incl. 3% surcharge)" : paymentMethod === "ach" ? " (incl. $5 bank transfer fee)" : "";
+
+  return `
+<div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;color:#111;line-height:1.6;">
+  <div style="border-bottom:1px solid #eee;padding-bottom:16px;margin-bottom:28px;">
+    <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#888;margin:0;">The Collective SoHo · 435 Broadway, NYC</p>
+  </div>
+
+  <h2 style="font-size:22px;font-weight:normal;margin-bottom:4px;">
+    ${pending ? "Your payment is being processed." : "Payment received — thank you!"}
+  </h2>
+  <p style="color:#888;font-size:14px;margin-top:0;">Hi ${vendorName}, here is your receipt from <strong>The Collective SoHo</strong>.</p>
+
+  ${pending ? `
+  <div style="background:#fef3c7;border:1px solid #fde68a;padding:14px 18px;font-size:14px;color:#92400e;margin:20px 0;border-radius:2px;">
+    Your bank transfer is being processed and typically takes <strong>3–5 business days</strong> to settle.
+    You'll receive a final receipt once the payment clears.
+  </div>` : ""}
+
+  <table style="width:100%;border-collapse:collapse;background:#f9f9f9;border:1px solid #eee;margin:24px 0;">
+    <tr>
+      <td style="padding:12px 16px;color:#888;border-bottom:1px solid #eee;width:40%;font-size:14px;">Description</td>
+      <td style="padding:12px 16px;border-bottom:1px solid #eee;font-size:14px;">${description}</td>
+    </tr>
+    <tr>
+      <td style="padding:12px 16px;color:#888;border-bottom:1px solid #eee;font-size:14px;">Amount ${pending ? "initiated" : "paid"}</td>
+      <td style="padding:12px 16px;border-bottom:1px solid #eee;font-size:14px;"><strong>${formatAmount(totalCents)}</strong>${feeNote}</td>
+    </tr>
+    <tr>
+      <td style="padding:12px 16px;color:#888;border-bottom:1px solid #eee;font-size:14px;">Payment method</td>
+      <td style="padding:12px 16px;border-bottom:1px solid #eee;font-size:14px;">${methodLabel}</td>
+    </tr>
+    <tr>
+      <td style="padding:12px 16px;color:#888;font-size:14px;">Status</td>
+      <td style="padding:12px 16px;font-size:14px;color:${pending ? "#92400e" : "#16a34a"};"><strong>${pending ? "Processing" : "Paid"}</strong></td>
+    </tr>
+  </table>
+
+  <p style="font-size:15px;">Questions? Reply to this email and we'll get back to you.</p>
+
+  <div style="margin-top:36px;border-top:1px solid #eee;padding-top:20px;">
+    <p style="font-size:13px;color:#888;margin:0;"><strong>The Collective SoHo</strong></p>
+    <p style="font-size:12px;color:#aaa;margin:4px 0 0;">
+      <a href="mailto:${ADMIN_EMAIL}" style="color:#aaa;">${ADMIN_EMAIL}</a> · @popupcollective.nyc
+    </p>
+  </div>
+</div>`;
+}
+
+async function handleInvoicePaid(session: Stripe.Checkout.Session, resend: Resend, pending = false) {
+  const m = session.metadata!;
+  const paymentMethod = m.paymentMethod ?? "card";
+
+  // Receipt to vendor
+  await resend.emails.send({
+    from: `The Collective SoHo <${ADMIN_EMAIL}>`,
+    to: m.vendorEmail,
+    cc: ADMIN_EMAIL,
+    subject: pending
+      ? `Payment processing — The Collective SoHo`
+      : `Payment received — The Collective SoHo`,
+    html: invoiceReceiptHtml(m.vendorName, m.description, session.amount_total ?? 0, paymentMethod, pending),
+  });
+}
+
 export async function POST(req: NextRequest) {
   const body = await req.text();
   const sig = req.headers.get("stripe-signature")!;
@@ -260,19 +333,35 @@ export async function POST(req: NextRequest) {
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
-    if (session.payment_status === "paid") {
-      // Card payment — confirmed immediately
-      await createBookings(session, resend);
+    const isInvoice = session.metadata?.type === "invoice";
+
+    if (isInvoice) {
+      if (session.payment_status === "paid") {
+        await handleInvoicePaid(session, resend, false);
+      } else {
+        // ACH pending
+        await handleInvoicePaid(session, resend, true);
+      }
     } else {
-      // ACH — payment pending, notify but don't create booking yet
-      await notifyAchPending(session, resend);
+      if (session.payment_status === "paid") {
+        await createBookings(session, resend);
+      } else {
+        await notifyAchPending(session, resend);
+      }
     }
   }
 
   if (event.type === "checkout.session.async_payment_succeeded") {
-    // ACH settled — now create the booking and send confirmations
     const session = event.data.object as Stripe.Checkout.Session;
-    await createBookings(session, resend);
+    const isInvoice = session.metadata?.type === "invoice";
+
+    if (isInvoice) {
+      // ACH settled — send final receipt
+      await handleInvoicePaid(session, resend, false);
+    } else {
+      // ACH booking settled — create booking and confirm
+      await createBookings(session, resend);
+    }
   }
 
   return NextResponse.json({ received: true });

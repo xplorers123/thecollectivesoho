@@ -62,7 +62,16 @@ export async function POST(req: NextRequest) {
     line_items: lineItems,
     success_url: `${SITE_URL}/invoice/${slug}/success`,
     cancel_url: `${SITE_URL}/invoice/${slug}`,
-    metadata: { slug, invoiceId: invoice.id },
+    metadata: {
+      type: "invoice",
+      slug,
+      invoiceId: invoice.id,
+      vendorName: invoice.name,
+      vendorEmail: invoice.email,
+      description: invoice.description,
+      amountCents: String(invoice.amountCents),
+      paymentMethod: method,
+    },
   });
 
   return NextResponse.json({ url: session.url });
