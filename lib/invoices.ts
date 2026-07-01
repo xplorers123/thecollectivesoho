@@ -198,11 +198,7 @@ export const invoices: Record<string, Invoice> = {
     id: "adastra-jul-2026",
     email: "adastradumbo@gmail.com",
     name: "Ad Astra Studio",
-    description: "Prorated Booth Fee — July 11–31, 2026",
-    lineItems: [
-      { label: "Monthly rate (July 2026)",            amountCents: 300000 },
-      { label: "Proration adjustment (10/31 days)",   amountCents: 96774, deduction: true },
-    ],
+    description: "Booth Fee — July 11–31, 2026",
     amountCents: 203226,
     dueDate: "July 1, 2026",
   },
