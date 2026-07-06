@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import LoadInForm from "./LoadInForm";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Load-In Email — Admin" };
 
 export default async function LoadInPage() {

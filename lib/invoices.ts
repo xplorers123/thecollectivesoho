@@ -12,6 +12,7 @@ export type Invoice = {
   lineItems?: LineItem[];
   amountCents: number; // net total to charge
   dueDate?: string;
+  agreementUrl?: string; // if set, vendor must check agreement box before paying
 };
 
 export const invoices: Record<string, Invoice> = {
@@ -211,9 +212,19 @@ export const invoices: Record<string, Invoice> = {
     id: "adastra-jul-2026",
     email: "adastradumbo@gmail.com",
     name: "Ad Astra Studio",
-    description: "Booth Fee — July 11–31, 2026",
-    amountCents: 203226,
+    description: "Booth Fee — July 18–31, 2026",
+    amountCents: 135484,
     dueDate: "July 1, 2026",
+  },
+
+  "lovetara-jul-2026": {
+    id: "lovetara-jul-2026",
+    email: "lovetaranyc@gmail.com",
+    name: "Love Tara NYC",
+    description: "Share Consignment — July 15–31, 2026",
+    amountCents: 100000,
+    dueDate: "July 14, 2026",
+    agreementUrl: "/agreements/love-tara-consignment-agreement.docx",
   },
 
   "cafetruman-june-aug-2026": {

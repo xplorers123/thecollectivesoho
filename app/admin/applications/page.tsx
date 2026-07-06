@@ -1,6 +1,7 @@
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import ApplicationRow from "./ApplicationRow";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Applications — Admin" };
 
 const BUCKET = "Applications";

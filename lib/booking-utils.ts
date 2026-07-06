@@ -1,5 +1,12 @@
 export const AVAILABLE_BOOTHS = 5;
 
+// Weekends that are manually sold out (Saturday start date)
+export const SOLD_OUT_WEEKEND_STARTS = new Set([
+  "2026-06-27",
+  "2026-07-04",
+  "2026-07-11",
+]);
+
 export type BookingSlot = {
   id: string;
   startDate: string; // ISO date YYYY-MM-DD

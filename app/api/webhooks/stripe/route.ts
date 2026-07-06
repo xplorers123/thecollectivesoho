@@ -331,37 +331,39 @@ export async function POST(req: NextRequest) {
 
   const resend = new Resend(process.env.RESEND_API_KEY);
 
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object as Stripe.Checkout.Session;
-    const isInvoice = session.metadata?.type === "invoice";
+  try {
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object as Stripe.Checkout.Session;
+      const isInvoice = session.metadata?.type === "invoice";
 
-    if (isInvoice) {
-      if (session.payment_status === "paid") {
+      if (isInvoice) {
+        if (session.payment_status === "paid") {
+          await handleInvoicePaid(session, resend, false);
+        } else {
+          await handleInvoicePaid(session, resend, true);
+        }
+      } else {
+        if (session.payment_status === "paid") {
+          await createBookings(session, resend);
+        } else {
+          await notifyAchPending(session, resend);
+        }
+      }
+    }
+
+    if (event.type === "checkout.session.async_payment_succeeded") {
+      const session = event.data.object as Stripe.Checkout.Session;
+      const isInvoice = session.metadata?.type === "invoice";
+
+      if (isInvoice) {
         await handleInvoicePaid(session, resend, false);
       } else {
-        // ACH pending
-        await handleInvoicePaid(session, resend, true);
-      }
-    } else {
-      if (session.payment_status === "paid") {
         await createBookings(session, resend);
-      } else {
-        await notifyAchPending(session, resend);
       }
     }
-  }
-
-  if (event.type === "checkout.session.async_payment_succeeded") {
-    const session = event.data.object as Stripe.Checkout.Session;
-    const isInvoice = session.metadata?.type === "invoice";
-
-    if (isInvoice) {
-      // ACH settled — send final receipt
-      await handleInvoicePaid(session, resend, false);
-    } else {
-      // ACH booking settled — create booking and confirm
-      await createBookings(session, resend);
-    }
+  } catch (err) {
+    console.error("[stripe-webhook] handler error:", err);
+    // Still return 200 so Stripe doesn't retry and disable the endpoint
   }
 
   return NextResponse.json({ received: true });

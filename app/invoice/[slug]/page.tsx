@@ -75,7 +75,7 @@ export default async function InvoicePage({
         )}
 
         {/* Payment buttons */}
-        <InvoiceButtons slug={slug} amountCents={invoice.amountCents} />
+        <InvoiceButtons slug={slug} amountCents={invoice.amountCents} agreementUrl={invoice.agreementUrl} />
 
         <p className="mt-6 text-xs text-center text-muted">
           Questions? Email{" "}

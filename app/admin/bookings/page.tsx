@@ -1,5 +1,6 @@
 import { supabaseAdmin } from "@/lib/supabase-admin";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Bookings — Admin" };
 
 const TYPE_COLOR: Record<string, string> = {
