@@ -1,5 +1,5 @@
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { getWeekendSlots, AVAILABLE_BOOTHS, SOLD_OUT_WEEKEND_STARTS } from "@/lib/booking-utils";
+import { getWeekendSlots, AVAILABLE_BOOTHS } from "@/lib/booking-utils";
 import Link from "next/link";
 import BookingFlow from "@/components/BookingFlow";
 
@@ -16,9 +16,7 @@ export default async function WeekendBooking() {
 
   const slotsWithAvailability = slots.map((slot) => ({
     ...slot,
-    remaining: SOLD_OUT_WEEKEND_STARTS.has(slot.startDate)
-      ? 0
-      : AVAILABLE_BOOTHS - (bookings ?? []).filter((b) => b.start_date === slot.startDate).length,
+    remaining: AVAILABLE_BOOTHS - (bookings ?? []).filter((b) => b.start_date === slot.startDate).length,
   }));
 
   return (
