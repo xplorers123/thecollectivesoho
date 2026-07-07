@@ -219,7 +219,7 @@ export const invoices: Record<string, Invoice> = {
 
   "luiandlui-jul-aug-2026": {
     id: "luiandlui-jul-aug-2026",
-    email: "info@popupcollectivenyc.com",
+    email: "luiandluiofficial@gmail.com",
     name: "Lui & Lui",
     description: "Booth Fee — July 8 – August 7, 2026",
     amountCents: 300000,
