@@ -217,6 +217,15 @@ export const invoices: Record<string, Invoice> = {
     dueDate: "July 1, 2026",
   },
 
+  "luiandlui-jul-aug-2026": {
+    id: "luiandlui-jul-aug-2026",
+    email: "info@popupcollectivenyc.com",
+    name: "Lui & Lui",
+    description: "Booth Fee — July 8 – August 7, 2026",
+    amountCents: 300000,
+    dueDate: "July 7, 2026",
+  },
+
   "lovetara-jul-2026": {
     id: "lovetara-jul-2026",
     email: "lovetaranyc@gmail.com",
