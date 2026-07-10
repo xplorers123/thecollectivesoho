@@ -221,8 +221,8 @@ export const invoices: Record<string, Invoice> = {
     id: "jenairel-jul18-2026",
     email: "jenairelco@gmail.com",
     name: "Jenairel",
-    description: "Booth Fee — July 18–31, 2026",
-    amountCents: 160000,
+    description: "Weekly Booth Fee — July 18–24, 2026",
+    amountCents: 80000,
     dueDate: "July 14, 2026",
   },
 
