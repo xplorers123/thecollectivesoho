@@ -150,12 +150,12 @@ export default function ApplyForm() {
       const res = await fetch("/api/apply", { method: "POST", body: fd });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error ?? "Something went wrong. Please try again.");
+        setError(data.error ?? "Something went wrong. Please try again. If the issue persists, try removing your photos and resubmitting.");
       } else {
         setSubmitted(true);
       }
     } catch {
-      setError("Something went wrong. Please try again.");
+      setError("Something went wrong. Please try again. If the issue persists, try removing your photos and resubmitting.");
     } finally {
       setLoading(false);
     }
