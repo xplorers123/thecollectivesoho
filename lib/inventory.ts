@@ -15,6 +15,7 @@ const SLOT_CATEGORY_OOS = new Set([
   "weekly:2026-07-25:jewelry", // Sat-start Jul 25–31
   "weekly:2026-07-27:jewelry", // Mon-start Jul 27–Aug 2
   "weekly:2026-08-01:jewelry", // Sat-start Aug 1–7
+  "weekly:2026-08-03:jewelry", // Mon-start Aug 3–9
 ]);
 
 const ALL_CATEGORIES = ["jewelry", "clothing", "other", "food-drink"];
