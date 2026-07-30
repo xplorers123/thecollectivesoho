@@ -254,6 +254,51 @@ export const invoices: Record<string, Invoice> = {
     agreementUrl: "/agreements/love-tara-consignment-agreement.docx",
   },
 
+  "selfloom-aug-2026": {
+    id: "selfloom-aug-2026",
+    email: "helloselfloom@gmail.com",
+    name: "Selfloom",
+    description: "Monthly Booth Fee — August 1–31, 2026",
+    amountCents: 350000,
+    dueDate: "July 30, 2026",
+  },
+
+  "frgmnt-aug-2026": {
+    id: "frgmnt-aug-2026",
+    email: "ed@frgmntfoto.com",
+    name: "Ed",
+    description: "Booth Fee — August 1–31, 2026",
+    amountCents: 150000,
+    dueDate: "July 30, 2026",
+  },
+
+  "savageanchor-aug-2026": {
+    id: "savageanchor-aug-2026",
+    email: "info@savageanchor.com",
+    name: "Savage Anchor",
+    description: "Monthly Booth Fee — August 1–31, 2026",
+    amountCents: 340000,
+    dueDate: "July 30, 2026",
+  },
+
+  "bangbang-aug-2026": {
+    id: "bangbang-aug-2026",
+    email: "erenarina@gmail.com",
+    name: "BangBang Co",
+    description: "Monthly Booth Fee — August 1–31, 2026",
+    amountCents: 200000,
+    dueDate: "July 30, 2026",
+  },
+
+  "maisonthird-aug-2026": {
+    id: "maisonthird-aug-2026",
+    email: "maisonthird03@gmail.com",
+    name: "Maison Third",
+    description: "Monthly Booth Fee — August 1–31, 2026",
+    amountCents: 325000,
+    dueDate: "July 30, 2026",
+  },
+
   "ageofstones-aug-2026": {
     id: "ageofstones-aug-2026",
     email: "lautaro@theageofstones.com",
