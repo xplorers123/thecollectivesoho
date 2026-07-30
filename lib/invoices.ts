@@ -254,6 +254,15 @@ export const invoices: Record<string, Invoice> = {
     agreementUrl: "/agreements/love-tara-consignment-agreement.docx",
   },
 
+  "oilogy-aug-2026": {
+    id: "oilogy-aug-2026",
+    email: "oilogy.us@gmail.com",
+    name: "Oilogy",
+    description: "Monthly Booth Fee — August 1–31, 2026",
+    amountCents: 350000,
+    dueDate: "July 30, 2026",
+  },
+
   "selfloom-aug-2026": {
     id: "selfloom-aug-2026",
     email: "helloselfloom@gmail.com",
