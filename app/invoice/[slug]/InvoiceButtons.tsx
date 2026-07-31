@@ -46,7 +46,7 @@ export default function InvoiceButtons({ slug, amountCents, agreementUrl }: { sl
           <span className="text-xs text-muted leading-relaxed">
             By submitting payment I agree to the{" "}
             <a href={agreementUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 text-black">
-              Consignment Agreement
+              Vendor Space Agreement
             </a>
           </span>
         </label>
