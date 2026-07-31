@@ -261,6 +261,7 @@ export const invoices: Record<string, Invoice> = {
     description: "Booth Fee — August 6 – September 5, 2026",
     amountCents: 350000,
     dueDate: "August 5, 2026",
+    agreementUrl: "/agreements/beautelie-vendor-agreement-aug2026.pdf",
   },
 
   "marina-aug-2026": {
