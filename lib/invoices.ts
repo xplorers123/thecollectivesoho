@@ -254,6 +254,15 @@ export const invoices: Record<string, Invoice> = {
     agreementUrl: "/agreements/love-tara-consignment-agreement.docx",
   },
 
+  "teenagegrandma-aug22-2026": {
+    id: "teenagegrandma-aug22-2026",
+    email: "teeenagegrandma@gmail.com",
+    name: "Teenage Grandma's Closet",
+    description: "Window Spot (Prorated) — August 22–31, 2026",
+    amountCents: 129032,
+    dueDate: "August 22, 2026",
+  },
+
   "teenagegrandma-aug13-2026": {
     id: "teenagegrandma-aug13-2026",
     email: "teeenagegrandma@gmail.com",
