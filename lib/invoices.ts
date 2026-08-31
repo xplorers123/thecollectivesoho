@@ -622,6 +622,6 @@ export const invoices: Record<string, Invoice> = {
     name: "Mia New York",
     description: "Weekly Booth Fee — September 7–13, 2026 · Clothing & Accessories",
     amountCents: 85000,
-    dueDate: "September 7, 2026",
+    dueDate: "September 1, 2026",
   },
 };
