@@ -283,8 +283,8 @@ export const invoices: Record<string, Invoice> = {
     id: "beautelier-sep-2026",
     email: "info@beautelierus.com",
     name: "Beautelier",
-    description: "Booth Fee — September 5–30, 2026",
-    amountCents: 350000,
+    description: "Booth Fee — September 6–30, 2026",
+    amountCents: 291667,
     dueDate: "September 4, 2026",
   },
   "savageanchor-sep-2026": {
