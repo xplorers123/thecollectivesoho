@@ -30,7 +30,7 @@ function nextSaturday(from: Date): Date {
   return d;
 }
 
-const CUTOFF = new Date("2026-09-01");
+const CUTOFF = new Date("2026-11-01");
 
 export function getWeekendSlots(): BookingSlot[] {
   const slots: BookingSlot[] = [];
