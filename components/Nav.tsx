@@ -18,7 +18,7 @@ export default function Nav() {
     <header className="sticky top-0 z-50 border-b border-border bg-white/90 backdrop-blur">
       {/* Announcement banner */}
       <div className="bg-black px-4 py-2 text-center text-xs uppercase tracking-widest text-white">
-        Join The Collective SoHo this Summer —{" "}
+        Join The Collective SoHo this Fall —{" "}
         <Link href="/apply" className="underline underline-offset-2 hover:text-neutral-300 transition-colors">
           Apply today
         </Link>

@@ -134,7 +134,7 @@ export default function Home() {
             <span className="serif-italic font-normal">SoHo</span>.
           </h3>
           <p className="mx-auto mt-8 max-w-xl text-lg text-white/70">
-            We&apos;re currently curating our Spring/Summer 2026 lineup.
+            We&apos;re currently curating our Fall 2026 lineup.
           </p>
           <Link
             href="/apply"

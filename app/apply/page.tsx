@@ -39,7 +39,7 @@ export default function Apply() {
             <span className="serif-italic font-normal">to SoHo</span>.
           </h1>
           <p className="mt-8 max-w-2xl text-lg text-muted">
-            We&apos;re currently accepting applications for Summer 2026.
+            We&apos;re currently accepting applications for Fall 2026.
             We seek independent creators, designers, and small brands with unique,
             high-quality products who want to build a presence in New York City.
           </p>
