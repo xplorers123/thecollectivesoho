@@ -648,6 +648,14 @@ export const invoices: Record<string, Invoice> = {
     amountCents: 200000,
     dueDate: "September 16, 2026",
   },
+  "teenagegrandma-oct1-2026": {
+    id: "teenagegrandma-oct1-2026",
+    email: "teeenagegrandma@gmail.com",
+    name: "Teenage Grandma's Closet",
+    description: "Booth Fee — October 1–15, 2026",
+    amountCents: 200000,
+    dueDate: "October 1, 2026",
+  },
   "jenairel-sep15-2026": {
     id: "jenairel-sep15-2026",
     email: "jenairelco@gmail.com",
