@@ -31,7 +31,7 @@ export default function Visit() {
   return (
     <>
       {/* Hero */}
-      <section className="relative h-[60vh] w-full overflow-hidden bg-black">
+      <section className="relative h-[60vh] w-full overflow-hidden bg-evergreen-deep">
         <Image
           src="/images/DSC_0742.jpg"
           alt="The Collective SoHo storefront"
@@ -40,10 +40,10 @@ export default function Visit() {
           className="object-cover opacity-70"
           style={{ objectPosition: "center center" }}
         />
-        <div className="absolute inset-0 bg-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-evergreen-deep/80" />
         <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-end px-6 pb-16 text-white">
-          <p className="mb-4 text-xs uppercase tracking-[0.3em] text-white/80">
-            Visit
+          <p className="eyebrow mb-4 flex items-center gap-3 text-champagne">
+            <span aria-hidden>✦</span> Visit · Holiday Market through Dec 31
           </p>
           <h1 className="text-5xl font-medium leading-[1.05] tracking-tight sm:text-7xl">
             435 <span className="serif-italic font-normal">Broadway</span>
@@ -52,7 +52,7 @@ export default function Visit() {
       </section>
 
       {/* Info strip */}
-      <section className="border-b border-border bg-white px-6 py-10">
+      <section className="border-b border-border bg-background px-6 py-10">
         <div className="mx-auto flex max-w-5xl flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-col gap-1">
             <p className="text-xs uppercase tracking-widest text-muted">Address</p>
@@ -78,7 +78,7 @@ export default function Visit() {
       </section>
 
       {/* Description */}
-      <section className="bg-white px-6 py-24">
+      <section className="bg-background px-6 py-24">
         <div className="mx-auto max-w-5xl">
           <p className="mb-6 text-xs uppercase tracking-[0.3em] text-muted">SoHo, New York City</p>
           <h2 className="max-w-3xl text-3xl font-medium leading-tight tracking-tight sm:text-5xl">
@@ -95,7 +95,7 @@ export default function Visit() {
       </section>
 
       {/* Vendor showcase */}
-      <section className="border-t border-border bg-neutral-50 px-6 py-24">
+      <section className="border-t border-border bg-cream px-6 py-24">
         <div className="mx-auto max-w-5xl">
           <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
@@ -106,7 +106,7 @@ export default function Visit() {
             </div>
             <Link
               href="/apply"
-              className="inline-flex items-center justify-center bg-black px-8 py-3 text-xs uppercase tracking-widest text-white hover:bg-neutral-800 transition-colors"
+              className="inline-flex items-center justify-center bg-foreground px-8 py-3 text-xs uppercase tracking-widest text-white hover:bg-evergreen transition-colors"
             >
               Join Them — Apply
             </Link>
@@ -133,7 +133,7 @@ export default function Visit() {
       </section>
 
       {/* Instagram */}
-      <section className="border-t border-border bg-white px-6 py-24">
+      <section className="border-t border-border bg-background px-6 py-24">
         <div className="mx-auto max-w-5xl">
           <div className="elfsight-app-3f1f09e0-b842-4811-b321-d81432a23ba5" data-elfsight-app-lazy />
           <Script src="https://elfsightcdn.com/platform.js" strategy="lazyOnload" />

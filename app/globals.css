@@ -1,10 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #0a0a0a;
-  --muted: #6b6b6b;
-  --border: #e5e5e5;
+  --background: #fbf9f4;
+  --foreground: #12110f;
+  --muted: #6e6a63;
+  --border: #e4ded2;
+  --cream: #f3eee4;
+  --evergreen: #1c3328;
+  --evergreen-deep: #142620;
+  --gold: #b08d57;
+  --champagne: #dcc495;
 }
 
 @theme inline {
@@ -12,6 +17,11 @@
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
   --color-border: var(--border);
+  --color-cream: var(--cream);
+  --color-evergreen: var(--evergreen);
+  --color-evergreen-deep: var(--evergreen-deep);
+  --color-gold: var(--gold);
+  --color-champagne: var(--champagne);
   --font-sans: var(--font-inter);
   --font-serif: var(--font-playfair);
 }
@@ -27,4 +37,34 @@ body {
   font-family: var(--font-playfair), Georgia, serif;
   font-style: italic;
   font-weight: 500;
+}
+
+::selection {
+  background: var(--evergreen);
+  color: var(--background);
+}
+
+@layer components {
+  /* Small uppercase label used above headings */
+  .eyebrow {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+  }
+
+  /* Thin gold rule with a centered star, used as a holiday divider */
+  .ornament {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .ornament::before,
+  .ornament::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: currentColor;
+    opacity: 0.5;
+  }
 }

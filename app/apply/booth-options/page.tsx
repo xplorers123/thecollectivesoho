@@ -74,7 +74,7 @@ export default function BoothOptions() {
   return (
     <>
       {/* Hero */}
-      <section className="border-b border-border bg-white px-6 pt-32 pb-16">
+      <section className="border-b border-border bg-background px-6 pt-32 pb-16">
         <div className="mx-auto max-w-5xl">
           <Link
             href="/apply"
@@ -94,7 +94,7 @@ export default function BoothOptions() {
       </section>
 
       {/* Amenities strip */}
-      <section className="border-b border-border bg-neutral-50 px-6 py-10">
+      <section className="border-b border-border bg-cream px-6 py-10">
         <div className="mx-auto max-w-5xl">
           <p className="mb-6 text-xs uppercase tracking-[0.3em] text-muted">What's included in every booth</p>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
@@ -109,10 +109,10 @@ export default function BoothOptions() {
       </section>
 
       {/* Pricing tiers */}
-      <section className="bg-white px-6 py-24">
+      <section className="bg-background px-6 py-24">
         <div className="mx-auto max-w-5xl">
-          <div className="mb-10 border border-black px-6 py-5">
-            <p className="text-xs uppercase tracking-[0.3em]">Holiday Season · Nov 1 – Dec 31</p>
+          <div className="mb-10 border border-gold/60 bg-cream px-6 py-5">
+            <p className="eyebrow flex items-center gap-3 text-evergreen"><span className="text-gold" aria-hidden>✦</span> Holiday Season · Nov 1 – Dec 31</p>
             <p className="mt-2 text-sm leading-relaxed text-muted">
               Booth rates change for the holiday season. October pricing is shown first on each
               package below, followed by holiday season pricing for bookings from November 1 through December 31.
@@ -124,8 +124,8 @@ export default function BoothOptions() {
                 key={tier.name}
                 className={`relative flex flex-col border p-8 ${
                   tier.featured
-                    ? "border-black bg-black text-white"
-                    : "border-border bg-white text-black"
+                    ? "border-evergreen bg-evergreen text-white"
+                    : "border-border bg-background text-foreground"
                 }`}
               >
                 <div className="mb-6 flex items-start justify-between gap-2">
@@ -135,7 +135,7 @@ export default function BoothOptions() {
                       tier.limited
                         ? "bg-neutral-100 text-neutral-500"
                         : tier.featured
-                        ? "bg-white/20 text-white"
+                        ? "bg-white/15 text-champagne"
                         : "bg-neutral-100 text-neutral-600"
                     }`}
                   >
@@ -183,7 +183,7 @@ export default function BoothOptions() {
                   href="/apply/form"
                   className={`mt-8 inline-flex items-center justify-center px-6 py-3 text-xs uppercase tracking-widest transition-colors ${
                     tier.featured
-                      ? "bg-white text-black hover:bg-neutral-200"
+                      ? "bg-background text-foreground hover:bg-cream"
                       : "border border-black hover:bg-black hover:text-white"
                   }`}
                 >
@@ -206,12 +206,12 @@ export default function BoothOptions() {
       </section>
 
       {/* CTA */}
-      <section className="border-t border-border bg-neutral-50 px-6 py-16">
+      <section className="border-t border-border bg-cream px-6 py-16">
         <div className="mx-auto max-w-5xl flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <p className="text-lg font-medium">Ready to bring your brand to SoHo?</p>
           <Link
             href="/apply/form"
-            className="inline-flex items-center justify-center bg-black px-10 py-4 text-xs uppercase tracking-widest text-white hover:bg-neutral-800 transition-colors"
+            className="inline-flex items-center justify-center bg-foreground px-10 py-4 text-xs uppercase tracking-widest text-white hover:bg-evergreen transition-colors"
           >
             Apply Now
           </Link>

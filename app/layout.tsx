@@ -37,7 +37,7 @@ export default function RootLayout({
         lang="en"
         className={`${inter.variable} ${playfair.variable} antialiased`}
       >
-        <body className="min-h-screen flex flex-col bg-white text-black">
+        <body className="min-h-screen flex flex-col bg-background text-foreground">
           {/* Meta Pixel */}
           <Script id="meta-pixel" strategy="afterInteractive">
             {`

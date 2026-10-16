@@ -29,24 +29,24 @@ export default function Apply() {
   return (
     <>
       {/* Hero */}
-      <section className="border-b border-border bg-white px-6 pt-32 pb-20">
+      <section className="border-b border-border bg-background px-6 pt-32 pb-20">
         <div className="mx-auto max-w-5xl">
-          <p className="mb-6 text-xs uppercase tracking-[0.3em] text-muted">
-            Vendor Application
+          <p className="eyebrow mb-6 flex items-center gap-3 text-gold">
+            <span aria-hidden>✦</span> Holiday Season 2026 · Vendor Application
           </p>
           <h1 className="text-5xl font-medium leading-[1.05] tracking-tight sm:text-7xl">
             Bring your brand{" "}
             <span className="serif-italic font-normal">to SoHo</span>.
           </h1>
           <p className="mt-8 max-w-2xl text-lg text-muted">
-            We&apos;re currently accepting applications for Fall 2026.
-            We seek independent creators, designers, and small brands with unique,
+            We&apos;re accepting applications for the holiday season, November 1 – December 31.
+            Booths are limited. We seek independent creators, designers, and small brands with unique,
             high-quality products who want to build a presence in New York City.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
             <Link
               href="/apply/form"
-              className="inline-flex items-center justify-center bg-black px-10 py-4 text-xs uppercase tracking-widest text-white hover:bg-neutral-800 transition-colors"
+              className="inline-flex items-center justify-center bg-foreground px-10 py-4 text-xs uppercase tracking-widest text-white hover:bg-evergreen transition-colors"
             >
               Apply Now
             </Link>
@@ -67,7 +67,7 @@ export default function Apply() {
       </section>
 
       {/* Why sell with us */}
-      <section className="bg-white px-6 py-24">
+      <section className="bg-background px-6 py-24">
         <div className="mx-auto max-w-5xl">
           <p className="mb-8 text-xs uppercase tracking-[0.3em] text-muted">Why sell with us</p>
           <div className="grid gap-10 md:grid-cols-2">
@@ -82,9 +82,9 @@ export default function Apply() {
       </section>
 
       {/* Two CTAs */}
-      <section className="border-t border-border bg-neutral-50 px-6 py-24">
+      <section className="border-t border-border bg-cream px-6 py-24">
         <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2">
-          <div className="flex flex-col justify-between border border-border bg-white p-10">
+          <div className="flex flex-col justify-between border border-border bg-background p-10">
             <div>
               <p className="text-xs uppercase tracking-widest text-muted">Step 1</p>
               <h2 className="mt-4 text-2xl font-medium leading-snug">
@@ -103,9 +103,9 @@ export default function Apply() {
             </Link>
           </div>
 
-          <div className="flex flex-col justify-between border border-black bg-black p-10 text-white">
+          <div className="flex flex-col justify-between bg-evergreen p-10 text-white">
             <div>
-              <p className="text-xs uppercase tracking-widest text-white/60">Step 2</p>
+              <p className="text-xs uppercase tracking-widest text-champagne">Step 2</p>
               <h2 className="mt-4 text-2xl font-medium leading-snug">
                 Submit your<br />application
               </h2>
@@ -116,7 +116,7 @@ export default function Apply() {
             </div>
             <Link
               href="/apply/form"
-              className="mt-10 inline-flex items-center justify-center bg-white px-8 py-3 text-xs uppercase tracking-widest text-black hover:bg-neutral-200 transition-colors"
+              className="mt-10 inline-flex items-center justify-center bg-background px-8 py-3 text-xs uppercase tracking-widest text-foreground hover:bg-cream transition-colors"
             >
               Apply Now
             </Link>

@@ -15,12 +15,13 @@ export default function Nav() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-white/90 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur">
       {/* Announcement banner */}
-      <div className="bg-black px-4 py-2 text-center text-xs uppercase tracking-widest text-white">
-        Join The Collective SoHo this Fall —{" "}
-        <Link href="/apply" className="underline underline-offset-2 hover:text-neutral-300 transition-colors">
-          Apply today
+      <div className="bg-evergreen px-4 py-2.5 text-center text-[11px] uppercase tracking-[0.2em] text-white sm:text-xs">
+        <span className="text-champagne" aria-hidden>✦</span>{" "}
+        Holiday booths <span className="hidden sm:inline">now booking</span> · Nov 1 – Dec 31 ·{" "}
+        <Link href="/apply" className="underline underline-offset-4 decoration-champagne hover:text-champagne transition-colors">
+          Apply
         </Link>
       </div>
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
@@ -31,7 +32,7 @@ export default function Nav() {
             <Link
               key={l.href}
               href={l.href}
-              className="text-sm uppercase tracking-widest text-black hover:text-muted transition-colors"
+              className="text-sm uppercase tracking-widest text-foreground hover:text-evergreen transition-colors"
             >
               {l.label}
             </Link>
@@ -40,7 +41,7 @@ export default function Nav() {
 
         <Link
           href="/apply"
-          className="hidden md:inline-flex items-center justify-center bg-black px-5 py-2.5 text-xs uppercase tracking-widest text-white hover:bg-neutral-800 transition-colors"
+          className="hidden md:inline-flex items-center justify-center bg-foreground px-5 py-2.5 text-xs uppercase tracking-widest text-white hover:bg-evergreen transition-colors"
         >
           Apply Now
         </Link>
@@ -57,7 +58,7 @@ export default function Nav() {
       </div>
 
       {open && (
-        <div className="md:hidden border-t border-border bg-white">
+        <div className="md:hidden border-t border-border bg-background">
           <nav className="flex flex-col px-6 py-6">
             {links.map((l) => (
               <Link
@@ -72,7 +73,7 @@ export default function Nav() {
             <Link
               href="/apply"
               onClick={() => setOpen(false)}
-              className="mt-4 inline-flex items-center justify-center bg-black px-5 py-3 text-xs uppercase tracking-widest text-white"
+              className="mt-4 inline-flex items-center justify-center bg-foreground px-5 py-3 text-xs uppercase tracking-widest text-white"
             >
               Apply Now
             </Link>

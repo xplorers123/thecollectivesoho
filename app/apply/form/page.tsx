@@ -177,7 +177,7 @@ export default function ApplyForm() {
 
   if (submitted) {
     return (
-      <section className="bg-neutral-50 px-6 py-32 min-h-[60vh] flex items-center justify-center">
+      <section className="bg-cream px-6 py-32 min-h-[60vh] flex items-center justify-center">
         <div className="mx-auto max-w-md text-center">
           <p className="mb-4 text-xs uppercase tracking-[0.3em] text-muted">Application Received</p>
           <h2 className="text-4xl font-medium leading-tight">
@@ -199,7 +199,7 @@ export default function ApplyForm() {
 
   return (
     <>
-      <section className="border-b border-border bg-white px-6 pt-32 pb-12">
+      <section className="border-b border-border bg-background px-6 pt-32 pb-12">
         <div className="mx-auto max-w-3xl">
           <Link
             href="/apply"
@@ -218,7 +218,7 @@ export default function ApplyForm() {
         </div>
       </section>
 
-      <section className="bg-neutral-50 px-6 py-16">
+      <section className="bg-cream px-6 py-16">
         <form onSubmit={handleSubmit} className="mx-auto max-w-3xl space-y-6">
 
           {/* Personal Info */}
@@ -333,7 +333,7 @@ export default function ApplyForm() {
             <RadioGroup name="bookingType" options={SEASONS[season]} value={bookingType} onChange={setBookingType} />
             {bookingType.startsWith("Weekend") && (
               <p className="mt-3 border border-border bg-white px-4 py-3 text-xs leading-relaxed text-muted">
-                <strong className="text-black">NOTE:</strong> Weekend-only application is limited and not guaranteed. For the fall, we are prioritizing weekly participants.
+                <strong className="text-black">NOTE:</strong> Weekend-only application is limited and not guaranteed. For the holiday season, we are prioritizing weekly and monthly participants.
               </p>
             )}
           </div>
@@ -366,7 +366,7 @@ export default function ApplyForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-black px-6 py-4 text-xs uppercase tracking-widest text-white hover:bg-neutral-800 transition-colors disabled:opacity-50"
+            className="w-full bg-foreground px-6 py-4 text-xs uppercase tracking-widest text-white hover:bg-evergreen transition-colors disabled:opacity-50"
           >
             {loading ? "Submitting…" : "Submit Application"}
           </button>

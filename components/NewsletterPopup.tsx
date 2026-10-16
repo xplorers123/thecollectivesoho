@@ -46,15 +46,15 @@ export default function NewsletterPopup() {
         <button
           type="button"
           onClick={() => setMinimized(false)}
-          className="w-full bg-black text-white text-xs uppercase tracking-widest px-5 py-3 flex items-center justify-between hover:bg-neutral-800 transition-colors"
+          className="w-full bg-evergreen text-white text-xs uppercase tracking-widest px-5 py-3 flex items-center justify-between hover:bg-evergreen-deep transition-colors"
         >
           <span>Join the community</span>
           <span className="text-lg leading-none">+</span>
         </button>
       ) : (
-        <div className="bg-white border border-border shadow-xl">
+        <div className="bg-background border border-border shadow-xl">
           {/* Header bar with minimize */}
-          <div className="flex items-center justify-between bg-black px-5 py-3">
+          <div className="flex items-center justify-between bg-evergreen px-5 py-3">
             <span className="text-xs uppercase tracking-widest text-white">
               Stay connected
             </span>
@@ -82,7 +82,7 @@ export default function NewsletterPopup() {
                   Join the community.
                 </h2>
                 <p className="mb-5 text-xs text-muted leading-relaxed">
-                  Be the first to hear about new vendors, markets, and events.
+                  Be the first to hear about holiday markets, new vendors, and events.
                 </p>
 
                 <div className="space-y-3 mb-4">
@@ -128,7 +128,7 @@ export default function NewsletterPopup() {
 
                 <button
                   type="submit"
-                  className="w-full bg-black py-3 text-xs uppercase tracking-widest text-white hover:bg-neutral-800 transition-colors"
+                  className="w-full bg-foreground py-3 text-xs uppercase tracking-widest text-white hover:bg-evergreen transition-colors"
                 >
                   Subscribe
                 </button>

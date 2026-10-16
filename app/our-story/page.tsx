@@ -11,7 +11,7 @@ export default function OurStory() {
   return (
     <>
       {/* Hero */}
-      <section className="border-b border-border bg-white px-6 pt-32 pb-20">
+      <section className="border-b border-border bg-background px-6 pt-32 pb-20">
         <div className="mx-auto max-w-5xl">
           <p className="mb-6 text-xs uppercase tracking-[0.3em] text-muted">
             Our Story
@@ -24,7 +24,7 @@ export default function OurStory() {
       </section>
 
       {/* Personal story */}
-      <section className="bg-white px-6 py-24">
+      <section className="bg-background px-6 py-24">
         <div className="mx-auto grid max-w-6xl gap-16 md:grid-cols-2">
           <div className="space-y-6 text-lg leading-relaxed text-neutral-700">
             <p>
@@ -58,7 +58,7 @@ export default function OurStory() {
       </section>
 
       {/* Timeline */}
-      <section className="border-t border-border bg-neutral-50 px-6 py-24">
+      <section className="border-t border-border bg-cream px-6 py-24">
         <div className="mx-auto max-w-5xl">
           <p className="mb-10 text-xs uppercase tracking-[0.3em] text-muted">The journey</p>
           <div className="space-y-16">
@@ -106,7 +106,7 @@ export default function OurStory() {
       </section>
 
       {/* Mission */}
-      <section className="bg-white px-6 py-24">
+      <section className="bg-background px-6 py-24">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-3xl font-medium leading-tight sm:text-4xl">What we&apos;re building.</h2>
           <div className="mt-12 grid gap-12 md:grid-cols-3">
@@ -134,7 +134,7 @@ export default function OurStory() {
       </section>
 
       {/* CTA */}
-      <section className="bg-black px-6 py-32 text-white">
+      <section className="bg-evergreen px-6 py-32 text-white">
         <div className="mx-auto max-w-4xl text-center">
           <h3 className="text-4xl font-medium leading-tight sm:text-5xl">
             Ready to join the community?
@@ -145,7 +145,7 @@ export default function OurStory() {
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Link
               href="/apply"
-              className="inline-flex items-center justify-center bg-white px-10 py-4 text-xs uppercase tracking-widest text-black hover:bg-neutral-200 transition-colors"
+              className="inline-flex items-center justify-center bg-background px-10 py-4 text-xs uppercase tracking-widest text-foreground hover:bg-cream transition-colors"
             >
               Apply as a Vendor
             </Link>
