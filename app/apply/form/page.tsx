@@ -13,11 +13,20 @@ const CATEGORIES = [
   "Other",
 ];
 
-const BOOKING_TYPES = [
-  "Weekly ($850+/week)",
-  "Monthly ($3,200+/month)",
-  "Weekend ($600+/weekend)",
-];
+const SEASONS = {
+  October: [
+    "Weekly ($850+/week)",
+    "Monthly ($3,200+/month)",
+    "Weekend ($600+/weekend)",
+  ],
+  "Holiday Season (Nov 1 – Dec 31)": [
+    "Weekly ($950+/week)",
+    "Monthly ($3,500+/month)",
+    "Weekend ($650+/weekend)",
+  ],
+};
+
+type Season = keyof typeof SEASONS;
 
 function Label({ children, required }: { children: React.ReactNode; required?: boolean }) {
   return (
@@ -99,12 +108,17 @@ export default function ApplyForm() {
   const [brandStory, setBrandStory] = useState("");
   const [productPhotos, setProductPhotos] = useState<FileList | null>(null);
   const [displayPhotos, setDisplayPhotos] = useState<FileList | null>(null);
+  const [season, setSeason] = useState<Season | "">("");
   const [bookingType, setBookingType] = useState("");
   const [additionalComments, setAdditionalComments] = useState("");
   const [emailConsent, setEmailConsent] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!season || !bookingType) {
+      setError("Please select a season and booking type.");
+      return;
+    }
     if (!emailConsent) {
       setError("Please agree to receive communications to submit your application.");
       return;
@@ -140,7 +154,7 @@ export default function ApplyForm() {
     fd.append("website", website);
     fd.append("priceRange", priceRange);
     fd.append("brandStory", brandStory);
-    fd.append("bookingType", bookingType);
+    fd.append("bookingType", `${season} — ${bookingType}`);
     fd.append("additionalComments", additionalComments);
     fd.append("emailConsent", String(emailConsent));
     if (productPhotos) Array.from(productPhotos).forEach((f) => fd.append("productPhotos", f));
@@ -299,14 +313,31 @@ export default function ApplyForm() {
           <SectionTitle>Booking Preference</SectionTitle>
 
           <div>
+            <Label required>Which season are you applying for?</Label>
+            <RadioGroup
+              name="season"
+              options={Object.keys(SEASONS)}
+              value={season}
+              onChange={(v) => { setSeason(v as Season); setBookingType(""); }}
+            />
+            {season === "Holiday Season (Nov 1 – Dec 31)" && (
+              <p className="mt-3 border border-border bg-white px-4 py-3 text-xs leading-relaxed text-muted">
+                <strong className="text-black">NOTE:</strong> Holiday season pricing applies to all bookings from November 1 through December 31.
+              </p>
+            )}
+          </div>
+
+          {season && (
+          <div>
             <Label required>Which booking type are you interested in?</Label>
-            <RadioGroup name="bookingType" options={BOOKING_TYPES} value={bookingType} onChange={setBookingType} />
-            {bookingType === "Weekend ($600+/weekend)" && (
+            <RadioGroup name="bookingType" options={SEASONS[season]} value={bookingType} onChange={setBookingType} />
+            {bookingType.startsWith("Weekend") && (
               <p className="mt-3 border border-border bg-white px-4 py-3 text-xs leading-relaxed text-muted">
                 <strong className="text-black">NOTE:</strong> Weekend-only application is limited and not guaranteed. For the fall, we are prioritizing weekly participants.
               </p>
             )}
           </div>
+          )}
 
           <SectionTitle>Almost Done</SectionTitle>
 

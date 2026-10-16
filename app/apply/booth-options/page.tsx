@@ -10,6 +10,7 @@ const tiers = [
     name: "Weekend",
     badge: "Limited Availability",
     price: "$600",
+    holidayPrice: "$650",
     period: "/ weekend",
     description: "A short-run option to test the market. Weekend slots are limited and fill quickly.",
     days: "Saturday – Sunday (2 days)",
@@ -27,6 +28,7 @@ const tiers = [
     name: "Weekly",
     badge: "Most Popular",
     price: "$850",
+    holidayPrice: "$950",
     period: "/ week",
     description: "Our most popular option — a full week to build momentum and connect with shoppers.",
     days: "Saturday – following Friday (7 days)",
@@ -45,6 +47,7 @@ const tiers = [
     name: "Monthly",
     badge: "Best Value",
     price: "$3,200",
+    holidayPrice: "$3,500",
     period: "/ month",
     description: "Commit to a full month and we'll secure the best placement in the space for your brand.",
     days: "4-week booking period",
@@ -108,6 +111,13 @@ export default function BoothOptions() {
       {/* Pricing tiers */}
       <section className="bg-white px-6 py-24">
         <div className="mx-auto max-w-5xl">
+          <div className="mb-10 border border-black px-6 py-5">
+            <p className="text-xs uppercase tracking-[0.3em]">Holiday Season · Nov 1 – Dec 31</p>
+            <p className="mt-2 text-sm leading-relaxed text-muted">
+              Booth rates change for the holiday season. October pricing is shown first on each
+              package below, followed by holiday season pricing for bookings from November 1 through December 31.
+            </p>
+          </div>
           <div className="grid gap-6 md:grid-cols-3">
             {tiers.map((tier) => (
               <div
@@ -133,13 +143,25 @@ export default function BoothOptions() {
                   </span>
                 </div>
 
-                <p className={`text-xs uppercase tracking-widest mb-1 ${tier.featured ? "text-white/50" : "text-muted"}`}>Starting at</p>
+                <p className={`text-xs uppercase tracking-widest mb-1 ${tier.featured ? "text-white/50" : "text-muted"}`}>October · Starting at</p>
                 <p className="text-4xl font-medium">
                   {tier.price}
                   <span className={`text-sm font-normal ml-1 ${tier.featured ? "text-white/60" : "text-muted"}`}>
                     {tier.period}
                   </span>
                 </p>
+
+                <div className={`mt-4 border-t pt-4 ${tier.featured ? "border-white/20" : "border-border"}`}>
+                  <p className={`text-xs uppercase tracking-widest mb-1 ${tier.featured ? "text-white/50" : "text-muted"}`}>
+                    Holiday Season · Nov 1 – Dec 31
+                  </p>
+                  <p className="text-2xl font-medium">
+                    {tier.holidayPrice}
+                    <span className={`text-sm font-normal ml-1 ${tier.featured ? "text-white/60" : "text-muted"}`}>
+                      {tier.period}
+                    </span>
+                  </p>
+                </div>
 
                 <p className={`mt-3 text-xs uppercase tracking-widest ${tier.featured ? "text-white/60" : "text-muted"}`}>
                   {tier.days}
