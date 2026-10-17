@@ -695,4 +695,5 @@ export const invoices: Record<string, Invoice> = {
   "frgmnt-oct-2026": { id: "frgmnt-oct-2026", email: "ed@frgmntfoto.com", name: "Ed (FRGMNT)", description: "Monthly Booth Fee — October 1–31, 2026", amountCents: 150000, dueDate: "September 30, 2026" },
   "gkbeauty-oct17-2026": { id: "gkbeauty-oct17-2026", email: "info@gkbeautycorner.com", name: "GK Beauty Corner", description: "Booth Fee — October 17 – November 16, 2026", amountCents: 300000, dueDate: "October 17, 2026" },
   "astercollection-nov2-2026": { id: "astercollection-nov2-2026", email: "astercollectionnyc@gmail.com", name: "Aster Collection", description: "Booth Fee — November 2–8, 2026", amountCents: 85000, dueDate: "November 2, 2026" },
+  "teenagegrandma-oct16-2026": { id: "teenagegrandma-oct16-2026", email: "teeenagegrandma@gmail.com", name: "Teenage Grandma's Closet", description: "Booth Fee — October 16–30, 2026", amountCents: 200000, dueDate: "October 16, 2026" },
 };
