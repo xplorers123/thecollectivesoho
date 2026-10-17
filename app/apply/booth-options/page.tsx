@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FloatingDecor } from "@/components/HolidayDecor";
 
 export const metadata = {
   title: "Booth Options — The Collective SoHo",
@@ -74,8 +75,15 @@ export default function BoothOptions() {
   return (
     <>
       {/* Hero */}
-      <section className="border-b border-border bg-background px-6 pt-32 pb-16">
-        <div className="mx-auto max-w-5xl">
+      <section className="relative overflow-hidden border-b border-border bg-background px-6 pt-32 pb-16">
+        <FloatingDecor
+          items={[
+            { kind: "gift", className: "top-28 right-[6%] h-12 w-12 md:top-36 md:right-[12%] md:h-16 md:w-16", tilt: -8 },
+            { kind: "candyCane", className: "bottom-10 right-[20%] h-14 w-9 hidden md:block", tilt: 18, delay: 1 },
+            { kind: "star", className: "top-40 right-[24%] h-5 w-5 hidden md:block", delay: 2 },
+          ]}
+        />
+        <div className="relative z-[4] mx-auto max-w-5xl">
           <Link
             href="/apply"
             className="mb-8 inline-flex items-center gap-2 text-xs uppercase tracking-widest text-muted hover:text-black transition-colors"

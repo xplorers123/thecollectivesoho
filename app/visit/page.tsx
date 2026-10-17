@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
+import { Snowfall } from "@/components/HolidayDecor";
 
 export const metadata = {
   title: "Visit — The Collective SoHo",
@@ -41,6 +42,7 @@ export default function Visit() {
           style={{ objectPosition: "center center" }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-evergreen-deep/80" />
+        <Snowfall />
         <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-end px-6 pb-16 text-white">
           <p className="eyebrow mb-4 flex items-center gap-3 text-champagne">
             <span aria-hidden>✦</span> Visit · Holiday Market through Dec 31

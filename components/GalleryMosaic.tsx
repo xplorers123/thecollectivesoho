@@ -4,6 +4,20 @@ import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 
 const photos = [
+  "/images/collective/booth-selfloom.jpg",
+  "/images/collective/product-candles.jpg",
+  "/images/collective/crowd-main-aisle.jpg",
+  "/images/collective/product-gold-cuffs.jpg",
+  "/images/collective/booth-vintage-pennants.jpg",
+  "/images/collective/shopping-picking-rings.jpg",
+  "/images/collective/booth-drawings-of-new-york.jpg",
+  "/images/collective/product-perfume-rollerballs.jpg",
+  "/images/collective/product-crystal-jewelry.jpg",
+  "/images/collective/booth-glowpop.jpg",
+  "/images/collective/product-gold-earrings.jpg",
+  "/images/collective/product-body-scrub.jpg",
+  "/images/collective/product-eyewear.jpg",
+  "/images/collective/booth-scrapbook-clothing-bar.jpg",
   "/images/DSC_0713.jpg",
   "/images/DSC_0719.jpg",
   "/images/DSC_0720.jpg",

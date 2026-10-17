@@ -10,6 +10,8 @@
   --evergreen-deep: #142620;
   --gold: #b08d57;
   --champagne: #dcc495;
+  --cranberry: #8e1c2b;
+  --cranberry-deep: #6e1420;
 }
 
 @theme inline {
@@ -22,6 +24,8 @@
   --color-evergreen-deep: var(--evergreen-deep);
   --color-gold: var(--gold);
   --color-champagne: var(--champagne);
+  --color-cranberry: var(--cranberry);
+  --color-cranberry-deep: var(--cranberry-deep);
   --font-sans: var(--font-inter);
   --font-serif: var(--font-playfair);
 }
@@ -66,5 +70,47 @@ body {
     flex: 1;
     background: currentColor;
     opacity: 0.5;
+  }
+}
+
+/* Holiday decorations: gentle floating, swaying and falling snow */
+@keyframes decor-float {
+  0%, 100% { transform: translateY(0) rotate(var(--tilt, 0deg)); }
+  50% { transform: translateY(-10px) rotate(calc(var(--tilt, 0deg) + 6deg)); }
+}
+@keyframes decor-sway {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg); }
+}
+@keyframes snowfall {
+  from { transform: translate3d(0, -10vh, 0); }
+  to { transform: translate3d(var(--drift, 20px), 105vh, 0); }
+}
+
+@layer components {
+  .decor-float {
+    animation: decor-float var(--dur, 7s) ease-in-out var(--delay, 0s) infinite;
+  }
+  .decor-sway {
+    transform-origin: top center;
+    animation: decor-sway var(--dur, 5s) ease-in-out var(--delay, 0s) infinite;
+  }
+  .snowflake {
+    position: absolute;
+    top: 0;
+    border-radius: 9999px;
+    background: white;
+    animation: snowfall var(--dur, 12s) linear var(--delay, 0s) infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .decor-float,
+  .decor-sway,
+  .snowflake {
+    animation: none;
+  }
+  .snowflake {
+    display: none;
   }
 }

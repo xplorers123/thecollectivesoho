@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 
 const slides = [
   { src: "/images/DSC_0657-scaled.jpg", position: "object-center" },
+  { src: "/images/collective/hero-desktop.jpg", position: "object-center" },
   { src: "/images/DSC_0755.jpg",        position: "object-right" },
   { src: "/images/DSC_0661-scaled.jpg", position: "object-center" },
   { src: "/images/DSC_0721.jpg",        position: "object-center" },

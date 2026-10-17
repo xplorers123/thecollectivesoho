@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import { FloatingDecor, Snowfall } from "@/components/HolidayDecor";
 import StoryCarousel from "@/components/StoryCarousel";
+import LoopVideo from "@/components/LoopVideo";
 
 export const metadata = {
   title: "Our Story — The Collective SoHo",
@@ -11,8 +13,14 @@ export default function OurStory() {
   return (
     <>
       {/* Hero */}
-      <section className="border-b border-border bg-background px-6 pt-32 pb-20">
-        <div className="mx-auto max-w-5xl">
+      <section className="relative overflow-hidden border-b border-border bg-background px-6 pt-32 pb-20">
+        <FloatingDecor
+          items={[
+            { kind: "tree", className: "top-28 right-[6%] h-14 w-11 md:right-[10%] md:h-20 md:w-16", tilt: 3 },
+            { kind: "star", className: "top-32 right-[20%] h-4 w-4 hidden md:block", delay: 1.2 },
+          ]}
+        />
+        <div className="relative z-[4] mx-auto max-w-5xl">
           <p className="mb-6 text-xs uppercase tracking-[0.3em] text-muted">
             Our Story
           </p>
@@ -54,6 +62,31 @@ export default function OurStory() {
             </p>
           </div>
           <StoryCarousel />
+        </div>
+      </section>
+
+      {/* Behind the scenes */}
+      <section className="border-t border-border bg-background px-6 py-24">
+        <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-12 md:items-center">
+          <div className="md:col-span-5">
+            <p className="eyebrow mb-6 text-muted">Behind the scenes</p>
+            <h2 className="text-3xl font-medium leading-tight sm:text-4xl">
+              You&apos;ll usually find me{" "}
+              <span className="serif-italic font-normal text-cranberry">on the floor</span>.
+            </h2>
+            <p className="mt-6 text-base leading-relaxed text-muted">
+              Restocking, styling displays, setting up for the next market — running
+              The Collective is hands-on, and I wouldn&apos;t have it any other way.
+            </p>
+          </div>
+          <div className="grid grid-cols-2 gap-3 md:col-span-7">
+            <div className="relative aspect-[9/16] overflow-hidden bg-cream">
+              <LoopVideo src="/videos/loop-lou-mirror.mp4" poster="/videos/loop-lou-mirror.jpg" label="Lou styling the mirror by The Collective SoHo sign" />
+            </div>
+            <div className="relative mt-12 aspect-[9/16] overflow-hidden bg-cream">
+              <LoopVideo src="/videos/loop-lou-restocking.mp4" poster="/videos/loop-lou-restocking.jpg" label="Lou restocking tees on a display table" />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -134,8 +167,9 @@ export default function OurStory() {
       </section>
 
       {/* CTA */}
-      <section className="bg-evergreen px-6 py-32 text-white">
-        <div className="mx-auto max-w-4xl text-center">
+      <section className="relative overflow-hidden bg-cranberry px-6 py-32 text-white">
+        <Snowfall density={0.6} />
+        <div className="relative z-[4] mx-auto max-w-4xl text-center">
           <h3 className="text-4xl font-medium leading-tight sm:text-5xl">
             Ready to join the community?
           </h3>

@@ -1,5 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
+import { FloatingDecor, HangingOrnaments } from "@/components/HolidayDecor";
+import LoopVideo from "@/components/LoopVideo";
 
 export const metadata = {
   title: "Apply — The Collective SoHo",
@@ -29,8 +31,18 @@ export default function Apply() {
   return (
     <>
       {/* Hero */}
-      <section className="border-b border-border bg-background px-6 pt-32 pb-20">
-        <div className="mx-auto max-w-5xl">
+      <section className="relative overflow-hidden border-b border-border bg-background px-6 pt-32 pb-20">
+        <HangingOrnaments
+          className="hidden md:block"
+          ornaments={[
+            { left: "74%", length: 90, size: 34, delay: 0 },
+            { left: "81%", length: 160, size: 44, color: "var(--gold)", delay: 1.1 },
+            { left: "88%", length: 60, size: 26, kind: "star", delay: 0.5 },
+            { left: "94%", length: 125, size: 36, color: "var(--evergreen)", delay: 1.8 },
+          ]}
+        />
+        <FloatingDecor items={[{ kind: "holly", className: "top-24 right-[6%] h-10 w-14 md:hidden", tilt: -10 }]} />
+        <div className="relative z-[4] mx-auto max-w-5xl">
           <p className="eyebrow mb-6 flex items-center gap-3 text-gold">
             <span aria-hidden>✦</span> Holiday Season 2026 · Vendor Application
           </p>
@@ -77,6 +89,58 @@ export default function Apply() {
                 <p className="mt-3 text-base leading-relaxed text-muted">{r.body}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* On the floor */}
+      <section className="border-t border-border bg-background px-6 py-24">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="eyebrow mb-4 text-muted">On the floor</p>
+              <h2 className="text-3xl font-medium leading-tight sm:text-5xl">
+                Your booth, <span className="serif-italic font-normal text-cranberry">your way</span>.
+              </h2>
+            </div>
+            <p className="max-w-sm text-base leading-relaxed text-muted">
+              Real booths from our current vendors. Every brand styles its own
+              space, and every booth comes with a table, chairs, power and WiFi.
+            </p>
+          </div>
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+            <div className="relative col-span-2 row-span-2 aspect-[3/4] overflow-hidden bg-cream md:aspect-auto">
+              <LoopVideo
+                src="/videos/loop-front-window.mp4"
+                poster="/videos/loop-front-window.jpg"
+                label="Shoppers browsing vendor tables by the front windows"
+                className="md:absolute md:inset-0"
+              />
+            </div>
+            <div className="relative aspect-[3/4] overflow-hidden">
+              <Image src="/images/collective/booth-selfloom.jpg" alt="Clothing and accessories booth" fill className="object-cover transition-transform duration-700 hover:scale-105" sizes="(min-width: 768px) 25vw, 50vw" />
+            </div>
+            <div className="relative aspect-[3/4] overflow-hidden">
+              <Image src="/images/collective/booth-drawings-of-new-york.jpg" alt="Art print booth" fill className="object-cover transition-transform duration-700 hover:scale-105" sizes="(min-width: 768px) 25vw, 50vw" />
+            </div>
+            <div className="relative aspect-[3/4] overflow-hidden">
+              <Image src="/images/collective/booth-glowpop.jpg" alt="Beauty booth" fill className="object-cover transition-transform duration-700 hover:scale-105" sizes="(min-width: 768px) 25vw, 50vw" />
+            </div>
+            <div className="relative aspect-[3/4] overflow-hidden">
+              <Image src="/images/collective/booth-vintage-pennants.jpg" alt="Vintage pennant shop" fill className="object-cover transition-transform duration-700 hover:scale-105" sizes="(min-width: 768px) 25vw, 50vw" />
+            </div>
+            <div className="relative aspect-[3/4] overflow-hidden">
+              <Image src="/images/collective/booth-scrapbook-clothing-bar.jpg" alt="Custom apparel booth" fill className="object-cover transition-transform duration-700 hover:scale-105" sizes="(min-width: 768px) 25vw, 50vw" />
+            </div>
+            <div className="relative aspect-[3/4] overflow-hidden">
+              <Image src="/images/collective/vendor-beautelier.jpg" alt="Perfume vendor at their booth" fill className="object-cover transition-transform duration-700 hover:scale-105" sizes="(min-width: 768px) 25vw, 50vw" />
+            </div>
+            <div className="relative aspect-[3/4] overflow-hidden">
+              <Image src="/images/collective/crowd-eyewear-aisle.jpg" alt="Shoppers in the eyewear aisle" fill className="object-cover transition-transform duration-700 hover:scale-105" sizes="(min-width: 768px) 25vw, 50vw" />
+            </div>
+            <div className="relative aspect-[3/4] overflow-hidden">
+              <Image src="/images/collective/shopping-picking-rings.jpg" alt="A shopper picking out rings" fill className="object-cover transition-transform duration-700 hover:scale-105" sizes="(min-width: 768px) 25vw, 50vw" />
+            </div>
           </div>
         </div>
       </section>

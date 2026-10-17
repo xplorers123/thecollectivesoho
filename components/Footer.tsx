@@ -1,10 +1,12 @@
 import Link from "next/link";
 import Logo from "./Logo";
+import { Snowfall } from "./HolidayDecor";
 
 export default function Footer() {
   return (
-    <footer className="bg-evergreen-deep text-white">
-      <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
+    <footer className="relative overflow-hidden bg-evergreen-deep text-white">
+      <Snowfall density={0.4} />
+      <div className="relative z-[4] mx-auto max-w-7xl px-6 py-16 md:py-20">
         <p className="ornament mb-14 text-sm text-champagne" aria-hidden>✦</p>
         <div className="grid gap-12 md:grid-cols-4">
           <div className="md:col-span-2">

@@ -17,7 +17,7 @@ export default function Nav() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur">
       {/* Announcement banner */}
-      <div className="bg-evergreen px-4 py-2.5 text-center text-[11px] uppercase tracking-[0.2em] text-white sm:text-xs">
+      <div className="bg-cranberry px-4 py-2.5 text-center text-[11px] uppercase tracking-[0.2em] text-white sm:text-xs">
         <span className="text-champagne" aria-hidden>✦</span>{" "}
         Holiday booths <span className="hidden sm:inline">now booking</span> · Nov 1 – Dec 31 ·{" "}
         <Link href="/apply" className="underline underline-offset-4 decoration-champagne hover:text-champagne transition-colors">
