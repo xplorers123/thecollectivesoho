@@ -170,10 +170,10 @@ export default function Home() {
         <div className="relative z-[4] mx-auto grid max-w-7xl gap-16 md:grid-cols-2 md:items-center">
           <div className="relative aspect-[4/5] overflow-hidden">
             <Image
-              src="/images/IMG_1819.jpg"
-              alt="Inside The Collective SoHo"
+              src="/images/collective/feature-perfume-testers.jpg"
+              alt="Shoppers testing perfume strips inside The Collective SoHo"
               fill
-              className="object-cover"
+              className="object-cover object-[35%_center]"
               sizes="(min-width: 768px) 50vw, 100vw"
             />
           </div>

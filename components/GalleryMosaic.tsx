@@ -4,12 +4,22 @@ import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 
 const photos = [
+  "/images/collective/crowd-packed-main-aisle.jpg",
+  "/images/collective/shopping-happy-with-bags.jpg",
   "/images/collective/booth-selfloom.jpg",
+  "/images/collective/shopping-trying-on-ring.jpg",
+  "/images/collective/crowd-at-hunch.jpg",
   "/images/collective/product-candles.jpg",
-  "/images/collective/crowd-main-aisle.jpg",
-  "/images/collective/product-gold-cuffs.jpg",
-  "/images/collective/booth-vintage-pennants.jpg",
+  "/images/collective/shopping-friends-photo-strips.jpg",
+  "/images/collective/crowd-clothing-racks.jpg",
   "/images/collective/shopping-picking-rings.jpg",
+  "/images/collective/crowd-main-aisle.jpg",
+  "/images/collective/shopping-chess-table.jpg",
+  "/images/collective/product-gold-cuffs.jpg",
+  "/images/collective/crowd-packed-jewelry-aisle.jpg",
+  "/images/collective/shopping-trying-jewelry-film.jpg",
+  "/images/collective/booth-vintage-pennants.jpg",
+  "/images/collective/crowd-hunch-aisle-wide.jpg",
   "/images/collective/booth-drawings-of-new-york.jpg",
   "/images/collective/product-perfume-rollerballs.jpg",
   "/images/collective/product-crystal-jewelry.jpg",
@@ -43,7 +53,7 @@ const objectPosition: Record<string, string> = {
   "/images/DSC_0751.jpg": "bottom",
 };
 
-const INITIAL_COUNT = 9;
+const INITIAL_COUNT = 12;
 
 export default function GalleryMosaic() {
   const [expanded, setExpanded] = useState(false);
