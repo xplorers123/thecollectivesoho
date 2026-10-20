@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import Stripe from "stripe";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { findSlot } from "@/lib/booking-utils";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -16,8 +17,14 @@ export async function POST(req: NextRequest) {
   if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const user = await currentUser();
-  const { type, startDate, endDate, label, price, category, prime, paymentMethod } = await req.json();
+  const { type, startDate, category, prime, paymentMethod, setupPreference } = await req.json();
   const isAch = paymentMethod === "ach";
+
+  // Price comes from the slot definition, not the client
+  const slot = findSlot(type, startDate);
+  if (!slot) return NextResponse.json({ error: "This slot is no longer available." }, { status: 404 });
+  const { endDate, label } = slot;
+  const price = isAch ? slot.price : Math.round(slot.price * 1.03);
 
   // Check availability
   const { count } = await supabaseAdmin
@@ -63,6 +70,7 @@ export async function POST(req: NextRequest) {
       priceCents: String(price),
       category,
       primePlacement: prime ? "yes" : "no",
+      setupPreference: setupPreference || "not specified",
       paymentMethod: isAch ? "ach" : "card",
     },
     allow_promotion_codes: true,

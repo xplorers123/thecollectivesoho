@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
 import { useRouter } from "next/navigation";
@@ -39,6 +40,7 @@ type Props = {
 
 export default function BookingDetail({ slot, primePlacementPrice, originalPrice, oosCategories = [] }: Props) {
   const [category, setCategory] = useState<Category | null>(null);
+  const [setupPreference, setSetupPreference] = useState("");
   const [prime, setPrime] = useState(false);
   const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState<"ach" | "card" | null>(null);
@@ -64,7 +66,7 @@ export default function BookingDetail({ slot, primePlacementPrice, originalPrice
       const res = await fetch("/api/bookings/create-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...slot, price, category, prime, paymentMethod }),
+        body: JSON.stringify({ ...slot, price, category, prime, paymentMethod, setupPreference }),
       });
       const data = await res.json();
       if (data.url) {
@@ -106,6 +108,53 @@ export default function BookingDetail({ slot, primePlacementPrice, originalPrice
             );
           })}
         </div>
+      </div>
+
+      {/* Setup preference */}
+      <div>
+        <p className="mb-1 text-xs uppercase tracking-widest text-muted">Booth Setup Preference</p>
+        <p className="mb-4 text-xs text-muted leading-relaxed">Subject to availability — we'll do our best to accommodate.</p>
+        <div className="grid grid-cols-2 gap-3 mb-3">
+          {[
+            { value: "Wall Setup (7×5 ft)", img: "/images/setup-wall.webp", title: "Wall Setup · 7×5 ft", sub: "Jewelry, small items, tables" },
+            { value: "Middle Setup (9×4 ft)", img: "/images/setup-middle-1.webp", title: "Middle Setup · 9×4 ft", sub: "Clothing, accessories, racks" },
+          ].map((opt) => (
+            <button
+              key={opt.value}
+              type="button"
+              onClick={() => setSetupPreference(opt.value)}
+              className={`text-left border overflow-hidden transition-all ${
+                setupPreference === opt.value ? "border-black ring-1 ring-black" : "border-border hover:border-neutral-400"
+              }`}
+            >
+              <div className="relative aspect-[4/3]">
+                <Image src={opt.img} alt={opt.title} fill className="object-cover" />
+              </div>
+              <div className="p-3 flex items-start justify-between gap-2">
+                <div>
+                  <p className="text-xs font-medium leading-tight">{opt.title}</p>
+                  <p className="text-xs text-muted mt-0.5">{opt.sub}</p>
+                </div>
+                <span className={`mt-0.5 flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full border-2 ${
+                  setupPreference === opt.value ? "border-black bg-black" : "border-border"
+                }`}>
+                  {setupPreference === opt.value && <span className="h-1 w-1 rounded-full bg-white" />}
+                </span>
+              </div>
+            </button>
+          ))}
+        </div>
+        <label className="flex cursor-pointer items-center gap-3 text-xs">
+          <input
+            type="radio"
+            name="setupPref"
+            value="No preference"
+            checked={setupPreference === "No preference"}
+            onChange={() => setSetupPreference("No preference")}
+            className="accent-black"
+          />
+          No preference — either works for me
+        </label>
       </div>
 
       {/* Prime placement */}
