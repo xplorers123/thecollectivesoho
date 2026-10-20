@@ -18,11 +18,13 @@ const SEASONS = {
     "Weekly ($850+/week)",
     "Monthly ($3,200+/month)",
     "Weekend ($600+/weekend)",
+    "Weekday Mon–Fri ($400+/week)",
   ],
   "Holiday Season (Nov 1 – Dec 31)": [
     "Weekly ($950+/week)",
     "Monthly ($3,500+/month)",
     "Weekend ($650+/weekend)",
+    "Weekday Mon–Fri ($500+/week)",
   ],
 };
 

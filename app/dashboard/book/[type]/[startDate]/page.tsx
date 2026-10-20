@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { getWeekendSlots, getAllWeeklySlots, getMonthlySlots, AVAILABLE_BOOTHS } from "@/lib/booking-utils";
+import { getWeekendSlots, getAllWeeklySlots, getMonthlySlots, getWeekdaySlots, AVAILABLE_BOOTHS } from "@/lib/booking-utils";
 import { getOOSCategories } from "@/lib/inventory";
 import BookingDetail from "@/components/BookingDetail";
 
@@ -10,12 +10,14 @@ const PHOTOS: Record<string, string> = {
   weekend: "/images/DSC_0361-scaled.jpg",
   weekly:  "/images/DSC_0381-scaled.jpg",
   monthly: "/images/DSC_0378-scaled.jpg",
+  weekday: "/images/DSC_0381-scaled.jpg",
 };
 
 const PRIME_PRICE: Record<string, number> = {
   weekend: 0,
   weekly:  0,
   monthly: 0,
+  weekday: 0,
 };
 
 const ORIGINAL_PRICE: Record<string, number> = {
@@ -26,6 +28,7 @@ function getAllSlots(type: string) {
   if (type === "weekend") return getWeekendSlots();
   if (type === "weekly")  return getAllWeeklySlots();
   if (type === "monthly") return getMonthlySlots();
+  if (type === "weekday") return getWeekdaySlots();
   return [];
 }
 
@@ -36,7 +39,7 @@ export default async function BookingDetailPage({
 }) {
   const { type, startDate } = await params;
 
-  if (!["weekend", "weekly", "monthly"].includes(type)) notFound();
+  if (!["weekend", "weekly", "monthly", "weekday"].includes(type)) notFound();
 
   const slots = getAllSlots(type);
   const slot = slots.find((s) => s.id === startDate);

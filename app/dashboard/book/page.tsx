@@ -17,6 +17,12 @@ const types = [
     image: "/images/DSC_0381-scaled.jpg",
   },
   {
+    type: "Weekday",
+    href: "/dashboard/book/weekday",
+    days: "Monday – Friday",
+    image: "/images/DSC_0378-scaled.jpg",
+  },
+  {
     type: "Monthly",
     href: "/dashboard/book/monthly",
     days: "Full calendar month",
@@ -35,7 +41,7 @@ export default function BookPage() {
         <p className="mt-2 text-sm text-muted">Select a booking period to view available dates.</p>
       </div>
 
-      <div className="grid gap-5 md:grid-cols-3">
+      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
         {types.map((t) => (
           <Link key={t.type} href={t.href} className="group relative block overflow-hidden border border-border bg-white">
             <div className="relative aspect-[4/3] overflow-hidden">

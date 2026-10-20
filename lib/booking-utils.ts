@@ -6,7 +6,7 @@ export type BookingSlot = {
   endDate: string;
   label: string;
   price: number; // cents
-  type: "weekend" | "weekly" | "monthly";
+  type: "weekend" | "weekly" | "monthly" | "weekday";
 };
 
 function formatDate(d: Date): string {
@@ -30,7 +30,31 @@ function nextSaturday(from: Date): Date {
   return d;
 }
 
-const CUTOFF = new Date("2026-11-01");
+const CUTOFF = new Date("2027-01-01");
+
+const STANDARD_PRICES: Record<BookingSlot["type"], number> = {
+  weekend: 60000,
+  weekly: 85000,
+  monthly: 320000,
+  weekday: 40000,
+};
+
+// Holiday Season: slots starting Nov 1 – Dec 31
+const HOLIDAY_PRICES: Record<BookingSlot["type"], number> = {
+  weekend: 65000,
+  weekly: 95000,
+  monthly: 350000,
+  weekday: 50000,
+};
+
+function isHolidaySeason(startDate: string): boolean {
+  const month = Number(startDate.slice(5, 7));
+  return month === 11 || month === 12;
+}
+
+export function getSlotPrice(type: BookingSlot["type"], startDate: string): number {
+  return (isHolidaySeason(startDate) ? HOLIDAY_PRICES : STANDARD_PRICES)[type];
+}
 
 export function getWeekendSlots(): BookingSlot[] {
   const slots: BookingSlot[] = [];
@@ -50,7 +74,7 @@ export function getWeekendSlots(): BookingSlot[] {
       startDate: toISO(sat),
       endDate: toISO(sun),
       label,
-      price: 60000,
+      price: getSlotPrice("weekend", toISO(sat)),
       type: "weekend",
     });
 
@@ -82,7 +106,7 @@ export function getWeeklySlots(startDay: "saturday" | "monday" = "saturday"): Bo
       startDate: toISO(start),
       endDate: toISO(end),
       label,
-      price: 85000,
+      price: getSlotPrice("weekly", toISO(start)),
       type: "weekly",
     });
 
@@ -120,7 +144,7 @@ export function getMonthlySlots(): BookingSlot[] {
       startDate: toISO(start),
       endDate: toISO(end),
       label,
-      price: 320000,
+      price: getSlotPrice("monthly", toISO(start)),
       type: "monthly",
     });
 
@@ -129,6 +153,52 @@ export function getMonthlySlots(): BookingSlot[] {
   return slots;
 }
 
+function nextMonday(from: Date): Date {
+  const d = new Date(from);
+  d.setHours(0, 0, 0, 0);
+  const day = d.getDay();
+  const daysUntilMon = ((1 - day + 7) % 7) || 7;
+  d.setDate(d.getDate() + daysUntilMon);
+  return d;
+}
+
+export function getWeekdaySlots(): BookingSlot[] {
+  const slots: BookingSlot[] = [];
+  let mon = nextMonday(new Date());
+
+  while (mon < CUTOFF) {
+    const fri = new Date(mon);
+    fri.setDate(fri.getDate() + 4);
+
+    const sameMonth = mon.getMonth() === fri.getMonth();
+    const label = sameMonth
+      ? `${formatDate(mon)} – ${fri.getDate()}, ${mon.getFullYear()}`
+      : `${formatDate(mon)} – ${formatDate(fri)}, ${fri.getFullYear()}`;
+
+    slots.push({
+      id: toISO(mon),
+      startDate: toISO(mon),
+      endDate: toISO(fri),
+      label,
+      price: getSlotPrice("weekday", toISO(mon)),
+      type: "weekday",
+    });
+
+    mon = new Date(mon);
+    mon.setDate(mon.getDate() + 7);
+  }
+  return slots;
+}
+
 export function formatPrice(cents: number): string {
   return `$${(cents / 100).toLocaleString()}`;
+}
+
+export function findSlot(type: string, startDate: string): BookingSlot | undefined {
+  const slots =
+    type === "weekend" ? getWeekendSlots() :
+    type === "weekly"  ? getAllWeeklySlots() :
+    type === "monthly" ? getMonthlySlots() :
+    type === "weekday" ? getWeekdaySlots() : [];
+  return slots.find((s) => s.id === startDate);
 }

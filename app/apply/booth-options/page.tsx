@@ -45,6 +45,23 @@ const tiers = [
     ],
   },
   {
+    name: "Weekday",
+    badge: "New",
+    price: "$400",
+    holidayPrice: "$500",
+    period: "/ week",
+    description: "Five weekdays to reach the local crowd. A lower-commitment way to run your booth mid-week.",
+    days: "Monday – Friday (5 days)",
+    featured: false,
+    limited: false,
+    features: [
+      "5 days on the floor (Mon – Fri)",
+      "5×7 ft or 4×9 ft booth",
+      "Table & chairs included",
+      "Heat, AC, electricity & WiFi",
+    ],
+  },
+  {
     name: "Monthly",
     badge: "Best Value",
     price: "$3,200",
@@ -118,7 +135,7 @@ export default function BoothOptions() {
 
       {/* Pricing tiers */}
       <section className="bg-background px-6 py-24">
-        <div className="mx-auto max-w-5xl">
+        <div className="mx-auto max-w-6xl">
           <div className="mb-10 border border-gold/60 bg-cream px-6 py-5">
             <p className="eyebrow flex items-center gap-3 text-evergreen"><span className="text-gold" aria-hidden>✦</span> Holiday Season · Nov 1 – Dec 31</p>
             <p className="mt-2 text-sm leading-relaxed text-muted">
@@ -126,7 +143,7 @@ export default function BoothOptions() {
               package below, followed by holiday season pricing for bookings from November 1 through December 31.
             </p>
           </div>
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {tiers.map((tier) => (
               <div
                 key={tier.name}
