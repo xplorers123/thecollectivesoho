@@ -379,7 +379,7 @@ export default function ApplyForm() {
                 <ul className="mt-3 space-y-1 text-xs text-muted">
                   <li>• One customer-facing side</li>
                   <li>• Wall for hanging displays & racks</li>
-                  <li>• Great for clothing, art, accessories</li>
+                  <li>• Best for jewelry, small items, and tables</li>
                 </ul>
               </div>
             </button>
@@ -412,7 +412,7 @@ export default function ApplyForm() {
                 <ul className="mt-3 space-y-1 text-xs text-muted">
                   <li>• Two customer-facing sides</li>
                   <li>• No back wall</li>
-                  <li>• Great for jewelry, accessories, display cases</li>
+                  <li>• Best for clothing, accessories, and rack displays</li>
                 </ul>
               </div>
             </button>

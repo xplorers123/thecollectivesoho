@@ -202,7 +202,7 @@ export default function VendorGuide() {
               <p className="font-medium text-sm">Wall Setup · 7×5 ft</p>
               <p className="mt-1 text-xs text-muted">One customer-facing side · Back wall for hanging displays</p>
               <ul className="mt-3 space-y-1 text-xs text-muted">
-                <li>• Best for clothing, art, accessories</li>
+                <li>• Best for jewelry, small items, and tables</li>
                 <li>• Wall space for racks, panels, or pinboards</li>
                 <li>• Standard table and chair included</li>
               </ul>
@@ -222,7 +222,7 @@ export default function VendorGuide() {
               <p className="font-medium text-sm">Middle / Aisle Setup · 9×4 ft</p>
               <p className="mt-1 text-xs text-muted">Two customer-facing sides · No back wall</p>
               <ul className="mt-3 space-y-1 text-xs text-muted">
-                <li>• Best for jewelry, accessories, display cases</li>
+                <li>• Best for clothing, accessories, and rack displays</li>
                 <li>• Exposed to aisles on both long sides</li>
                 <li>• Stool included</li>
               </ul>
