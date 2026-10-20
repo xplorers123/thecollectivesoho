@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export const metadata = { title: "Vendor Guide — The Collective SoHo" };
 
 const sections = [
@@ -181,6 +183,54 @@ export default function VendorGuide() {
         </h1>
         <p className="mt-4 text-base text-muted">
           Everything you need to know to set up and run your booth at The Collective SoHo. Please read carefully before your first booking.
+        </p>
+      </div>
+
+      {/* Booth Setup Types */}
+      <div className="border-t border-border pt-8 mb-10">
+        <h2 className="mb-2 text-xs uppercase tracking-[0.3em] text-muted">Booth Setups</h2>
+        <p className="mb-6 text-sm text-muted leading-relaxed">
+          We have two fixture types at The Collective SoHo. Placement is assigned based on availability and your setup preference.
+        </p>
+        <div className="grid gap-5 sm:grid-cols-2">
+          {/* Wall Setup */}
+          <div className="border border-border overflow-hidden">
+            <div className="relative aspect-[3/4]">
+              <Image src="/images/setup-wall.webp" alt="Wall Setup 7×5 ft" fill className="object-cover" />
+            </div>
+            <div className="p-5">
+              <p className="font-medium text-sm">Wall Setup · 7×5 ft</p>
+              <p className="mt-1 text-xs text-muted">One customer-facing side · Back wall for hanging displays</p>
+              <ul className="mt-3 space-y-1 text-xs text-muted">
+                <li>• Best for clothing, art, accessories</li>
+                <li>• Wall space for racks, panels, or pinboards</li>
+                <li>• Standard table and chair included</li>
+              </ul>
+            </div>
+          </div>
+          {/* Middle Setup */}
+          <div className="border border-border overflow-hidden">
+            <div className="grid grid-cols-2 gap-0.5 bg-border">
+              <div className="relative aspect-square">
+                <Image src="/images/setup-middle-1.webp" alt="Middle Setup angle 1" fill className="object-cover" />
+              </div>
+              <div className="relative aspect-square">
+                <Image src="/images/setup-middle-2.webp" alt="Middle Setup angle 2" fill className="object-cover" />
+              </div>
+            </div>
+            <div className="p-5">
+              <p className="font-medium text-sm">Middle / Aisle Setup · 9×4 ft</p>
+              <p className="mt-1 text-xs text-muted">Two customer-facing sides · No back wall</p>
+              <ul className="mt-3 space-y-1 text-xs text-muted">
+                <li>• Best for jewelry, accessories, display cases</li>
+                <li>• Exposed to aisles on both long sides</li>
+                <li>• Stool included</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p className="mt-4 text-xs text-muted border border-border bg-neutral-50 px-4 py-3 leading-relaxed">
+          <strong className="text-black">Note:</strong> Final placement is assigned on load-in day based on availability. You may indicate a preference on your application — we'll do our best to accommodate.
         </p>
       </div>
 

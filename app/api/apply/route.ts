@@ -38,6 +38,7 @@ export async function POST(req: NextRequest) {
     const weeklyTier = fd.get("weeklyTier") as string;
     const monthlyTier = fd.get("monthlyTier") as string;
     const bookingType = fd.get("bookingType") as string;
+    const setupPreference = fd.get("setupPreference") as string;
     const threeMonthTier = fd.get("threeMonthTier") as string;
     const grandOpening = fd.get("grandOpening") as string;
     const additionalComments = fd.get("additionalComments") as string;
@@ -116,6 +117,7 @@ export async function POST(req: NextRequest) {
               <tr><td style="padding:6px 0;color:#666;">Website</td><td>${website || "—"}</td></tr>
               <tr><td style="padding:6px 0;color:#666;">Price range</td><td>${priceRange}</td></tr>
               <tr><td style="padding:6px 0;color:#666;">Booking type</td><td>${bookingType}</td></tr>
+              ${setupPreference ? `<tr><td style="padding:6px 0;color:#666;">Setup preference</td><td>${setupPreference}</td></tr>` : ""}
             </table>
             ${brandStory ? `<div style="margin:16px 0;padding:14px;background:#f9f9f9;font-size:13px;line-height:1.6;"><strong>Brand story:</strong><br/>${brandStory}</div>` : ""}
             ${additionalComments ? `<div style="margin:12px 0;padding:14px;background:#f9f9f9;font-size:13px;line-height:1.6;"><strong>Comments:</strong><br/>${additionalComments}</div>` : ""}

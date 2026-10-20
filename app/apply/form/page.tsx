@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -112,6 +113,7 @@ export default function ApplyForm() {
   const [displayPhotos, setDisplayPhotos] = useState<FileList | null>(null);
   const [season, setSeason] = useState<Season | "">("");
   const [bookingType, setBookingType] = useState("");
+  const [setupPreference, setSetupPreference] = useState("");
   const [additionalComments, setAdditionalComments] = useState("");
   const [emailConsent, setEmailConsent] = useState(false);
 
@@ -157,6 +159,7 @@ export default function ApplyForm() {
     fd.append("priceRange", priceRange);
     fd.append("brandStory", brandStory);
     fd.append("bookingType", `${season} — ${bookingType}`);
+    fd.append("setupPreference", setupPreference);
     fd.append("additionalComments", additionalComments);
     fd.append("emailConsent", String(emailConsent));
     if (productPhotos) Array.from(productPhotos).forEach((f) => fd.append("productPhotos", f));
@@ -340,6 +343,92 @@ export default function ApplyForm() {
             )}
           </div>
           )}
+
+          <SectionTitle>Booth Setup Preference</SectionTitle>
+
+          <p className="text-sm text-muted leading-relaxed -mt-4">
+            We have two fixture types at The Collective SoHo. Let us know your preference — we'll do our best to accommodate based on availability.
+          </p>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            {/* Wall Setup */}
+            <button
+              type="button"
+              onClick={() => setSetupPreference("Wall Setup (7×5 ft)")}
+              className={`text-left border overflow-hidden transition-all ${
+                setupPreference === "Wall Setup (7×5 ft)"
+                  ? "border-black ring-1 ring-black"
+                  : "border-border hover:border-neutral-400"
+              }`}
+            >
+              <div className="relative aspect-[3/4] w-full">
+                <Image src="/images/setup-wall.webp" alt="Wall Setup" fill className="object-cover" />
+              </div>
+              <div className="p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="font-medium text-sm">Wall Setup · 7×5 ft</p>
+                    <p className="text-xs text-muted mt-0.5">Back wall for hanging displays</p>
+                  </div>
+                  <span className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 ${
+                    setupPreference === "Wall Setup (7×5 ft)" ? "border-black bg-black" : "border-border"
+                  }`}>
+                    {setupPreference === "Wall Setup (7×5 ft)" && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
+                  </span>
+                </div>
+                <ul className="mt-3 space-y-1 text-xs text-muted">
+                  <li>• One customer-facing side</li>
+                  <li>• Wall for hanging displays & racks</li>
+                  <li>• Great for clothing, art, accessories</li>
+                </ul>
+              </div>
+            </button>
+
+            {/* Middle Setup */}
+            <button
+              type="button"
+              onClick={() => setSetupPreference("Middle Setup (9×4 ft)")}
+              className={`text-left border overflow-hidden transition-all ${
+                setupPreference === "Middle Setup (9×4 ft)"
+                  ? "border-black ring-1 ring-black"
+                  : "border-border hover:border-neutral-400"
+              }`}
+            >
+              <div className="relative aspect-[3/4] w-full">
+                <Image src="/images/setup-middle-1.webp" alt="Middle Setup" fill className="object-cover" />
+              </div>
+              <div className="p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="font-medium text-sm">Middle / Aisle Setup · 9×4 ft</p>
+                    <p className="text-xs text-muted mt-0.5">Two customer-facing sides, no wall</p>
+                  </div>
+                  <span className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 ${
+                    setupPreference === "Middle Setup (9×4 ft)" ? "border-black bg-black" : "border-border"
+                  }`}>
+                    {setupPreference === "Middle Setup (9×4 ft)" && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
+                  </span>
+                </div>
+                <ul className="mt-3 space-y-1 text-xs text-muted">
+                  <li>• Two customer-facing sides</li>
+                  <li>• No back wall</li>
+                  <li>• Great for jewelry, accessories, display cases</li>
+                </ul>
+              </div>
+            </button>
+          </div>
+
+          <label className="flex cursor-pointer items-center gap-3 text-sm">
+            <input
+              type="radio"
+              name="setupPreference"
+              value="No preference"
+              checked={setupPreference === "No preference"}
+              onChange={() => setSetupPreference("No preference")}
+              className="h-4 w-4 cursor-pointer accent-black"
+            />
+            No preference — either setup works for me
+          </label>
 
           <SectionTitle>Almost Done</SectionTitle>
 
