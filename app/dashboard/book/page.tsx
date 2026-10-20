@@ -20,7 +20,7 @@ const types = [
     type: "Weekday",
     href: "/dashboard/book/weekday",
     days: "Monday – Friday",
-    image: "/images/DSC_0378-scaled.jpg",
+    image: "/images/weekday-thumb.jpg",
   },
   {
     type: "Monthly",
