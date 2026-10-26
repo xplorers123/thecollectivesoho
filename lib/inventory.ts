@@ -1,6 +1,8 @@
 // OOS for an entire booking type + category (all dates)
 const TYPE_CATEGORY_OOS = new Set<string>([
-  // Jewelry open from Oct 16 — no blanket blocks
+  // Jewelry open for weekly/monthly from Nov 1 — weekend/weekday remain blocked
+  "weekend:jewelry",
+  "weekday:jewelry",
 ]);
 
 // OOS for a specific slot + category keyed as "type:startDate:category"
@@ -23,6 +25,7 @@ const SLOT_CATEGORY_OOS = new Set([
   "weekly:2026-10-11:jewelry",  // Sat-start Oct 11–17
   "weekly:2026-10-12:jewelry",  // Mon-start Oct 12–18
   "monthly:2026-10-01:jewelry", // Oct monthly
+  "weekly:2026-10-31:jewelry",  // Sat-start Oct 31–Nov 6 (before Nov 1 open date)
 ]);
 
 const ALL_CATEGORIES = ["jewelry", "clothing", "other", "food-drink"];
