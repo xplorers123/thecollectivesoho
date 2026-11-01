@@ -704,6 +704,7 @@ export const invoices: Record<string, Invoice> = {
   "gkbeauty-oct17-2026": { id: "gkbeauty-oct17-2026", email: "info@gkbeautycorner.com", name: "GK Beauty Corner", description: "Booth Fee — October 17 – November 16, 2026", amountCents: 300000, dueDate: "October 17, 2026" },
   "astercollection-nov2-2026": { id: "astercollection-nov2-2026", email: "astercollectionnyc@gmail.com", name: "Aster Collection", description: "Booth Fee — November 2–8, 2026", amountCents: 85000, dueDate: "November 2, 2026" },
   "teenagegrandma-oct16-2026": { id: "teenagegrandma-oct16-2026", email: "teeenagegrandma@gmail.com", name: "Teenage Grandma's Closet", description: "Booth Fee — October 16–30, 2026", amountCents: 200000, dueDate: "October 16, 2026" },
+  "teenagegrandma-nov1-2026": { id: "teenagegrandma-nov1-2026", email: "teeenagegrandma@gmail.com", name: "Teenage Grandma's Closet", description: "Booth Fee — November 1–15, 2026", amountCents: 210000, dueDate: "November 1, 2026" },
   // November 2026 — holiday rates (+10%; consignment BangBang/Bryan at $2,500)
   "hunchstudio-nov-2026": { id: "hunchstudio-nov-2026", email: "alejitalala@gmail.com", name: "Hunch Studio", description: "Monthly Booth Fee — November 1–30, 2026", amountCents: 401500, dueDate: "November 1, 2026" },
   "selfloom-nov-2026": { id: "selfloom-nov-2026", email: "helloselfloom@gmail.com", name: "Selfloom", description: "Monthly Booth Fee — November 1–30, 2026", amountCents: 385000, dueDate: "November 1, 2026" },
