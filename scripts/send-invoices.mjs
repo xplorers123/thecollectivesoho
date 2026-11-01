@@ -80,6 +80,7 @@ for (const slug of slugs) {
   const { error } = await resend.emails.send({
     from: `The Collective SoHo <${ADMIN_EMAIL}>`,
     to: inv.email,
+    cc: ADMIN_EMAIL, // Lou is always cc'd on invoice emails
     replyTo: ADMIN_EMAIL,
     subject,
     html: html(inv, slug),
