@@ -11,6 +11,7 @@ const ADMIN_EMAIL = "info@popupcollectivenyc.com";
 const args = process.argv.slice(2);
 const dryRun = args.includes("--dry-run");
 const reminder = args.includes("--reminder");
+const preview = args.includes("--preview"); // write the email to a local HTML file instead of sending
 const slugs = args.filter((a) => !a.startsWith("--"));
 if (!slugs.length) {
   console.error("Pass at least one invoice slug.");
@@ -64,7 +65,7 @@ function html(inv, slug) {
   </div>`;
 }
 
-const resend = dryRun ? null : new Resend(process.env.RESEND_API_KEY);
+const resend = dryRun || preview ? null : new Resend(process.env.RESEND_API_KEY);
 
 for (const slug of slugs) {
   const inv = readInvoice(slug);
@@ -73,6 +74,13 @@ for (const slug of slugs) {
     continue;
   }
   const subject = reminder ? `Reminder: Invoice — ${inv.description}` : `Invoice — ${inv.description}`;
+  if (preview) {
+    const { writeFileSync } = await import("node:fs");
+    const out = `/tmp/invoice-preview-${slug}.html`;
+    writeFileSync(out, `<p style="font:13px sans-serif;color:#888">To: ${inv.email} · Cc: ${ADMIN_EMAIL}<br>Subject: ${subject}</p><hr>` + html(inv, slug));
+    console.log(out);
+    continue;
+  }
   if (dryRun) {
     console.log(`[dry run] ${inv.email} | ${inv.name} | ${money(inv.amountCents)} | due ${inv.dueDate} | ${SITE_URL}/invoice/${slug}`);
     continue;
