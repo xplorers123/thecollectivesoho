@@ -11,7 +11,8 @@ const ADMIN_EMAIL = "info@popupcollectivenyc.com";
 const args = process.argv.slice(2);
 const dryRun = args.includes("--dry-run");
 const reminder = args.includes("--reminder");
-const preview = args.includes("--preview"); // write the email to a local HTML file instead of sending
+const preview = args.includes("--preview");
+const dueToday = args.includes("--due-today"); // reminder wording: "due today" instead of "was due <date>" // write the email to a local HTML file instead of sending
 const slugs = args.filter((a) => !a.startsWith("--"));
 if (!slugs.length) {
   console.error("Pass at least one invoice slug.");
@@ -44,7 +45,9 @@ function readInvoice(slug) {
 const money = (c) => "$" + (c / 100).toLocaleString("en-US", { minimumFractionDigits: 2 });
 
 function html(inv, slug) {
-  const intro = reminder
+  const intro = reminder && dueToday
+    ? `This is a friendly reminder that your invoice for <strong>${inv.description}</strong> is due <strong>today</strong>. Please complete your payment by end of day.`
+    : reminder
     ? `This is a friendly reminder that your invoice for <strong>${inv.description}</strong> is still open. It was due <strong>${inv.dueDate}</strong> — please complete your payment as soon as you can.`
     : `Your invoice for <strong>${inv.description}</strong> is ready. Please complete your payment by <strong>${inv.dueDate}</strong>.`;
   const td = "padding:12px 14px;border-bottom:1px solid #eee;font-size:14px;";
@@ -55,7 +58,7 @@ function html(inv, slug) {
     <p style="font-size:16px;line-height:1.7;">${intro}</p>
     <table style="width:100%;border-collapse:collapse;margin:24px 0;">
       <tr><th style="${th}">Description</th><th style="${th}">Amount Due</th><th style="${th}">Due Date</th></tr>
-      <tr><td style="${td}">${inv.description}</td><td style="${td}"><strong>${money(inv.amountCents)}</strong></td><td style="${td}">${inv.dueDate}</td></tr>
+      <tr><td style="${td}">${inv.description}</td><td style="${td}"><strong>${money(inv.amountCents)}</strong></td><td style="${td}">${dueToday ? "Today" : inv.dueDate}</td></tr>
     </table>
     <div style="margin:28px 0;">
       <a href="${SITE_URL}/invoice/${slug}" style="display:inline-block;background:#000;color:#fff;padding:14px 32px;text-decoration:none;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;">View Invoice &amp; Pay</a>
@@ -73,7 +76,7 @@ for (const slug of slugs) {
     console.error(`✗ ${slug}: invoice not found or incomplete`);
     continue;
   }
-  const subject = reminder ? `Reminder: Invoice — ${inv.description}` : `Invoice — ${inv.description}`;
+  const subject = reminder ? `Reminder: ${dueToday ? "Payment due today" : "Invoice"} — ${inv.description}` : `Invoice — ${inv.description}`;
   if (preview) {
     const { writeFileSync } = await import("node:fs");
     const out = `/tmp/invoice-preview-${slug}.html`;
