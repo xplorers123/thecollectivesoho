@@ -12,6 +12,7 @@ const args = process.argv.slice(2);
 const dryRun = args.includes("--dry-run");
 const reminder = args.includes("--reminder");
 const preview = args.includes("--preview");
+const testToMe = args.includes("--test"); // email the invoice to Lou only, marked [PREVIEW]
 const dueToday = args.includes("--due-today"); // reminder wording: "due today" instead of "was due <date>" // write the email to a local HTML file instead of sending
 const slugs = args.filter((a) => !a.startsWith("--"));
 if (!slugs.length) {
@@ -90,11 +91,11 @@ for (const slug of slugs) {
   }
   const { error } = await resend.emails.send({
     from: `The Collective SoHo <${ADMIN_EMAIL}>`,
-    to: inv.email,
-    cc: ADMIN_EMAIL, // Lou is always cc'd on invoice emails
+    to: testToMe ? ADMIN_EMAIL : inv.email,
+    ...(testToMe ? {} : { cc: ADMIN_EMAIL }), // Lou is always cc'd on invoice emails
     replyTo: ADMIN_EMAIL,
-    subject,
+    subject: testToMe ? `[PREVIEW — will go to ${inv.email}] ${subject}` : subject,
     html: html(inv, slug),
   });
-  console.log(error ? `✗ ${slug} (${inv.email}): ${error.message}` : `✓ Sent ${slug} to ${inv.email}`);
+  console.log(error ? `✗ ${slug} (${testToMe ? ADMIN_EMAIL : inv.email}): ${error.message}` : `✓ Sent ${slug} to ${testToMe ? ADMIN_EMAIL + " (test)" : inv.email}`);
 }
