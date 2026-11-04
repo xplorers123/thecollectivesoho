@@ -137,10 +137,10 @@ export default function BoothOptions() {
       <section className="bg-background px-6 py-24">
         <div className="mx-auto max-w-6xl">
           <div className="mb-10 border border-gold/60 bg-cream px-6 py-5">
-            <p className="eyebrow flex items-center gap-3 text-evergreen"><span className="text-gold" aria-hidden>✦</span> Holiday Season · Nov 1 – Dec 31</p>
+            <p className="eyebrow flex items-center gap-3 text-evergreen"><span className="text-gold" aria-hidden>✦</span> Holiday Season · Dec 1 – 31</p>
             <p className="mt-2 text-sm leading-relaxed text-muted">
-              Booth rates change for the holiday season. October pricing is shown first on each
-              package below, followed by holiday season pricing for bookings from November 1 through December 31.
+              Booth rates change for the holiday season. Regular pricing (through November 30) is shown first on each
+              package below, followed by holiday season pricing for bookings from December 1 through December 31.
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -168,7 +168,7 @@ export default function BoothOptions() {
                   </span>
                 </div>
 
-                <p className={`text-xs uppercase tracking-widest mb-1 ${tier.featured ? "text-white/50" : "text-muted"}`}>October · Starting at</p>
+                <p className={`text-xs uppercase tracking-widest mb-1 ${tier.featured ? "text-white/50" : "text-muted"}`}>Through Nov 30 · Starting at</p>
                 <p className="text-4xl font-medium">
                   {tier.price}
                   <span className={`text-sm font-normal ml-1 ${tier.featured ? "text-white/60" : "text-muted"}`}>
@@ -178,7 +178,7 @@ export default function BoothOptions() {
 
                 <div className={`mt-4 border-t pt-4 ${tier.featured ? "border-white/20" : "border-border"}`}>
                   <p className={`text-xs uppercase tracking-widest mb-1 ${tier.featured ? "text-white/50" : "text-muted"}`}>
-                    Holiday Season · Nov 1 – Dec 31
+                    Holiday Season · Dec 1 – 31
                   </p>
                   <p className="text-2xl font-medium">
                     {tier.holidayPrice}

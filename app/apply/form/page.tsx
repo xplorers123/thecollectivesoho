@@ -15,13 +15,13 @@ const CATEGORIES = [
 ];
 
 const SEASONS = {
-  October: [
+  "Now – November 30": [
     "Weekly ($850+/week)",
     "Monthly ($3,200+/month)",
     "Weekend ($600+/weekend)",
     "Weekday Mon–Fri ($400+/week)",
   ],
-  "Holiday Season (Nov 1 – Dec 31)": [
+  "Holiday Season (Dec 1 – 31)": [
     "Weekly ($950+/week)",
     "Monthly ($3,500+/month)",
     "Weekend ($650+/weekend)",
@@ -325,9 +325,9 @@ export default function ApplyForm() {
               value={season}
               onChange={(v) => { setSeason(v as Season); setBookingType(""); }}
             />
-            {season === "Holiday Season (Nov 1 – Dec 31)" && (
+            {season === "Holiday Season (Dec 1 – 31)" && (
               <p className="mt-3 border border-border bg-white px-4 py-3 text-xs leading-relaxed text-muted">
-                <strong className="text-black">NOTE:</strong> Holiday season pricing applies to all bookings from November 1 through December 31.
+                <strong className="text-black">NOTE:</strong> Holiday season pricing applies to all bookings from December 1 through December 31.
               </p>
             )}
           </div>

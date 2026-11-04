@@ -39,7 +39,7 @@ const STANDARD_PRICES: Record<BookingSlot["type"], number> = {
   weekday: 40000,
 };
 
-// Holiday Season: slots starting Nov 1 – Dec 31
+// Holiday Season: slots starting Dec 1 – 31 (November uses standard rates)
 const HOLIDAY_PRICES: Record<BookingSlot["type"], number> = {
   weekend: 65000,
   weekly: 95000,
@@ -49,7 +49,7 @@ const HOLIDAY_PRICES: Record<BookingSlot["type"], number> = {
 
 function isHolidaySeason(startDate: string): boolean {
   const month = Number(startDate.slice(5, 7));
-  return month === 11 || month === 12;
+  return month === 12;
 }
 
 export function getSlotPrice(type: BookingSlot["type"], startDate: string): number {
