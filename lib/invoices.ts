@@ -738,4 +738,16 @@ export const invoices: Record<string, Invoice> = {
     amountCents: 525000,
     dueDate: "November 15, 2026",
   },
+  "label258-dec14-2026": {
+    id: "label258-dec14-2026",
+    email: "hello@label258.com",
+    name: "LABEL 258",
+    description: "Weekly Booth Fee — December 14–20, 2026",
+    lineItems: [
+      { label: "Weekly rate (holiday)",   amountCents: 95000 },
+      { label: "Special rate discount",   amountCents: 10000, deduction: true },
+    ],
+    amountCents: 85000,
+    dueDate: "November 8, 2026",
+  },
 };
