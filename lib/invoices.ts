@@ -760,11 +760,7 @@ export const invoices: Record<string, Invoice> = {
     id: "ocealine-nov16-2026",
     email: "ocealine.jewelry@gmail.com",
     name: "Ocealine Jewelry",
-    description: "Booth Fee — November 16–30, 2026 (14 operating days)",
-    lineItems: [
-      { label: "Monthly rate ($3,200/mo) × 14/30 days", amountCents: 149333 },
-      { label: "Closed Thanksgiving (Nov 27)",           amountCents: 0 },
-    ],
+    description: "Booth Fee — November 16–30, 2026 · 14 operating days (closed Thanksgiving Nov 27) @ $3,200/mo",
     amountCents: 149333,
     dueDate: "November 12, 2026",
   },
