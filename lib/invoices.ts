@@ -756,4 +756,16 @@ export const invoices: Record<string, Invoice> = {
   "delia-nov12-p2-2026": { id: "delia-nov12-p2-2026", email: "deliavaldez819@yahoo.com", name: "Delia Valdez", description: "Booth Fee — November 12–15, 2026 · Payment 2 of 4", amountCents: 14000, dueDate: "November 10, 2026" },
   "delia-nov12-p3-2026": { id: "delia-nov12-p3-2026", email: "deliavaldez819@yahoo.com", name: "Delia Valdez", description: "Booth Fee — November 12–15, 2026 · Payment 3 of 4", amountCents: 19500, dueDate: "November 10, 2026" },
   "delia-nov12-p4-2026": { id: "delia-nov12-p4-2026", email: "deliavaldez819@yahoo.com", name: "Delia Valdez", description: "Booth Fee — November 12–15, 2026 · Payment 4 of 4", amountCents: 11500, dueDate: "November 10, 2026" },
+  "ocealine-nov16-2026": {
+    id: "ocealine-nov16-2026",
+    email: "ocealine.jewelry@gmail.com",
+    name: "Ocealine Jewelry",
+    description: "Booth Fee — November 16–30, 2026 (14 operating days)",
+    lineItems: [
+      { label: "Monthly rate ($3,200/mo) × 14/30 days", amountCents: 149333 },
+      { label: "Closed Thanksgiving (Nov 27)",           amountCents: 0 },
+    ],
+    amountCents: 149333,
+    dueDate: "November 12, 2026",
+  },
 };
