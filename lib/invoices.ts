@@ -13,6 +13,7 @@ export type Invoice = {
   amountCents: number; // net total to charge
   dueDate?: string;
   agreementUrl?: string; // if set, vendor must check agreement box before paying
+  noCardSurcharge?: boolean; // if true, card charges the invoice amount exactly (no 3% added)
 };
 
 export const invoices: Record<string, Invoice> = {
@@ -752,10 +753,10 @@ export const invoices: Record<string, Invoice> = {
   },
   "dominika-dec12-2026": { id: "dominika-dec12-2026", email: "dominika.studio.nyc@gmail.com", name: "Dominika", description: "Weekend Booth Fee — December 12–13, 2026 · Clothing & Accessories", amountCents: 65000, dueDate: "November 11, 2026" },
   // Delia Valdez — Nov 12–15, 2026 split into 4 payments (different cards, no fee)
-  "delia-nov12-p1-2026": { id: "delia-nov12-p1-2026", email: "deliavaldez819@yahoo.com", name: "Delia Valdez", description: "Booth Fee — November 12–15, 2026 · Payment 1 of 4", amountCents: 14000, dueDate: "November 10, 2026" },
-  "delia-nov12-p2-2026": { id: "delia-nov12-p2-2026", email: "deliavaldez819@yahoo.com", name: "Delia Valdez", description: "Booth Fee — November 12–15, 2026 · Payment 2 of 4", amountCents: 15000, dueDate: "November 10, 2026" },
-  "delia-nov12-p3-2026": { id: "delia-nov12-p3-2026", email: "deliavaldez819@yahoo.com", name: "Delia Valdez", description: "Booth Fee — November 12–15, 2026 · Payment 3 of 4", amountCents: 19500, dueDate: "November 10, 2026" },
-  "delia-nov12-p4-2026": { id: "delia-nov12-p4-2026", email: "deliavaldez819@yahoo.com", name: "Delia Valdez", description: "Booth Fee — November 12–15, 2026 · Payment 4 of 4 (incl. 3% card surcharge)", amountCents: 13300, dueDate: "November 10, 2026" },
+  "delia-nov12-p1-2026": { id: "delia-nov12-p1-2026", email: "deliavaldez819@yahoo.com", name: "Delia Valdez", description: "Booth Fee — November 12–15, 2026 · Payment 1 of 4", amountCents: 14000, dueDate: "November 10, 2026", noCardSurcharge: true },
+  "delia-nov12-p2-2026": { id: "delia-nov12-p2-2026", email: "deliavaldez819@yahoo.com", name: "Delia Valdez", description: "Booth Fee — November 12–15, 2026 · Payment 2 of 4", amountCents: 15000, dueDate: "November 10, 2026", noCardSurcharge: true },
+  "delia-nov12-p3-2026": { id: "delia-nov12-p3-2026", email: "deliavaldez819@yahoo.com", name: "Delia Valdez", description: "Booth Fee — November 12–15, 2026 · Payment 3 of 4", amountCents: 19500, dueDate: "November 10, 2026", noCardSurcharge: true },
+  "delia-nov12-p4-2026": { id: "delia-nov12-p4-2026", email: "deliavaldez819@yahoo.com", name: "Delia Valdez", description: "Booth Fee — November 12–15, 2026 · Payment 4 of 4 (incl. 3% card surcharge)", amountCents: 13300, dueDate: "November 10, 2026", noCardSurcharge: true },
   "ocealine-nov16-2026": {
     id: "ocealine-nov16-2026",
     email: "ocealine.jewelry@gmail.com",

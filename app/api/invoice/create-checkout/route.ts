@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
 
   const isCard = method === "card";
   const baseAmount = invoice.amountCents;
-  const cardSurcharge = Math.round(baseAmount * CARD_SURCHARGE);
+  const cardSurcharge = invoice.noCardSurcharge ? 0 : Math.round(baseAmount * CARD_SURCHARGE);
 
   const lineItems = isCard
     ? [
@@ -27,14 +27,14 @@ export async function POST(req: NextRequest) {
           },
           quantity: 1,
         },
-        {
+        ...(cardSurcharge > 0 ? [{
           price_data: {
             currency: "usd",
             unit_amount: cardSurcharge,
             product_data: { name: "Credit card surcharge (3%)" },
           },
           quantity: 1,
-        },
+        }] : []),
       ]
     : [
         {

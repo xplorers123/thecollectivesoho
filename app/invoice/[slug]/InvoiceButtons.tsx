@@ -9,12 +9,12 @@ function fmt(cents: number) {
   return (cents / 100).toLocaleString("en-US", { style: "currency", currency: "USD" });
 }
 
-export default function InvoiceButtons({ slug, amountCents, agreementUrl }: { slug: string; amountCents: number; agreementUrl?: string }) {
+export default function InvoiceButtons({ slug, amountCents, agreementUrl, noCardSurcharge }: { slug: string; amountCents: number; agreementUrl?: string; noCardSurcharge?: boolean }) {
   const [loading, setLoading] = useState<"card" | "bank" | null>(null);
   const [zelleOpen, setZelleOpen] = useState(false);
   const [agreed, setAgreed] = useState(!agreementUrl);
 
-  const cardTotal = Math.round(amountCents * (1 + CARD_SURCHARGE));
+  const cardTotal = noCardSurcharge ? amountCents : Math.round(amountCents * (1 + CARD_SURCHARGE));
   const bankTotal = amountCents + BANK_FEE_CENTS;
 
   async function pay(method: "card" | "bank") {
@@ -61,7 +61,7 @@ export default function InvoiceButtons({ slug, amountCents, agreementUrl }: { sl
         {loading === "card" ? "Redirecting…" : (
           <span className="flex justify-between items-center">
             <span>Pay by Card</span>
-            <span>{fmt(cardTotal)} <span className="opacity-60">(+3% surcharge)</span></span>
+            <span>{fmt(cardTotal)}{!noCardSurcharge && <span className="opacity-60"> (+3% surcharge)</span>}</span>
           </span>
         )}
       </button>
