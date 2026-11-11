@@ -31,6 +31,7 @@ function nextSaturday(from: Date): Date {
 }
 
 const CUTOFF = new Date("2027-01-01");
+const SEASON_END = new Date("2026-12-31");
 
 const STANDARD_PRICES: Record<BookingSlot["type"], number> = {
   weekend: 60000,
@@ -95,6 +96,7 @@ export function getWeeklySlots(startDay: "saturday" | "monday" = "saturday"): Bo
     }
     const end = new Date(start);
     end.setDate(end.getDate() + 6);
+    if (end > SEASON_END) end.setTime(SEASON_END.getTime());
 
     const sameMonth = start.getMonth() === end.getMonth();
     const label = sameMonth

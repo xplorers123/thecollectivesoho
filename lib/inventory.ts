@@ -26,11 +26,20 @@ const SLOT_CATEGORY_OOS = new Set([
   "weekly:2026-10-12:jewelry",  // Mon-start Oct 12–18
   "monthly:2026-10-01:jewelry", // Oct monthly
   "weekly:2026-10-31:jewelry",  // Sat-start Oct 31–Nov 6 (before Nov 1 open date)
-  // Dec 14-20 weekly fully booked
+  // Dec 14-20 weekly fully booked (Mon-start and Sat-start)
   "weekly:2026-12-14:jewelry",
   "weekly:2026-12-14:clothing",
   "weekly:2026-12-14:other",
   "weekly:2026-12-14:food-drink",
+  "weekly:2026-12-12:jewelry",
+  "weekly:2026-12-12:clothing",
+  "weekly:2026-12-12:other",
+  "weekly:2026-12-12:food-drink",
+  // Dec 19-20 weekend fully booked
+  "weekend:2026-12-19:jewelry",
+  "weekend:2026-12-19:clothing",
+  "weekend:2026-12-19:other",
+  "weekend:2026-12-19:food-drink",
 ]);
 
 const ALL_CATEGORIES = ["jewelry", "clothing", "other", "food-drink"];
