@@ -726,18 +726,14 @@ export const invoices: Record<string, Invoice> = {
   "marina-nov-2026": { id: "marina-nov-2026", email: "marinamatia@hotmail.com", name: "Marina", description: "Monthly Booth Fee — November 1–30, 2026", amountCents: 330000, dueDate: "November 1, 2026" },
   "bangbang-nov-2026": { id: "bangbang-nov-2026", email: "erenarina@gmail.com", name: "BangBang Co", description: "Monthly Booth Fee — November 1–30, 2026", amountCents: 250000, dueDate: "November 1, 2026" },
   "bryancordova-nov-2026": { id: "bryancordova-nov-2026", email: "bcdesigndrawing@gmail.com", name: "Bryan Cordova", description: "Monthly Booth Fee — November 1–30, 2026", amountCents: 250000, dueDate: "November 1, 2026" },
-  "purna-deposit-nov-2026": { id: "purna-deposit-nov-2026", email: "purnaideals@gmail.com", name: "Purna Lama", description: "Security Deposit — Refundable, The Collective SoHo", amountCents: 50000, dueDate: "November 1, 2026" },
-  "purna-nov16-dec31-2026": {
-    id: "purna-nov16-dec31-2026",
+  "purna-deposit-nov-2026": { id: "purna-deposit-nov-2026", email: "purnaideals@gmail.com", name: "Purna Lama", description: "Security Deposit — Refundable, The Collective SoHo", amountCents: 50000, dueDate: "November 11, 2026" },
+  "purna-nov27-dec31-2026": {
+    id: "purna-nov27-dec31-2026",
     email: "purnaideals@gmail.com",
     name: "Purna Lama",
-    description: "Monthly Booth Fee — November 16 – December 31, 2026",
-    lineItems: [
-      { label: "Nov 16–30 (15 of 30 days @ $3,500/mo)", amountCents: 175000 },
-      { label: "Dec 1–31 (full month @ $3,500/mo)",     amountCents: 350000 },
-    ],
-    amountCents: 525000,
-    dueDate: "November 15, 2026",
+    description: "Booth Fee — November 27 – December 31, 2026",
+    amountCents: 395000,
+    dueDate: "November 11, 2026",
   },
   "label258-dec14-2026": {
     id: "label258-dec14-2026",
