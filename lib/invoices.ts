@@ -735,7 +735,7 @@ export const invoices: Record<string, Invoice> = {
     amountCents: 395000,
     dueDate: "November 11, 2026",
   },
-  "sippyscloset-nov23-2026": { id: "sippyscloset-nov23-2026", email: "styledby@sippyscloset.com", name: "Sippy's Closet", description: "Weekly Booth Fee — November 23–29, 2026", amountCents: 75000, dueDate: "November 11, 2026" },
+  "sippyscloset-nov27-2026": { id: "sippyscloset-nov27-2026", email: "styledby@sippyscloset.com", name: "Sippy's Closet", description: "Booth Fee — November 27–29, 2026", amountCents: 55000, dueDate: "November 13, 2026" },
 
   "label258-dec14-2026": {
     id: "label258-dec14-2026",
