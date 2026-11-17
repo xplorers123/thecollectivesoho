@@ -1,5 +1,5 @@
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import ApplicationRow from "./ApplicationRow";
+import ApplicationsClient from "./ApplicationsClient";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Applications — Admin" };
@@ -96,22 +96,5 @@ export default async function AdminApplicationsPage() {
     }))
   );
 
-  return (
-    <div className="px-8 py-10">
-      <div className="mb-8 flex items-baseline justify-between">
-        <h1 className="text-2xl font-medium">Applications</h1>
-        <p className="text-xs text-muted">{resolved.length} total</p>
-      </div>
-
-      {resolved.length === 0 ? (
-        <p className="text-sm text-muted">No applications yet.</p>
-      ) : (
-        <div className="space-y-3">
-          {resolved.map((app) => (
-            <ApplicationRow key={app.id} app={app} />
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  return <ApplicationsClient applications={resolved} />;
 }
