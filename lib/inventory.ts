@@ -1,9 +1,5 @@
 // OOS for an entire booking type + category (all dates)
-const TYPE_CATEGORY_OOS = new Set<string>([
-  // Jewelry open for weekly/monthly from Nov 1 — weekend/weekday remain blocked
-  "weekend:jewelry",
-  "weekday:jewelry",
-]);
+const TYPE_CATEGORY_OOS = new Set<string>([]);
 
 // OOS for a specific slot + category keyed as "type:startDate:category"
 const SLOT_CATEGORY_OOS = new Set([
