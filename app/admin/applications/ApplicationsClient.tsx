@@ -23,8 +23,24 @@ type Application = {
   _displayUrls: string[];
 };
 
-const BOOKING_FILTERS = ["All", "Monthly", "Weekly", "Weekend", "Weekday"];
-const STATUS_FILTERS  = ["All", "Pending", "Approved", "Rejected"];
+const BOOKING_FILTERS  = ["All", "Monthly", "Weekly", "Weekend", "Weekday"];
+const STATUS_FILTERS   = ["All", "Pending", "Approved", "Rejected"];
+const CATEGORY_FILTERS = ["All", "Jewelry", "Clothing & Accessories", "Beauty and Home Goods", "Food / Drink", "Vintage", "Art", "Other"];
+
+const CANONICAL_CATEGORIES = new Set(CATEGORY_FILTERS.slice(1));
+
+function normalizeCategory(raw: string): string {
+  if (!raw) return "Other";
+  const lower = raw.toLowerCase();
+  if (lower.includes("jewelry")) return "Jewelry";
+  if (lower.includes("clothing") || lower.includes("accessories") || lower.includes("fashion") || lower.includes("apparel")) return "Clothing & Accessories";
+  if (lower.includes("beauty") || lower.includes("skincare") || lower.includes("candle") || lower.includes("cosmetic") || lower.includes("fragrance") || lower.includes("home good")) return "Beauty and Home Goods";
+  if (lower.includes("food") || lower.includes("drink") || lower.includes("bakery") || lower.includes("coffee") || lower.includes("chocolate") || lower.includes("cafe") || lower.includes("pastry") || lower.includes("cupcake")) return "Food / Drink";
+  if (lower.includes("vintage")) return "Vintage";
+  if (lower.includes("art") || lower.includes("print") || lower.includes("painting") || lower.includes("pottery") || lower.includes("ceramic") || lower.includes("woodburn")) return "Art";
+  if (CANONICAL_CATEGORIES.has(raw)) return raw;
+  return "Other";
+}
 
 function matchesBooking(bookingType: string, filter: string): boolean {
   if (filter === "All") return true;
@@ -51,15 +67,10 @@ export default function ApplicationsClient({ applications }: { applications: App
   const [statusFilter,  setStatusFilter]  = useState("All");
   const [categoryFilter, setCategoryFilter] = useState("All");
 
-  const categories = useMemo(() => {
-    const cats = new Set(applications.map(a => a.product_category).filter(Boolean));
-    return ["All", ...Array.from(cats).sort()];
-  }, [applications]);
-
   const filtered = useMemo(() => applications.filter(app => {
     if (!matchesBooking(app.booking_type, bookingFilter)) return false;
     if (statusFilter !== "All" && app.status?.toLowerCase() !== statusFilter.toLowerCase()) return false;
-    if (categoryFilter !== "All" && app.product_category !== categoryFilter) return false;
+    if (categoryFilter !== "All" && normalizeCategory(app.product_category) !== categoryFilter) return false;
     return true;
   }), [applications, bookingFilter, statusFilter, categoryFilter]);
 
@@ -86,7 +97,7 @@ export default function ApplicationsClient({ applications }: { applications: App
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs text-muted uppercase tracking-widest w-16">Category</span>
-          {categories.map(f => (
+          {CATEGORY_FILTERS.map(f => (
             <FilterBtn key={f} label={f} active={categoryFilter === f} onClick={() => setCategoryFilter(f)} />
           ))}
         </div>
