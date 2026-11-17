@@ -9,23 +9,17 @@ export const metadata = {
 };
 
 const vendors = [
+  { name: "Admirable Jewels", ig: "admirablejewels" },
   { name: "Aroma de Merrie", ig: "aromademerrie" },
-  { name: "Askan NYC", ig: "askannyc" },
-  { name: "Awita New York Design", ig: "awitanewyorkdesign" },
   { name: "Bang Bang Co", ig: "bangbangco" },
-  { name: "Café Truman", ig: "cafe_truman" },
+  { name: "Collective Vintage", ig: "popupcollective.nyc" },
   { name: "Crystella Jing", ig: "crystellajing55" },
-  { name: "Deewang Studio", ig: "deewang_studio" },
   { name: "Hunch Studio", ig: "hunchstudio" },
   { name: "Le Nail Studio", ig: "lenailstudio_official" },
-  { name: "Maison Raphaella", ig: "maisonraphaella" },
   { name: "Maison Third", ig: "maison_third" },
   { name: "Marina Pecoraro Jewelry", ig: "marinapecorarojewelry" },
-  { name: "Oilogy NY", ig: "oilogy.ny" },
-  { name: "Psychic Readings by Sandra", ig: "psychicreadingsbysandra" },
-  { name: "Real Snow Milk", ig: "realsnowmilk" },
-  { name: "Selfloom", ig: "selfloom_" },
-  { name: "Y Dimension", ig: "y.dimension" },
+  { name: "Savage Anchor", ig: "savageanchor" },
+  { name: "Teenage Grandma Closet", ig: "teenagegrandmascloset" },
 ];
 
 export default function Visit() {
