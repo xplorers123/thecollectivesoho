@@ -23,7 +23,7 @@ export default async function AvailabilityPage() {
   }
 
   const weekendSlots = buildRows("weekend", getWeekendSlots());
-  const weeklySlots = buildRows("weekly", getWeeklySlots("saturday"));
+  const weeklySlots = buildRows("weekly", getWeeklySlots());
   const monthlySlots = buildRows("monthly", getMonthlySlots());
 
   const slots: SlotRow[] = [...weekendSlots, ...weeklySlots, ...monthlySlots];

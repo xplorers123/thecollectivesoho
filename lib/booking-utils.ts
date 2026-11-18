@@ -87,15 +87,13 @@ export function getWeekendSlots(): BookingSlot[] {
   return slots;
 }
 
-export function getWeeklySlots(startDay: "saturday" | "monday" = "saturday"): BookingSlot[] {
+export function getWeeklySlots(): BookingSlot[] {
   const slots: BookingSlot[] = [];
   let sat = nextSaturday(new Date());
 
   while (sat < CUTOFF) {
     const start = new Date(sat);
-    if (startDay === "monday") {
-      start.setDate(start.getDate() + 2); // Sat → Mon
-    }
+    start.setDate(start.getDate() + 2); // always Mon start
     const end = new Date(start);
     end.setDate(end.getDate() + 6);
     if (end > SEASON_END) end.setTime(SEASON_END.getTime());
@@ -106,7 +104,6 @@ export function getWeeklySlots(startDay: "saturday" | "monday" = "saturday"): Bo
       : `${formatDate(start)} – ${formatDate(end)}, ${end.getFullYear()}`;
 
     const startISO = toISO(start);
-    const isBlackFridayWeek = startISO === "2026-11-22" || startISO === "2026-11-23";
     slots.push({
       id: startISO,
       startDate: startISO,
@@ -114,7 +111,7 @@ export function getWeeklySlots(startDay: "saturday" | "monday" = "saturday"): Bo
       label,
       price: getSlotPrice("weekly", startISO),
       type: "weekly",
-      ...(isBlackFridayWeek && {
+      ...(startISO === "2026-11-23" && {
         badge: "Black Friday Weekend!",
         note: "Closed Thanksgiving Thu Nov 26",
       }),
@@ -127,7 +124,7 @@ export function getWeeklySlots(startDay: "saturday" | "monday" = "saturday"): Bo
 }
 
 export function getAllWeeklySlots(): BookingSlot[] {
-  return [...getWeeklySlots("saturday"), ...getWeeklySlots("monday")];
+  return getWeeklySlots();
 }
 
 export function getMonthlySlots(): BookingSlot[] {
