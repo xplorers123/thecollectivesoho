@@ -2,41 +2,7 @@
 const TYPE_CATEGORY_OOS = new Set<string>([]);
 
 // OOS for a specific slot + category keyed as "type:startDate:category"
-const SLOT_CATEGORY_OOS = new Set([
-  "monthly:2026-06-01:jewelry",
-  "monthly:2026-07-01:jewelry",
-  // Weekly jewelry sold out through Aug 2
-  "weekly:2026-07-11:jewelry", // Sat-start Jul 11–17
-  "weekly:2026-07-13:jewelry", // Mon-start Jul 13–19
-  "weekly:2026-07-18:jewelry", // Sat-start Jul 18–24
-  "weekly:2026-07-20:jewelry", // Mon-start Jul 20–26
-  "weekly:2026-07-25:jewelry", // Sat-start Jul 25–31
-  "weekly:2026-07-27:jewelry", // Mon-start Jul 27–Aug 2
-  "weekly:2026-08-01:jewelry", // Sat-start Aug 1–7
-  // Aug 3–9 available (removed)
-  "weekly:2026-08-08:jewelry", // Sat-start Aug 8–14
-  "weekly:2026-08-10:jewelry", // Mon-start Aug 10–16
-  // Jewelry opens Oct 16 — block slots starting before then
-  "weekend:2026-10-10:jewelry", // Oct 10–11 weekend
-  "weekly:2026-10-11:jewelry",  // Sat-start Oct 11–17
-  "weekly:2026-10-12:jewelry",  // Mon-start Oct 12–18
-  "monthly:2026-10-01:jewelry", // Oct monthly
-  "weekly:2026-10-31:jewelry",  // Sat-start Oct 31–Nov 6 (before Nov 1 open date)
-  // Dec 14-20 weekly fully booked (Mon-start and Sat-start)
-  "weekly:2026-12-14:jewelry",
-  "weekly:2026-12-14:clothing",
-  "weekly:2026-12-14:other",
-  "weekly:2026-12-14:food-drink",
-  "weekly:2026-12-12:jewelry",
-  "weekly:2026-12-12:clothing",
-  "weekly:2026-12-12:other",
-  "weekly:2026-12-12:food-drink",
-  // Dec 19-20 weekend fully booked
-  "weekend:2026-12-19:jewelry",
-  "weekend:2026-12-19:clothing",
-  "weekend:2026-12-19:other",
-  "weekend:2026-12-19:food-drink",
-]);
+const SLOT_CATEGORY_OOS = new Set<string>([]);
 
 const ALL_CATEGORIES = ["jewelry", "clothing", "other", "food-drink"];
 
