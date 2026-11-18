@@ -7,6 +7,8 @@ export type BookingSlot = {
   label: string;
   price: number; // cents
   type: "weekend" | "weekly" | "monthly" | "weekday";
+  badge?: string;
+  note?: string;
 };
 
 function formatDate(d: Date): string {
@@ -103,13 +105,19 @@ export function getWeeklySlots(startDay: "saturday" | "monday" = "saturday"): Bo
       ? `${formatDate(start)} – ${end.getDate()}, ${start.getFullYear()}`
       : `${formatDate(start)} – ${formatDate(end)}, ${end.getFullYear()}`;
 
+    const startISO = toISO(start);
+    const isBlackFridayWeek = startISO === "2026-11-22" || startISO === "2026-11-23";
     slots.push({
-      id: toISO(start),
-      startDate: toISO(start),
+      id: startISO,
+      startDate: startISO,
       endDate: toISO(end),
       label,
-      price: getSlotPrice("weekly", toISO(start)),
+      price: getSlotPrice("weekly", startISO),
       type: "weekly",
+      ...(isBlackFridayWeek && {
+        badge: "Black Friday Weekend!",
+        note: "Closed Thanksgiving Thu Nov 26",
+      }),
     });
 
     sat = new Date(sat);

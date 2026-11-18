@@ -7,6 +7,8 @@ type Slot = {
   label: string;
   remaining: number;
   type: string;
+  badge?: string;
+  note?: string;
 };
 
 export default function BookingFlow({ slots, type }: { slots: Slot[]; type: string }) {
@@ -28,7 +30,15 @@ export default function BookingFlow({ slots, type }: { slots: Slot[]; type: stri
             }`}
           >
             <div>
-              <p className="text-sm font-medium">{s.label}</p>
+              <div className="flex items-center gap-2">
+                <p className="text-sm font-medium">{s.label}</p>
+                {s.badge && (
+                  <span className="px-2 py-0.5 text-[10px] uppercase tracking-widest bg-black text-white">
+                    {s.badge}
+                  </span>
+                )}
+              </div>
+              {s.note && <p className="mt-0.5 text-xs text-muted">{s.note}</p>}
               <p className="mt-1 text-xs text-muted">
                 {soldOut
                   ? "Sold out"
