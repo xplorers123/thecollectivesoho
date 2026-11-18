@@ -13,7 +13,7 @@ const types = [
   {
     type: "Weekly",
     href: "/dashboard/book/weekly",
-    days: "Saturday – Friday",
+    days: "Monday – Sunday",
     image: "/images/DSC_0381-scaled.jpg",
   },
   {
