@@ -105,7 +105,7 @@ export function getWeeklySlots(): BookingSlot[] {
 
     const startISO = toISO(start);
     const isThanksgivingWeek = startISO === "2026-11-23";
-    const isChristmasWeek    = startISO === "2026-12-22";
+    const isChristmasWeek    = startISO === "2026-12-21";
     const basePrice = getSlotPrice("weekly", startISO);
     slots.push({
       id: startISO,
