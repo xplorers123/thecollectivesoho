@@ -104,16 +104,22 @@ export function getWeeklySlots(): BookingSlot[] {
       : `${formatDate(start)} – ${formatDate(end)}, ${end.getFullYear()}`;
 
     const startISO = toISO(start);
+    const isThanksgivingWeek = startISO === "2026-11-23";
+    const isChristmasWeek    = startISO === "2026-12-22";
+    const basePrice = getSlotPrice("weekly", startISO);
     slots.push({
       id: startISO,
       startDate: startISO,
       endDate: toISO(end),
       label,
-      price: getSlotPrice("weekly", startISO),
+      price: (isThanksgivingWeek || isChristmasWeek) ? basePrice - 10000 : basePrice,
       type: "weekly",
-      ...(startISO === "2026-11-23" && {
+      ...(isThanksgivingWeek && {
         badge: "Black Friday Weekend!",
-        note: "Closed Thanksgiving Thu Nov 26",
+        note: "Closed Thanksgiving Thu Nov 26 · Prorated price",
+      }),
+      ...(isChristmasWeek && {
+        note: "Closed Christmas Day Fri Dec 25 · Prorated price",
       }),
     });
 
