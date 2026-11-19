@@ -74,6 +74,7 @@ export async function POST(req: NextRequest) {
       weekly_tier: weeklyTier,
       monthly_tier: monthlyTier,
       booking_type: bookingType,
+      setup_preference: setupPreference,
       three_month_tier: threeMonthTier,
       grand_opening: grandOpening,
       additional_comments: additionalComments,

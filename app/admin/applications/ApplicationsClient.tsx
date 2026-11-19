@@ -16,6 +16,7 @@ type Application = {
   price_range: string;
   brand_story: string;
   booking_type: string;
+  setup_preference?: string;
   additional_comments: string;
   status: string;
   created_at: string;

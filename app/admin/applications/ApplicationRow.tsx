@@ -15,6 +15,7 @@ type Application = {
   price_range: string;
   brand_story: string;
   booking_type: string;
+  setup_preference?: string;
   additional_comments: string;
   status: string;
   created_at: string;
@@ -114,12 +115,13 @@ export default function ApplicationRow({ app }: { app: Application }) {
           {/* Contact & brand info */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-3 text-sm">
             {[
-              ["Phone",        app.phone],
-              ["Instagram",    app.instagram],
-              ["Website",      app.website],
-              ["Price Range",  app.price_range],
-              ["Booking Type", app.booking_type],
-              ["Category",     app.product_category],
+              ["Phone",           app.phone],
+              ["Instagram",       app.instagram],
+              ["Website",         app.website],
+              ["Price Range",     app.price_range],
+              ["Booking Type",    app.booking_type],
+              ["Category",        app.product_category],
+              ["Booth Setup",     app.setup_preference],
             ].filter(([, v]) => v).map(([label, value]) => (
               <div key={label}>
                 <p className="text-xs text-muted uppercase tracking-widest mb-0.5">{label}</p>
