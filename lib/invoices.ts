@@ -17,6 +17,15 @@ export type Invoice = {
 };
 
 export const invoices: Record<string, Invoice> = {
+  "aanche-dec1820-2026": {
+    id: "aanche-dec1820-2026",
+    email: "hello@theaanche.com",
+    name: "AANCHÉ",
+    description: "Weekend Booth Fee — December 18–20, 2026",
+    amountCents: 65000,
+    dueDate: "November 23, 2026",
+  },
+
   "mousieco-nov2122-2026": {
     id: "mousieco-nov2122-2026",
     email: "mousieco@outlook.com",
