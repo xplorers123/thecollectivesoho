@@ -17,11 +17,11 @@ export type Invoice = {
 };
 
 export const invoices: Record<string, Invoice> = {
-  "robinruth-nov27dec26-2026": {
-    id: "robinruth-nov27dec26-2026",
+  "robinruth-nov30dec29-2026": {
+    id: "robinruth-nov30dec29-2026",
     email: "galshabi457@gmail.com",
     name: "Robin Ruth",
-    description: "Front Retail Space — November 27 – December 26, 2026",
+    description: "Front Retail Space — November 30 – December 29, 2026",
     amountCents: 350000,
     dueDate: "November 24, 2026",
   },
