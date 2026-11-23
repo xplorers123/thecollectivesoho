@@ -90,6 +90,46 @@ export async function POST(req: NextRequest) {
 
   <hr style="border:none;border-top:1px solid #eee;margin:28px 0;" />
 
+  <p style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:#888;margin-bottom:6px;">Parking</p>
+  <p style="font-size:15px;margin-top:0;">There is commercial parking directly in front of 435 Broadway for temporary unloading. For longer stays, here are the closest garages:</p>
+  <table style="font-size:14px;border-collapse:collapse;width:100%;border:1px solid #eee;">
+    <tr style="background:#f9f9f9;">
+      <td style="padding:12px 16px;border-bottom:1px solid #eee;vertical-align:top;width:38%;">
+        <strong>Champion Parking</strong><br/>
+        <span style="color:#888;font-size:13px;">411 Broadway · 0.06 mi · 1 min walk</span>
+      </td>
+      <td style="padding:12px 16px;border-bottom:1px solid #eee;vertical-align:top;font-size:13px;">
+        Outdoor valet · 7am–9pm daily (no overnight)<br/>
+        ~$44.52 pre-booked on SpotHero<br/>
+        ~$25–$35 on SpotAngels (varies by time)
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:12px 16px;border-bottom:1px solid #eee;vertical-align:top;">
+        <strong>Park-it</strong><br/>
+        <span style="color:#888;font-size:13px;">395 Broome St · 0.2 mi · 4 min walk</span>
+      </td>
+      <td style="padding:12px 16px;border-bottom:1px solid #eee;vertical-align:top;font-size:13px;">
+        Open-air valet · 7am–11pm daily<br/>
+        ~$26.50 pre-booked on SpotHero<br/>
+        On-site: $24/1h · $32/2h · $37/3h · $45/12h · $53/24h
+      </td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:12px 16px;vertical-align:top;">
+        <strong>Wooster Parking</strong><br/>
+        <span style="color:#888;font-size:13px;">6 Wooster St · 0.3 mi · 6 min walk</span>
+      </td>
+      <td style="padding:12px 16px;vertical-align:top;font-size:13px;">
+        Covered valet · Open 24/7 · Height limit 6'0"<br/>
+        ~$30.74 pre-booked on SpotHero<br/>
+        ~$34.32 for 2h on SpotAngels
+      </td>
+    </tr>
+  </table>
+
+  <hr style="border:none;border-top:1px solid #eee;margin:28px 0;" />
+
   <p style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:#888;margin-bottom:6px;">Wi-Fi</p>
   <table style="font-size:14px;border-collapse:collapse;">
     <tr><td style="padding:3px 16px 3px 0;color:#888;">Network</td><td><strong>Cubico.co</strong></td></tr>

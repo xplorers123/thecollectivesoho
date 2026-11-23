@@ -17,6 +17,15 @@ export type Invoice = {
 };
 
 export const invoices: Record<string, Invoice> = {
+  "robinruth-nov27dec26-2026": {
+    id: "robinruth-nov27dec26-2026",
+    email: "galshabi457@gmail.com",
+    name: "Robin Ruth",
+    description: "Front Retail Space — November 27 – December 26, 2026",
+    amountCents: 350000,
+    dueDate: "November 24, 2026",
+  },
+
   "aanche-dec1820-2026": {
     id: "aanche-dec1820-2026",
     email: "hello@theaanche.com",
@@ -33,6 +42,15 @@ export const invoices: Record<string, Invoice> = {
     description: "Weekend Booth Fee — November 21–22, 2026",
     amountCents: 60000,
     dueDate: "November 20, 2026",
+  },
+
+  "mousieco-nov2329-2026": {
+    id: "mousieco-nov2329-2026",
+    email: "mousieco@outlook.com",
+    name: "Mousie Co",
+    description: "Booth Fee — November 23–29, 2026",
+    amountCents: 50000,
+    dueDate: "November 24, 2026",
   },
 
   "yuehu-june-2026": {
@@ -729,6 +747,8 @@ export const invoices: Record<string, Invoice> = {
   // Mark moved from Dec 7–11 weekday to Dec 14–20 weekly ($950): $100 deposit + $850 balance
   "casualemuivi-dec14-deposit-2026": { id: "casualemuivi-dec14-deposit-2026", email: "markslevy91@gmail.com", name: "Mark", description: "Weekly Booth Fee — December 14–20, 2026 · Deposit ($100 of $950)", amountCents: 10000, dueDate: "November 6, 2026" },
   "casualemuivi-dec14-balance-2026": { id: "casualemuivi-dec14-balance-2026", email: "markslevy91@gmail.com", name: "Mark", description: "Weekly Booth Fee — December 14–20, 2026 · Remaining Balance ($850 of $950)", amountCents: 85000, dueDate: "November 20, 2026" },
+  // Mark paid $350 of $950 so far; $600 still owed (replaces the $850 balance link)
+  "casualemuivi-dec14-remaining-2026": { id: "casualemuivi-dec14-remaining-2026", email: "markslevy91@gmail.com", name: "Mark", description: "Weekly Booth Fee — December 14–20, 2026 · Remaining Balance ($600 of $950)", amountCents: 60000, dueDate: "November 20, 2026" },
   // November 2026 — holiday rates (+10%; consignment BangBang/Bryan at $2,500)
   "hunchstudio-nov-2026": { id: "hunchstudio-nov-2026", email: "alejitalala@gmail.com", name: "Hunch Studio", description: "Monthly Booth Fee — November 1–30, 2026", amountCents: 401500, dueDate: "November 1, 2026" },
   "selfloom-nov-2026": { id: "selfloom-nov-2026", email: "helloselfloom@gmail.com", name: "Selfloom", description: "Monthly Booth Fee — November 1–30, 2026", amountCents: 385000, dueDate: "November 1, 2026" },
@@ -738,8 +758,7 @@ export const invoices: Record<string, Invoice> = {
   "aromademerrie-nov-p1-2026": { id: "aromademerrie-nov-p1-2026", email: "info@aromademerrie.com", name: "Aroma de Merrie", description: "Monthly Booth Fee — November 2026 · Payment 1 of 3 (week 1)", amountCents: 90750, dueDate: "November 1, 2026" },
   "aromademerrie-nov-p2-2026": { id: "aromademerrie-nov-p2-2026", email: "info@aromademerrie.com", name: "Aroma de Merrie", description: "Monthly Booth Fee — November 2026 · Payment 2 of 3", amountCents: 90750, dueDate: "November 15, 2026" },
   "aromademerrie-nov-p3-2026": { id: "aromademerrie-nov-p3-2026", email: "info@aromademerrie.com", name: "Aroma de Merrie", description: "Monthly Booth Fee — November 2026 · Payment 3 of 3 (weeks 3–4)", amountCents: 181500, dueDate: "November 15, 2026" },
-  // Mark paid $350 of $950 so far; $600 still owed (replaces the $850 balance link)
-  "casualemuivi-dec14-remaining-2026": { id: "casualemuivi-dec14-remaining-2026", email: "markslevy91@gmail.com", name: "Mark", description: "Weekly Booth Fee — December 14–20, 2026 · Remaining Balance ($600 of $950)", amountCents: 60000, dueDate: "November 20, 2026" },
+  "aromademerrie-nov-remainder-2026": { id: "aromademerrie-nov-remainder-2026", email: "info@aromademerrie.com", name: "Aroma de Merrie", description: "Monthly Booth Fee — November 2026 · Remainder", amountCents: 148500, dueDate: "November 25, 2026" },
   "admirablejewelry-nov-2026": { id: "admirablejewelry-nov-2026", email: "admirablejewels@gmail.com", name: "Admirable Jewelry", description: "Monthly Booth Fee — November 1–30, 2026", amountCents: 363000, dueDate: "November 1, 2026" },
   "maisonthird-nov-2026": { id: "maisonthird-nov-2026", email: "maisonthird03@gmail.com", name: "Maison Third", description: "Monthly Booth Fee — November 1–30, 2026", amountCents: 357500, dueDate: "November 1, 2026" },
   "natalia-nov-2026": { id: "natalia-nov-2026", email: "nataliajingjing55@yahoo.com", name: "Natalia", description: "Monthly Booth Fee — November 1–30, 2026", amountCents: 352000, dueDate: "November 1, 2026" },
