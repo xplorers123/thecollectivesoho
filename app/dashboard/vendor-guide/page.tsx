@@ -31,9 +31,9 @@ const sections = [
     items: [
       "Single space: roughly 7′ × 5′, or 9′ × 4′ (best for clothing & accessory vendors)",
       "Spaces assigned on-site upon arrival — no advance requests",
-      "1 six-foot table and 1 chair provided",
+      "1 chair provided — tables available upon request",
       "Tablecloths, racks, and additional furniture not provided",
-      "Additional table or extra chair available for an extra cost",
+      "Additional chair available for an extra cost",
     ],
   },
   {
@@ -204,7 +204,7 @@ export default function VendorGuide() {
               <ul className="mt-3 space-y-1 text-xs text-muted">
                 <li>• Best for jewelry, small items, and tables</li>
                 <li>• Wall space for racks, panels, or pinboards</li>
-                <li>• Standard table and chair included</li>
+                <li>• Chair included — table available upon request</li>
               </ul>
             </div>
           </div>
