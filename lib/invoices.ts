@@ -17,6 +17,16 @@ export type Invoice = {
 };
 
 export const invoices: Record<string, Invoice> = {
+  "theleathercompany-dec2026": {
+    id: "theleathercompany-dec2026",
+    email: "Theleathercompany2024@gmail.com",
+    name: "The Leather Company",
+    description: "Window Retail Space — December 1–31, 2026",
+    amountCents: 100000,
+    dueDate: "November 26, 2026",
+    agreementUrl: "/terms/window-consignment-dec2026",
+  },
+
   "initiatrix-dec2026": {
     id: "initiatrix-dec2026",
     email: "Sarah@initiatrixcollective.com",
