@@ -27,7 +27,7 @@ export default function WindowConsignmentTerms() {
               1. Retail Placement
             </h2>
             <p className="text-sm leading-relaxed text-secondary">
-              The Collective SoHo ("Operator") agrees to provide the Vendor with retail display space within its curated vintage section near the storefront window, accommodating approximately two clothing racks.
+              The Collective SoHo ("Operator") agrees to provide the Vendor with retail display space within its curated vintage section near the storefront window, accommodating approximately two clothing racks (approx. 5 ft each).
             </p>
             <p className="text-sm leading-relaxed text-secondary mt-3">
               Operator maintains full discretion over merchandise placement, display arrangements, and visual merchandising. Placement may be adjusted based on operational needs without guaranteeing any specific window position or visibility.
