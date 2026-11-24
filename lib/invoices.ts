@@ -37,6 +37,15 @@ export const invoices: Record<string, Invoice> = {
     agreementUrl: "/terms/window-consignment-dec2026",
   },
 
+  "robinruth-dec2026": {
+    id: "robinruth-dec2026",
+    email: "galshabi457@gmail.com",
+    name: "Robin Ruth",
+    description: "Middle Retail Space (9×4 ft) — December 1–31, 2026",
+    amountCents: 320000,
+    dueDate: "November 26, 2026",
+  },
+
   "robinruth-nov30dec29-2026": {
     id: "robinruth-nov30dec29-2026",
     email: "galshabi457@gmail.com",
