@@ -24,6 +24,7 @@ export const invoices: Record<string, Invoice> = {
     description: "Front Retail Space — November 30 – December 29, 2026",
     amountCents: 350000,
     dueDate: "November 24, 2026",
+    agreementUrl: "/terms/window-consignment-dec2026",
   },
 
   "aanche-dec1820-2026": {
