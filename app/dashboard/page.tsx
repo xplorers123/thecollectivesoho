@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 
@@ -6,13 +6,34 @@ export const metadata = { title: "Dashboard — The Collective SoHo" };
 
 export default async function Dashboard() {
   const { userId } = await auth();
+  const user = await currentUser();
+  const vendorEmail = user?.emailAddresses?.[0]?.emailAddress?.toLowerCase() ?? null;
 
-  const { data: bookings } = await supabaseAdmin
-    .from("bookings")
-    .select("*")
-    .eq("vendor_clerk_id", userId)
-    .neq("status", "cancelled")
-    .order("start_date", { ascending: true });
+  // Fetch by Clerk ID and also by email (covers manually-added bookings with vendor_clerk_id = "admin_override")
+  const [byId, byEmail] = await Promise.all([
+    supabaseAdmin
+      .from("bookings")
+      .select("*")
+      .eq("vendor_clerk_id", userId)
+      .neq("status", "cancelled")
+      .order("start_date", { ascending: true }),
+    vendorEmail
+      ? supabaseAdmin
+          .from("bookings")
+          .select("*")
+          .eq("vendor_email", vendorEmail)
+          .neq("vendor_clerk_id", userId)
+          .neq("status", "cancelled")
+          .order("start_date", { ascending: true })
+      : Promise.resolve({ data: [] }),
+  ]);
+
+  const seen = new Set<string>();
+  const bookings = [...(byId.data ?? []), ...(byEmail.data ?? [])].filter((b) => {
+    if (seen.has(b.id)) return false;
+    seen.add(b.id);
+    return true;
+  }).sort((a, b) => a.start_date.localeCompare(b.start_date));
 
   const upcoming = bookings?.filter((b) => new Date(b.end_date) >= new Date()) ?? [];
   const past = bookings?.filter((b) => new Date(b.end_date) < new Date()) ?? [];
